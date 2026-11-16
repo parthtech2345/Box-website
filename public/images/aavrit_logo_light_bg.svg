@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1050" height="280" viewBox="65 30 1050 280" role="img" aria-labelledby="title desc">
+  <title id="title">AAVRIT Packaging logo</title>
+  <desc id="desc">A geometric dark hexagon with an orange letter A, separated from the AAVRIT Packaging wordmark. Tight bounding box for navbar.</desc>
+  <defs>
+    <linearGradient id="hexFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#202A2E"/>
+      <stop offset="0.52" stop-color="#2b3b42"/>
+      <stop offset="1" stop-color="#141c20"/>
+    </linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="0.9" y2="1">
+      <stop offset="0" stop-color="#E97835"/>
+      <stop offset="1" stop-color="#d46320"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Faceted hexagonal emblem -->
+  <path d="M190 36 L305 102 L305 235 L190 301 L75 235 L75 102 Z" fill="url(#hexFill)" stroke="#D1B48C" stroke-width="2"/>
+  <path d="M190 36 L190 168 L75 102 Z" fill="#2E3C42" opacity=".72"/>
+  <path d="M190 36 L305 102 L190 168 Z" fill="#354952" opacity=".78"/>
+  <path d="M75 102 L190 168 L75 235 Z" fill="#182329" opacity=".55"/>
+  <path d="M305 102 L190 168 L305 235 Z" fill="#1a262c" opacity=".55"/>
+  <path d="M75 235 L190 168 L190 301 Z" fill="#24343b" opacity=".72"/>
+  <path d="M305 235 L190 168 L190 301 Z" fill="#2a3d45" opacity=".72"/>
+
+  <!-- Stylized orange A -->
+  <path d="M190 88 L270 232 L230 232 L190 158 L150 232 L110 232 Z" fill="url(#orange)"/>
+  <path d="M171 199 L209 199 L221 220 L159 220 Z" fill="#d96823"/>
+  <path d="M190 252 L202 267 L190 282 L178 267 Z" fill="#E97835"/>
+
+  <!-- Divider -->
+  <rect x="355" y="46" width="3.5" height="245" fill="#E4DED3"/>
+
+  <!-- Wordmark -->
+  <text x="405" y="180" fill="#202A2E" font-family="'Barlow Semi Condensed', Arial, sans-serif" font-size="126" font-weight="800" letter-spacing="2">AAVRIT</text>
+  <text x="410" y="242" fill="#687378" font-family="'Source Sans 3', Arial, sans-serif" font-size="38" font-weight="600" letter-spacing="18">PACKAGING</text>
+</svg>
