@@ -38,17 +38,17 @@ export default function Home() {
         {/* Section 3: Why Choose Us */}
         <WhyChooseUs />
 
-        {/* Section 4: Corrugated Box Construction (3/5/7 Ply) */}
-        <BoxConstruction />
-
-        {/* Section 5: Custom Packaging Solutions */}
+        {/* Section 4: Custom Packaging Solutions */}
         <CustomPackaging />
+
+        {/* Section 5: Manufacturing Process */}
+        <ManufacturingProcess />
 
         {/* Section 6: Industries We Serve */}
         <IndustriesWeServe />
 
-        {/* Section 7: Manufacturing Process */}
-        <ManufacturingProcess />
+        {/* Section 7: Corrugated Box Construction (3/5/7 Ply) */}
+        <BoxConstruction />
 
         {/* Section 8: Machinery and Infrastructure */}
         <MachineryInfrastructure />
