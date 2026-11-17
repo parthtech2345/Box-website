@@ -47,17 +47,17 @@ export default function Home() {
         {/* Section 6: Industries We Serve */}
         <IndustriesWeServe />
 
-        {/* Section 7: Corrugated Box Construction (3/5/7 Ply) */}
+        {/* Section 7: Case Studies / Packaging Applications */}
+        <CaseStudies />
+
+        {/* Section 8: Corrugated Box Construction (3/5/7 Ply) */}
         <BoxConstruction />
 
-        {/* Section 8: Machinery and Infrastructure */}
+        {/* Section 9: Machinery and Infrastructure */}
         <MachineryInfrastructure />
 
-        {/* Section 9: Quality Assurance */}
+        {/* Section 10: Quality Assurance */}
         <QualityAssurance />
-
-        {/* Section 10: Case Studies / Projects */}
-        <CaseStudies />
 
         {/* Section 11: Factory Gallery / Video */}
         <FactoryGallery />
