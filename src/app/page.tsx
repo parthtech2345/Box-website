@@ -8,6 +8,7 @@ import AboutUs from "@/components/home/AboutUs";
 import ProductCategories from "@/components/home/ProductCategories";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import BoxConstruction from "@/components/home/BoxConstruction";
+import OurClients from "@/components/home/OurClients";
 import CustomPackaging from "@/components/home/CustomPackaging";
 import IndustriesWeServe from "@/components/home/IndustriesWeServe";
 import ManufacturingProcess from "@/components/home/ManufacturingProcess";
@@ -52,6 +53,9 @@ export default function Home() {
 
         {/* Section 8: Corrugated Box Construction (3/5/7 Ply) */}
         <BoxConstruction />
+
+        {/* Section 8.5: Trusted by Businesses - Client Logo Marquee */}
+        <OurClients />
 
         {/* Section 9: Machinery and Infrastructure */}
         <MachineryInfrastructure />
