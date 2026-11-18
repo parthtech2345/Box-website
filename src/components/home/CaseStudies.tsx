@@ -134,16 +134,6 @@ export default function CaseStudies() {
                   className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
                   priority
                 />
-
-                {/* Floating Category Pill */}
-                <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
-                  <span className="px-3 py-1 bg-[#202A2E]/90 text-white text-[11px] font-bold rounded-lg uppercase tracking-wider backdrop-blur-xs shadow-xs">
-                    {featured.projectNumber}
-                  </span>
-                  <span className="px-3 py-1 bg-[#A65D32] text-white text-[11px] font-bold rounded-lg uppercase tracking-wider shadow-xs">
-                    {featured.category}
-                  </span>
-                </div>
               </div>
 
               {/* Primary Content */}
@@ -203,11 +193,6 @@ export default function CaseStudies() {
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
                         className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
                       />
-                      <div className="absolute top-3 left-3 z-10">
-                        <span className="px-2 py-0.5 bg-[#202A2E]/90 text-white text-[10px] font-bold rounded uppercase tracking-wider backdrop-blur-xs">
-                          {app.category}
-                        </span>
-                      </div>
                     </div>
 
                     {/* Secondary Content */}

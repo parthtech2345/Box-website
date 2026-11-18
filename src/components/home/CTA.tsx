@@ -3,7 +3,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Boxes, Sparkles, PackageCheck, Layers } from "lucide-react";
+import { ArrowRight, Phone, MessageSquare, ShieldCheck, Sparkles, PhoneCall } from "lucide-react";
 
 export default function CTA() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -122,43 +122,83 @@ export default function CTA() {
           </div>
 
           {/* =========================================================================
-              RIGHT SIDE (45%): Realistic Corrugated Cardboard Packaging Composition
+              RIGHT SIDE (45%): Packaging Specialist Animation & Direct Inquiry Callout
           ========================================================================= */}
           <div
             className={`lg:col-span-5 relative transition-all duration-700 delay-150 ease-out ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
               }`}
           >
             {/* Studio frame container */}
-            <div className="relative rounded-2xl p-2.5 sm:p-3 bg-[#FAF7F2] border border-[#E4DED3] shadow-lg group">
+            <div className="relative rounded-2xl p-4 sm:p-5 bg-gradient-to-b from-[#FAF7F2] to-[#F2ECE1] border border-[#E4DED3] shadow-xl group">
               {/* Outer Terracotta Soft Radial Aura */}
-              <div className="absolute -inset-1 bg-gradient-to-tr from-[#A65D32]/10 to-transparent rounded-2xl blur-lg pointer-events-none" />
+              <div className="absolute -inset-1 bg-gradient-to-tr from-[#A65D32]/15 via-transparent to-[#D1B48C]/20 rounded-2xl blur-xl pointer-events-none" />
 
-              {/* Image Container with Natural Studio Lighting */}
-              <div className="relative w-full h-[320px] sm:h-[380px] lg:h-[420px] rounded-xl overflow-hidden bg-white">
-                <Image
-                  src="/home/cta/corrugated-boxes-composition.png"
-                  alt="Authentic kraft corrugated cardboard boxes composition with visible fluting texture"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 45vw"
-                  className="object-cover object-center group-hover:scale-102 transition-transform duration-700 ease-out"
-                  priority
+              {/* Character Illustration Stage */}
+              <div className="relative w-full h-[380px] sm:h-[430px] lg:h-[460px] rounded-xl overflow-hidden flex items-end justify-center">
+                {/* Subtle Kraft Grid Texture in Background */}
+                <div
+                  className="absolute inset-0 opacity-20 pointer-events-none"
+                  style={{
+                    backgroundImage:
+                      "radial-gradient(#A65D32 0.75px, transparent 0.75px), radial-gradient(#493629 0.75px, #FAF7F2 0.75px)",
+                    backgroundSize: "24px 24px",
+                    backgroundPosition: "0 0, 12px 12px",
+                  }}
                 />
 
-                {/* Floating Dimension Badge */}
-                <div className="absolute top-4 left-4 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#493629]/90 backdrop-blur-sm border border-[#E8D5B8]/30 shadow-md">
-                  <Boxes className="w-3.5 h-3.5 text-[#A65D32]" />
-                  <span className="text-xs font-semibold text-[#F5EFE5]">
-                    Engineered Kraft Architecture
-                  </span>
+                {/* Floating Animated Speech Bubble */}
+                <div className="absolute top-4 left-4 right-4 sm:left-6 sm:right-auto z-30 animate-bounce">
+                  <div className="relative bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-2xl shadow-lg border border-[#A65D32]/30 flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-[#A65D32]/10 flex items-center justify-center shrink-0">
+                      <MessageSquare className="w-4 h-4 text-[#A65D32]" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-[#202A2E] leading-tight">
+                        Have an inquiry or custom size?
+                      </p>
+                      <p className="text-[11px] text-[#A65D32] font-semibold mt-0.5">
+                        We&apos;re here to help — Call us anytime!
+                      </p>
+                    </div>
+                    {/* Speech bubble pointer */}
+                    <div className="absolute -bottom-1.5 left-6 w-3 h-3 bg-white border-b border-r border-[#A65D32]/30 rotate-45" />
+                  </div>
                 </div>
 
-                {/* Floating Bottom Stamp */}
-                <div className="absolute bottom-4 right-4 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-sm border border-[#E4DED3] shadow-md">
-                  <PackageCheck className="w-3.5 h-3.5 text-[#A65D32]" />
-                  <span className="text-xs font-bold text-[#493629]">
-                    100% Recyclable Board
-                  </span>
+                {/* Packaging Specialist Employee Image */}
+                <div className="relative w-full h-[88%] max-h-[400px] z-20 flex items-end justify-center">
+                  <Image
+                    src="/home/cta/packaging-representative.png"
+                    alt="Aavrit Packaging customer specialist ready to assist with box inquiries"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 45vw"
+                    className="object-contain object-bottom transition-transform duration-500 hover:scale-[1.02]"
+                    priority
+                  />
                 </div>
+
+                {/* Floating Direct Call Card at Bottom */}
+                <a
+                  href="tel:+919876543210"
+                  className="absolute bottom-3 left-3 right-3 z-30 p-3 sm:p-3.5 rounded-xl bg-white/95 backdrop-blur-md border border-[#E4DED3] hover:border-[#A65D32] shadow-lg flex items-center justify-between group/call transition-all duration-200 hover:-translate-y-0.5"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-[#A65D32] text-white flex items-center justify-center shadow-md group-hover/call:scale-105 transition-transform">
+                      <PhoneCall className="w-5 h-5 animate-pulse" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] uppercase font-bold tracking-wider text-[#62574D]">
+                        Instant Technical Desk
+                      </span>
+                      <p className="text-sm font-bold text-[#202A2E] group-hover/call:text-[#A65D32] transition-colors">
+                        +91 98765 43210
+                      </p>
+                    </div>
+                  </div>
+                  <span className="hidden sm:inline-flex text-xs font-semibold px-2.5 py-1 rounded-md bg-[#A65D32]/10 text-[#A65D32]">
+                    Call Now
+                  </span>
+                </a>
               </div>
             </div>
           </div>
