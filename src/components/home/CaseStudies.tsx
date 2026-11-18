@@ -80,15 +80,14 @@ export default function CaseStudies() {
     <section
       id="case-studies"
       ref={sectionRef}
-      className="w-full bg-[#FFFFFF] py-16 sm:py-20 lg:py-24 border-b border-[#E4DED3] relative overflow-hidden"
+      className="w-full bg-[#FFFFFF] py-14 sm:py-14 lg:py-14 border-b border-[#E4DED3] relative overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
+
         {/* Section Header: Matching 2-Column Split */}
         <div
-          className={`flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 sm:pb-10 mb-10 sm:mb-14 border-b border-[#E4DED3] transition-all duration-700 ease-out ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+          className={`flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 sm:pb-10 mb-10 sm:mb-14 border-b border-[#E4DED3] transition-all duration-700 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
         >
           {/* Left Column */}
           <div className="max-w-xl">
@@ -115,12 +114,11 @@ export default function CaseStudies() {
 
         {/* ASYMMETRICAL EDITORIAL LAYOUT (1 Large Featured + 2 Supporting Showcases) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 mb-12 sm:mb-16">
-          
+
           {/* PRIMARY FEATURED SHOWCASE (Automotive) - 7 Columns */}
           <div
-            className={`lg:col-span-7 transition-all duration-700 delay-100 ease-out ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className={`lg:col-span-7 transition-all duration-700 delay-100 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
           >
             <Link
               href={featured.href}
@@ -136,7 +134,7 @@ export default function CaseStudies() {
                   className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
                   priority
                 />
-                
+
                 {/* Floating Category Pill */}
                 <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
                   <span className="px-3 py-1 bg-[#202A2E]/90 text-white text-[11px] font-bold rounded-lg uppercase tracking-wider backdrop-blur-xs shadow-xs">
@@ -189,9 +187,8 @@ export default function CaseStudies() {
               return (
                 <div
                   key={app.id}
-                  className={`flex-1 transition-all duration-700 ${delay} ease-out ${
-                    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                  }`}
+                  className={`flex-1 transition-all duration-700 ${delay} ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                    }`}
                 >
                   <Link
                     href={app.href}

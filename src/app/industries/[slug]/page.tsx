@@ -201,10 +201,10 @@ export default async function IndustryDetailPage({
         </section>
 
         {/* Hero Section of Industry Page */}
-        <section className="py-12 sm:py-16 border-b border-[#E4DED3]">
+        <section className="py-12 sm:py-14 border-b border-[#E4DED3]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-              
+
               {/* Left Column */}
               <div className="lg:col-span-7">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/20 mb-4">

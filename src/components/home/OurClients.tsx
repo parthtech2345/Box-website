@@ -11,7 +11,7 @@ export default function OurClients() {
   return (
     <section
       id="clients"
-      className="w-full bg-[#FFFFFF] py-14 sm:py-16 border-b border-[#E4DED3] relative overflow-hidden"
+      className="w-full bg-[#FFFFFF] py-14 sm:py-14 border-b border-[#E4DED3] relative overflow-hidden"
       aria-label="Trusted by Businesses"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-10">
@@ -41,25 +41,25 @@ export default function OurClients() {
       </div>
 
       {/* Marquee Carousel Container with Gradient Edge Fades */}
-      <div className="relative w-full overflow-hidden group">
+      <div className="relative w-full overflow-hidden py-4">
         {/* Left Fade Mask */}
         <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
 
         {/* Right Fade Mask */}
         <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
-        {/* Continuous Scrolling Track (Pauses on group hover or individual logo hover) */}
+        {/* Continuous Scrolling Track */}
         <div
-          className="flex items-center gap-8 sm:gap-12 w-max animate-marquee group-hover:[animation-play-state:paused]"
+          className="carousel-track flex items-center gap-12 sm:gap-20 w-max"
           style={{ willChange: "transform" }}
         >
           {marqueeLogos.map((client, index) => (
             <div
               key={`${client.id}-${index}`}
-              className="flex-shrink-0 flex items-center justify-center px-4 py-2"
+              className="logo-item flex-shrink-0 flex items-center justify-center cursor-pointer"
             >
               <div
-                className="relative h-12 sm:h-14 w-48 sm:w-56 flex items-center justify-center transition-all duration-300 filter grayscale opacity-60 hover:grayscale-0 hover:opacity-100 hover:scale-105 cursor-pointer"
+                className="relative h-12 sm:h-14 w-48 sm:w-56 flex items-center justify-center transition-transform duration-300 hover:scale-105"
                 title={`${client.name} • ${client.industry} (${client.location})`}
               >
                 <Image
@@ -75,7 +75,7 @@ export default function OurClients() {
         </div>
       </div>
 
-      {/* Custom CSS Animation Keyframes for Continuous Smooth Infinite Scroll */}
+      {/* Custom CSS Animation Keyframes & Hover Pause */}
       <style jsx>{`
         @keyframes marquee {
           0% {
@@ -86,12 +86,17 @@ export default function OurClients() {
           }
         }
 
-        .animate-marquee {
+        .carousel-track {
           animation: marquee 32s linear infinite;
         }
 
+        /* Pauses ONLY when the user directly hovers on a logo */
+        .carousel-track:has(.logo-item:hover) {
+          animation-play-state: paused !important;
+        }
+
         @media (prefers-reduced-motion: reduce) {
-          .animate-marquee {
+          .carousel-track {
             animation: none;
             transform: none;
             overflow-x: auto;

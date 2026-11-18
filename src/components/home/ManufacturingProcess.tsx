@@ -149,7 +149,7 @@ export default function ManufacturingProcess() {
     <section
       id="manufacturing"
       ref={sectionRef}
-      className="w-full bg-[#FFFFFF] py-14 sm:py-14 lg:py-24 border-b border-[#E4DED3] relative overflow-hidden"
+      className="w-full bg-[#FFFFFF] py-14 sm:py-14 lg:py-14 border-b border-[#E4DED3] relative overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 

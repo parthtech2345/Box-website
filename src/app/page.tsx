@@ -54,7 +54,10 @@ export default function Home() {
         {/* Section 8: Corrugated Box Construction (3/5/7 Ply) */}
         <BoxConstruction />
 
-        {/* Section 8.5: Trusted by Businesses - Client Logo Marquee */}
+        {/* Section 8.5: Sustainability – Packaging with Purpose */}
+        <Sustainability />
+
+        {/* Section 8.6: Trusted by Businesses - Client Logo Marquee */}
         <OurClients />
 
         {/* Section 9: Machinery and Infrastructure */}
@@ -66,10 +69,7 @@ export default function Home() {
         {/* Section 11: Factory Gallery / Video */}
         <FactoryGallery />
 
-        {/* Section 12: Sustainability */}
-        <Sustainability />
-
-        {/* Section 13: FAQ */}
+        {/* Section 12: FAQ */}
         <FAQ />
 
         {/* Section 14: Final Inquiry CTA */}

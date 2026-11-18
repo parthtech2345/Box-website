@@ -1,17 +1,28 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 60" fill="none" width="100%" height="100%">
-  <!-- Emblem: TV Monogram with modern geometric electrical circuit bolt -->
-  <g transform="translate(10, 6)">
-    <circle cx="24" cy="24" r="22" fill="#EFF6FF" stroke="#1E40AF" stroke-width="2.5" />
-    <!-- T top bar -->
-    <path d="M12 15 L28 15" stroke="#1E40AF" stroke-width="3.5" stroke-linecap="round" />
-    <!-- T stem converting into V and electric bolt -->
-    <path d="M20 15 L20 25 L27 34 L36 15" stroke="#1E40AF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-    <polygon points="25,22 22,27 25,27 23,33 28,26 25,26" fill="#F59E0B" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 270 60" fill="none" width="100%" height="100%">
+  <defs>
+    <linearGradient id="truvolt-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB" />
+      <stop offset="100%" stop-color="#1D4ED8" />
+    </linearGradient>
+    <linearGradient id="truvolt-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06B6D4" />
+      <stop offset="100%" stop-color="#3B82F6" />
+    </linearGradient>
+  </defs>
+
+  <!-- Emblem: High-Tech Energy Hex-Circle & Lightning Node -->
+  <g transform="translate(6, 6)">
+    <!-- Tech Outer Disc -->
+    <rect x="2" y="2" width="44" height="44" rx="12" fill="url(#truvolt-blue)" />
+    <!-- V Energy Wings -->
+    <path d="M12 14 L24 34 L36 14" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- Electric Bolt -->
+    <polygon points="26,11 20,22 25,22 22,31 30,19 25,19" fill="#FBBF24" stroke="#D97706" stroke-width="0.5" />
   </g>
   
   <!-- Text Label -->
-  <g transform="translate(68, 16)">
-    <text x="0" y="16" font-family="system-ui, -apple-system, sans-serif" font-size="19" font-weight="800" fill="#0F172A" letter-spacing="0.5">TRUVOLT</text>
-    <text x="0" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="9.5" font-weight="600" fill="#2563EB" letter-spacing="2">ELECTRICALS</text>
+  <g transform="translate(64, 15)">
+    <text x="0" y="17" font-family="'Inter', system-ui, -apple-system, sans-serif" font-size="20" font-weight="900" fill="#0F172A" letter-spacing="1">TRUVOLT</text>
+    <text x="0" y="32" font-family="'Inter', system-ui, -apple-system, sans-serif" font-size="9.5" font-weight="700" fill="#2563EB" letter-spacing="2.5">ELECTRICALS</text>
   </g>
 </svg>

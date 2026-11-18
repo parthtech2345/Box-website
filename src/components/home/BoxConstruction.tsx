@@ -268,7 +268,7 @@ export default function BoxConstruction() {
   return (
     <section
       id="specifications-guide"
-      className="relative w-full bg-[#FFFFFF] py-16 sm:py-20 lg:py-24 text-[#202A2E] overflow-hidden border-b border-[#E4DED3]"
+      className="relative w-full bg-[#FFFFFF] py-14 sm:py-14 lg:py-14 text-[#202A2E] overflow-hidden border-b border-[#E4DED3]"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* =========================================================================
@@ -382,16 +382,14 @@ export default function BoxConstruction() {
                     onMouseEnter={() => setActiveLayerHover(1)}
                     onMouseLeave={() => setActiveLayerHover(null)}
                     style={{ top: "24%", left: "4%" }}
-                    className={`absolute z-30 cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${
-                      activeLayerHover === 1
-                        ? "bg-[#A65D32] text-white scale-105 shadow-xl ring-2 ring-white"
-                        : "bg-white/95 text-[#202A2E] shadow-md border border-[#E4DED3] hover:border-[#A65D32]"
-                    }`}
+                    className={`absolute z-30 cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${activeLayerHover === 1
+                      ? "bg-[#A65D32] text-white scale-105 shadow-xl ring-2 ring-white"
+                      : "bg-white/95 text-[#202A2E] shadow-md border border-[#E4DED3] hover:border-[#A65D32]"
+                      }`}
                   >
                     <span
-                      className={`w-5 h-5 rounded-full flex items-center justify-center font-bold text-xs ${
-                        activeLayerHover === 1 ? "bg-white text-[#A65D32]" : "bg-[#A65D32] text-white"
-                      }`}
+                      className={`w-5 h-5 rounded-full flex items-center justify-center font-bold text-xs ${activeLayerHover === 1 ? "bg-white text-[#A65D32]" : "bg-[#A65D32] text-white"
+                        }`}
                     >
                       1
                     </span>
@@ -403,16 +401,14 @@ export default function BoxConstruction() {
                     onMouseEnter={() => setActiveLayerHover(2)}
                     onMouseLeave={() => setActiveLayerHover(null)}
                     style={{ top: "47%", left: "4%" }}
-                    className={`absolute z-30 cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${
-                      activeLayerHover === 2
-                        ? "bg-[#A65D32] text-white scale-105 shadow-xl ring-2 ring-white"
-                        : "bg-white/95 text-[#202A2E] shadow-md border border-[#E4DED3] hover:border-[#A65D32]"
-                    }`}
+                    className={`absolute z-30 cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${activeLayerHover === 2
+                      ? "bg-[#A65D32] text-white scale-105 shadow-xl ring-2 ring-white"
+                      : "bg-white/95 text-[#202A2E] shadow-md border border-[#E4DED3] hover:border-[#A65D32]"
+                      }`}
                   >
                     <span
-                      className={`w-5 h-5 rounded-full flex items-center justify-center font-bold text-xs ${
-                        activeLayerHover === 2 ? "bg-white text-[#A65D32]" : "bg-[#A65D32] text-white"
-                      }`}
+                      className={`w-5 h-5 rounded-full flex items-center justify-center font-bold text-xs ${activeLayerHover === 2 ? "bg-white text-[#A65D32]" : "bg-[#A65D32] text-white"
+                        }`}
                     >
                       2
                     </span>
@@ -424,16 +420,14 @@ export default function BoxConstruction() {
                     onMouseEnter={() => setActiveLayerHover(3)}
                     onMouseLeave={() => setActiveLayerHover(null)}
                     style={{ top: "69%", left: "4%" }}
-                    className={`absolute z-30 cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${
-                      activeLayerHover === 3
-                        ? "bg-[#A65D32] text-white scale-105 shadow-xl ring-2 ring-white"
-                        : "bg-white/95 text-[#202A2E] shadow-md border border-[#E4DED3] hover:border-[#A65D32]"
-                    }`}
+                    className={`absolute z-30 cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${activeLayerHover === 3
+                      ? "bg-[#A65D32] text-white scale-105 shadow-xl ring-2 ring-white"
+                      : "bg-white/95 text-[#202A2E] shadow-md border border-[#E4DED3] hover:border-[#A65D32]"
+                      }`}
                   >
                     <span
-                      className={`w-5 h-5 rounded-full flex items-center justify-center font-bold text-xs ${
-                        activeLayerHover === 3 ? "bg-white text-[#A65D32]" : "bg-[#A65D32] text-white"
-                      }`}
+                      className={`w-5 h-5 rounded-full flex items-center justify-center font-bold text-xs ${activeLayerHover === 3 ? "bg-white text-[#A65D32]" : "bg-[#A65D32] text-white"
+                        }`}
                     >
                       3
                     </span>
@@ -462,17 +456,15 @@ export default function BoxConstruction() {
                 <div
                   onMouseEnter={() => setActiveLayerHover(1)}
                   onMouseLeave={() => setActiveLayerHover(null)}
-                  className={`relative pl-5 border-l-4 transition-all duration-300 p-4 rounded-r-xl border cursor-pointer ${
-                    activeLayerHover === 1
-                      ? "bg-white border-[#A65D32] border-l-[#A65D32] shadow-md -translate-x-1"
-                      : "bg-white/80 border-[#E4DED3] border-l-[#E4DED3] hover:border-[#A65D32]/60 hover:border-l-[#A65D32]"
-                  }`}
+                  className={`relative pl-5 border-l-4 transition-all duration-300 p-4 rounded-r-xl border cursor-pointer ${activeLayerHover === 1
+                    ? "bg-white border-[#A65D32] border-l-[#A65D32] shadow-md -translate-x-1"
+                    : "bg-white/80 border-[#E4DED3] border-l-[#E4DED3] hover:border-[#A65D32]/60 hover:border-l-[#A65D32]"
+                    }`}
                 >
                   <div className="flex items-center gap-2 font-bold text-sm text-[#202A2E] mb-1">
                     <span
-                      className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
-                        activeLayerHover === 1 ? "bg-[#A65D32] text-white" : "bg-[#A65D32]/15 text-[#A65D32]"
-                      }`}
+                      className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${activeLayerHover === 1 ? "bg-[#A65D32] text-white" : "bg-[#A65D32]/15 text-[#A65D32]"
+                        }`}
                     >
                       1
                     </span>
@@ -490,17 +482,15 @@ export default function BoxConstruction() {
                 <div
                   onMouseEnter={() => setActiveLayerHover(2)}
                   onMouseLeave={() => setActiveLayerHover(null)}
-                  className={`relative pl-5 border-l-4 transition-all duration-300 p-4 rounded-r-xl border cursor-pointer ${
-                    activeLayerHover === 2
-                      ? "bg-white border-[#A65D32] border-l-[#A65D32] shadow-md -translate-x-1"
-                      : "bg-white/80 border-[#E4DED3] border-l-[#E4DED3] hover:border-[#A65D32]/60 hover:border-l-[#A65D32]"
-                  }`}
+                  className={`relative pl-5 border-l-4 transition-all duration-300 p-4 rounded-r-xl border cursor-pointer ${activeLayerHover === 2
+                    ? "bg-white border-[#A65D32] border-l-[#A65D32] shadow-md -translate-x-1"
+                    : "bg-white/80 border-[#E4DED3] border-l-[#E4DED3] hover:border-[#A65D32]/60 hover:border-l-[#A65D32]"
+                    }`}
                 >
                   <div className="flex items-center gap-2 font-bold text-sm text-[#202A2E] mb-1">
                     <span
-                      className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
-                        activeLayerHover === 2 ? "bg-[#A65D32] text-white" : "bg-[#A65D32]/15 text-[#A65D32]"
-                      }`}
+                      className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${activeLayerHover === 2 ? "bg-[#A65D32] text-white" : "bg-[#A65D32]/15 text-[#A65D32]"
+                        }`}
                     >
                       2
                     </span>
@@ -518,17 +508,15 @@ export default function BoxConstruction() {
                 <div
                   onMouseEnter={() => setActiveLayerHover(3)}
                   onMouseLeave={() => setActiveLayerHover(null)}
-                  className={`relative pl-5 border-l-4 transition-all duration-300 p-4 rounded-r-xl border cursor-pointer ${
-                    activeLayerHover === 3
-                      ? "bg-white border-[#A65D32] border-l-[#A65D32] shadow-md -translate-x-1"
-                      : "bg-white/80 border-[#E4DED3] border-l-[#E4DED3] hover:border-[#A65D32]/60 hover:border-l-[#A65D32]"
-                  }`}
+                  className={`relative pl-5 border-l-4 transition-all duration-300 p-4 rounded-r-xl border cursor-pointer ${activeLayerHover === 3
+                    ? "bg-white border-[#A65D32] border-l-[#A65D32] shadow-md -translate-x-1"
+                    : "bg-white/80 border-[#E4DED3] border-l-[#E4DED3] hover:border-[#A65D32]/60 hover:border-l-[#A65D32]"
+                    }`}
                 >
                   <div className="flex items-center gap-2 font-bold text-sm text-[#202A2E] mb-1">
                     <span
-                      className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
-                        activeLayerHover === 3 ? "bg-[#A65D32] text-white" : "bg-[#A65D32]/15 text-[#A65D32]"
-                      }`}
+                      className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${activeLayerHover === 3 ? "bg-[#A65D32] text-white" : "bg-[#A65D32]/15 text-[#A65D32]"
+                        }`}
                     >
                       3
                     </span>
@@ -562,11 +550,10 @@ export default function BoxConstruction() {
               <div
                 key={ply.id}
                 onMouseEnter={() => setActivePlyTab(ply.id)}
-                className={`bg-[#FAF7F2] rounded-xl border transition-all duration-300 flex flex-col overflow-hidden ${
-                  activePlyTab === ply.id
-                    ? "border-[#A65D32] shadow-md -translate-y-1"
-                    : "border-[#E4DED3] hover:border-[#A65D32]/50 hover:shadow-sm"
-                }`}
+                className={`bg-[#FAF7F2] rounded-xl border transition-all duration-300 flex flex-col overflow-hidden ${activePlyTab === ply.id
+                  ? "border-[#A65D32] shadow-md -translate-y-1"
+                  : "border-[#E4DED3] hover:border-[#A65D32]/50 hover:shadow-sm"
+                  }`}
               >
                 {/* Visual Image Header (Clean cross-section without overlapping badge text) */}
                 <div className="relative w-full h-48 sm:h-52 bg-white p-3 border-b border-[#E4DED3]">
@@ -618,22 +605,20 @@ export default function BoxConstruction() {
                   <button
                     key={req.id}
                     onClick={() => setSelectedReqId(req.id)}
-                    className={`w-full text-left p-5 rounded-xl border transition-all duration-200 cursor-pointer ${
-                      isSelected
-                        ? "bg-white border-[#A65D32] shadow-sm ring-1 ring-[#A65D32]"
-                        : "bg-white/80 border-[#E4DED3] hover:bg-white hover:border-[#A65D32]/50"
-                    }`}
+                    className={`w-full text-left p-5 rounded-xl border transition-all duration-200 cursor-pointer ${isSelected
+                      ? "bg-white border-[#A65D32] shadow-sm ring-1 ring-[#A65D32]"
+                      : "bg-white/80 border-[#E4DED3] hover:bg-white hover:border-[#A65D32]/50"
+                      }`}
                   >
                     <div className="flex items-center justify-between mb-1.5">
                       <span className="font-heading font-bold text-base text-[#202A2E]">
                         {req.title}
                       </span>
                       <span
-                        className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${
-                          isSelected
-                            ? "bg-[#A65D32] text-white"
-                            : "bg-[#E4DED3]/60 text-[#62574D]"
-                        }`}
+                        className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${isSelected
+                          ? "bg-[#A65D32] text-white"
+                          : "bg-[#E4DED3]/60 text-[#62574D]"
+                          }`}
                       >
                         {req.recommendedPly.split("–")[0].trim()}
                       </span>
