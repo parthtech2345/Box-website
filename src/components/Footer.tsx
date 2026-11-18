@@ -2,16 +2,11 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
-  Boxes,
   Phone,
   Mail,
   MapPin,
-  ArrowRight,
-  ShieldCheck,
-  Leaf,
-  Globe,
   Clock,
-  MessageCircle,
+  ShieldCheck,
 } from "lucide-react";
 
 export default function Footer() {
@@ -19,10 +14,10 @@ export default function Footer() {
     <>
       <footer id="contact" className="w-full bg-[#202A2E] text-white pt-16 pb-12 border-t border-[#202A2E]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
+
           {/* Main Footer Content Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-white/10">
-            
+
             {/* Col 1: Brand & Overview (4 cols) */}
             <div className="lg:col-span-4 flex flex-col">
               <Link href="/" className="flex items-center gap-3 mb-5 group">
@@ -36,19 +31,101 @@ export default function Footer() {
                 </div>
               </Link>
 
-              <p className="text-xs sm:text-sm text-[#F5F2EB]/80 leading-relaxed mb-6">
-                AAVRIT PACKAGING is an Indian corrugated box manufacturing enterprise operating high-capacity continuous corrugation lines. Inspired by the Sanskrit word for complete protection and enclosure, we engineer heavy-duty 3, 5, and 7-ply cartons that guarantee protection across domestic and export corridors.
+              {/* 2-line Description */}
+              <p className="text-xs sm:text-sm text-[#F5F2EB]/80 leading-relaxed mb-5 line-clamp-2">
+                AAVRIT PACKAGING engineers heavy-duty 3, 5, and 7-ply corrugated cartons delivering certified strength and reliable protection across industrial supply chains.
               </p>
 
-              <div className="flex items-center gap-3 text-xs text-[#D1B48C]">
-                <ShieldCheck className="w-4 h-4 text-[#7B8D78]" />
-                <span>Certified Indian Paper Mill Sourcing</span>
+              {/* Social Media Icons (SVG) */}
+              <div className="flex items-center gap-3 mb-5">
+                {/* Instagram */}
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#E97835] flex items-center justify-center text-white/80 hover:text-white transition-all duration-200"
+                  aria-label="Instagram"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                  </svg>
+                </a>
+                {/* LinkedIn */}
+                <a
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#E97835] flex items-center justify-center text-white/80 hover:text-white transition-all duration-200"
+                  aria-label="LinkedIn"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                  </svg>
+                </a>
+                {/* Facebook */}
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#E97835] flex items-center justify-center text-white/80 hover:text-white transition-all duration-200"
+                  aria-label="Facebook"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z" />
+                  </svg>
+                </a>
+                {/* X (formerly Twitter) */}
+                <a
+                  href="https://x.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#E97835] flex items-center justify-center text-white/80 hover:text-white transition-all duration-200"
+                  aria-label="X"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                </a>
               </div>
             </div>
 
-            {/* Col 2: Core Products (3 cols) */}
+            {/* Col 2: Quick Links (Navbar navigation) (2 cols) */}
+            <div className="lg:col-span-2">
+              <h4 className="font-heading font-bold text-white mb-4 uppercase tracking-wider text-xs">
+                Quick Links
+              </h4>
+              <ul className="space-y-2.5 text-xs sm:text-sm text-[#F5F2EB]/80">
+                <li>
+                  <Link href="#about" className="hover:text-[#E97835] transition-colors">
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#products" className="hover:text-[#E97835] transition-colors">
+                    Products
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#industries" className="hover:text-[#E97835] transition-colors">
+                    Industries We Serve
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#manufacturing" className="hover:text-[#E97835] transition-colors">
+                    Manufacturing
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/contact" className="hover:text-[#E97835] transition-colors">
+                    Contact Us
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Col 3: Product Categories (shifted from col 2) (3 cols) */}
             <div className="lg:col-span-3">
-              <h4 className="font-heading font-bold text-lg text-white mb-4 uppercase tracking-wider text-xs">
+              <h4 className="font-heading font-bold text-white mb-4 uppercase tracking-wider text-xs">
                 Product Categories
               </h4>
               <ul className="space-y-2.5 text-xs sm:text-sm text-[#F5F2EB]/80">
@@ -85,66 +162,31 @@ export default function Footer() {
               </ul>
             </div>
 
-            {/* Col 3: Technical & Industries (2 cols) */}
-            <div className="lg:col-span-2">
-              <h4 className="font-heading font-bold text-lg text-white mb-4 uppercase tracking-wider text-xs">
-                Engineering & Tech
-              </h4>
-              <ul className="space-y-2.5 text-xs sm:text-sm text-[#F5F2EB]/80">
-                <li>
-                  <Link href="#construction" className="hover:text-[#E97835] transition-colors">
-                    3, 5 & 7-Ply Analysis
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#construction" className="hover:text-[#E97835] transition-colors">
-                    Flute Types (B, C, E)
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#quality" className="hover:text-[#E97835] transition-colors">
-                    Burst Factor (BF) Testing
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#quality" className="hover:text-[#E97835] transition-colors">
-                    Edge Crush Test (ECT)
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#manufacturing" className="hover:text-[#E97835] transition-colors">
-                    Plant Operations Timeline
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#industries" className="hover:text-[#E97835] transition-colors">
-                    Automotive & Solar Specs
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Col 4: Factory & Contact Placeholders (3 cols) */}
+            {/* Col 4: Contact & Office (Clear & Easy to Understand) (3 cols) */}
             <div className="lg:col-span-3">
-              <h4 className="font-heading font-bold text-lg text-white mb-4 uppercase tracking-wider text-xs">
-                Plant & Corporate Office
+              <h4 className="font-heading font-bold text-white mb-4 uppercase tracking-wider text-xs">
+                Contact & Factory Location
               </h4>
               <div className="space-y-3 text-xs text-[#F5F2EB]/80">
                 <div className="flex items-start gap-2.5">
                   <MapPin className="w-4 h-4 text-[#E97835] shrink-0 mt-0.5" />
                   <span>
-                    Plot No. 42-45, Phase II GIDC / MIDC Industrial Corridor, Gujarat / Maharashtra, India
+                    Plot No. 42, Phase II GIDC, Gujarat, India
                   </span>
                 </div>
 
                 <div className="flex items-center gap-2.5">
                   <Phone className="w-4 h-4 text-[#E97835] shrink-0" />
-                  <span>+91 98765 43210 / +91 98765 43211</span>
+                  <a href="tel:+919876543210" className="hover:text-[#E97835] transition-colors">
+                    +91 98765 43210
+                  </a>
                 </div>
 
                 <div className="flex items-center gap-2.5">
                   <Mail className="w-4 h-4 text-[#E97835] shrink-0" />
-                  <span>inquiry@boxpackaging.in</span>
+                  <a href="mailto:inquiry@aavritpackaging.com" className="hover:text-[#E97835] transition-colors">
+                    inquiry@aavritpackaging.com
+                  </a>
                 </div>
 
                 <div className="flex items-center gap-2.5">
@@ -159,7 +201,7 @@ export default function Footer() {
           {/* Bottom Copyright & Legal Strip */}
           <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#687378]">
             <div>
-              © 2026 AAVRIT PACKAGING. All rights reserved. Protection in Every Layer.
+              © 2026 AAVRIT PACKAGING. All rights reserved.
             </div>
 
             <div className="flex items-center gap-6">
@@ -179,18 +221,6 @@ export default function Footer() {
 
         </div>
       </footer>
-
-      {/* Floating WhatsApp / Instant Contact Button */}
-      <a
-        href="https://wa.me/919876543210"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-40 bg-[#25D366] hover:bg-[#20ba5a] text-white p-3.5 rounded-full shadow-2xl flex items-center gap-2 transition-transform duration-200 hover:scale-105 active:scale-95 group"
-        aria-label="Direct WhatsApp Consultation"
-      >
-        <MessageCircle className="w-6 h-6 fill-white" />
-        <span className="hidden sm:inline text-xs font-bold pr-1">Chat With Packaging Desk</span>
-      </a>
     </>
   );
 }

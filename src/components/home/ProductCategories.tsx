@@ -53,7 +53,7 @@ export default function ProductCategories() {
   return (
     <section
       id="products"
-      className="w-full bg-[#FFFFFF] py-12 sm:py-14 border-b border-[#E4DED3]"
+      className="w-full bg-[#FFFFFF] py-14 sm:py-14 border-b border-[#E4DED3]"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header: Premium Editorial 2-Column Split */}

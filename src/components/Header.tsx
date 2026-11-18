@@ -47,33 +47,31 @@ export default function Header() {
             >
               <Phone className="w-3.5 h-3.5 text-[#E97835]" />
               <span className="font-semibold text-white">+91 98765 43210</span>
-              <span className="text-[#D1B48C]/70">(Sales)</span>
             </a>
             <span className="text-[#D1B48C]/40">•</span>
             <a
-              href="mailto:inquiry@boxpackaging.in"
+              href="mailto:inquiry@aavritpackaging.com"
               className="flex items-center gap-1.5 hover:text-[#E97835] transition-colors"
             >
               <Mail className="w-3.5 h-3.5 text-[#E97835]" />
-              <span>inquiry@boxpackaging.in</span>
+              <span>inquiry@aavritpackaging.com</span>
             </a>
           </div>
 
           {/* Right Side: Factory Address / Location only */}
           <div className="flex items-center gap-1.5 text-[#F5F2EB]/80 text-[11px] sm:text-xs">
             <MapPin className="w-3.5 h-3.5 text-[#D1B48C]" />
-            <span>Plot No. 42-45, Phase II GIDC / MIDC Industrial Corridor, Gujarat / Maharashtra, India</span>
+            <span>Plot No. 42, Phase II GIDC, Gujarat, India</span>
           </div>
         </div>
       </div>
 
       {/* 2. Main Navigation Bar */}
       <nav
-        className={`w-full bg-[#FFFFFF] transition-all duration-300 ${
-          isScrolled
+        className={`w-full bg-[#FFFFFF] transition-all duration-300 ${isScrolled
             ? "shadow-md py-3.5 border-b border-[#E4DED3]"
             : "py-4 border-b border-[#E4DED3]/80"
-        }`}
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-7">
           {/* Official AAVRIT PACKAGING Logo */}
@@ -110,19 +108,17 @@ export default function Header() {
               >
                 <span>Products</span>
                 <ChevronDown
-                  className={`w-4 h-4 transition-transform duration-200 ${
-                    productsOpen ? "rotate-180 text-[#E97835]" : ""
-                  }`}
+                  className={`w-4 h-4 transition-transform duration-200 ${productsOpen ? "rotate-180 text-[#E97835]" : ""
+                    }`}
                 />
               </button>
 
               {/* Mega-menu dropdown */}
               <div
-                className={`absolute top-full -left-20 w-[680px] bg-white rounded-xl shadow-2xl border border-[#E4DED3] p-6 grid grid-cols-2 gap-4 transition-all duration-200 origin-top ${
-                  productsOpen
+                className={`absolute top-full -left-20 w-[680px] bg-white rounded-xl shadow-2xl border border-[#E4DED3] p-6 grid grid-cols-2 gap-4 transition-all duration-200 origin-top ${productsOpen
                     ? "opacity-100 scale-100 visible"
                     : "opacity-0 scale-95 invisible pointer-events-none"
-                }`}
+                  }`}
               >
                 <div className="space-y-3">
                   <div className="text-xs uppercase tracking-wider font-bold text-[#687378] pb-1 border-b border-[#E4DED3]">

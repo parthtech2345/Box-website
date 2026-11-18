@@ -1,109 +1,157 @@
 "use client";
 
 import React, { useState } from "react";
-import { ChevronDown, HelpCircle, ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { Plus, Minus, ArrowRight, HelpCircle, MessageSquare } from "lucide-react";
+
+interface FAQItem {
+  id: string;
+  number: string;
+  q: string;
+  a: string;
+  tag: string;
+}
+
+const FAQS: FAQItem[] = [
+  {
+    id: "faq-1",
+    number: "01",
+    tag: "Board Basics",
+    q: "What is a corrugated box and how is it constructed?",
+    a: "A corrugated box is made of wavy arched paper (fluting) sandwiched between flat kraft paper liners. This arched structure creates air cushions that provide high stacking strength and impact protection during shipping.",
+  },
+  {
+    id: "faq-2",
+    number: "02",
+    tag: "Ply Selection",
+    q: "What is the difference between 3-ply, 5-ply, and 7-ply boxes?",
+    a: "3-ply (Single Wall) has 1 fluted layer for lightweight goods and e-commerce. 5-ply (Double Wall) has 2 fluted layers for master shipping and appliances. 7-ply (Triple Wall) has 3 fluted layers for heavy industrial machinery and export freight.",
+  },
+  {
+    id: "faq-3",
+    number: "03",
+    tag: "Customization",
+    q: "Can boxes be customized in exact dimensions and printing?",
+    a: "Yes. All boxes can be manufactured to your exact internal size (Length × Width × Height) to avoid wasted space. We also offer multi-colour brand printing, barcodes, and custom artwork on kraft or white liners.",
+  },
+  {
+    id: "faq-4",
+    number: "04",
+    tag: "Flute Engineering",
+    q: "Which flute profile is suitable for my specific packaging needs?",
+    a: "B-Flute (~3mm) is best for puncture resistance and sharp printing. C-Flute (~4mm) delivers maximum vertical stacking strength for warehouse storage. BC Double Wall combines both for heavy-duty protection.",
+  },
+  {
+    id: "faq-5",
+    number: "05",
+    tag: "Quotations & Orders",
+    q: "How do I request a technical consultation or production quote?",
+    a: "Simply share your box dimensions, product weight, ply choice, and estimated quantity via our online form or phone. Our engineering desk will recommend the optimal paper GSM and share a detailed quotation within 24 hours.",
+  },
+];
 
 export default function FAQ() {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
 
-  const faqs = [
-    {
-      q: "What is a corrugated box?",
-      a: "A corrugated box is an engineered structural container made of corrugated fiberboard. Unlike plain flat cardboard (paperboard), corrugated board consists of an arched fluted wave paper sandwiched firmly between two or more flat linerboards, providing high compression strength, impact cushioning, and rigidity for logistics.",
-    },
-    {
-      q: "What is the difference between 3-ply and 5-ply boxes?",
-      a: "A 3-ply box (Single Wall) has 2 outer paper liners with 1 fluted wave in the center, typically supporting loads up to 15-20 kg (ideal for e-commerce and retail items). A 5-ply box (Double Wall) incorporates 3 liners and 2 separate fluted layers (e.g., B+C flute combinations), engineered for heavy master shipping and stacking up to 50-60 kg.",
-    },
-    {
-      q: "Can boxes be manufactured in custom sizes?",
-      a: "Yes, 100% of our production can be customized to your exact internal dimensions (Length × Width × Height in millimeters). Our CAD packaging engineers design custom box die-lines and deliver physical prototypes before starting mass factory production.",
-    },
-    {
-      q: "Which flute is suitable for my product?",
-      a: "Flute choice depends on your product's specific protection needs: B-Flute (~3mm thickness) offers high puncture resistance and flat surface for crisp printing; C-Flute (~4mm) provides maximum top-to-bottom compression for heavy stacking; E-Flute (~1.5mm) is ultra-compact for delicate cosmetics, mailers, and premium retail displays.",
-    },
-    {
-      q: "Do you provide printed boxes?",
-      a: "Yes. We operate multi-color computerized flexographic printer-slotters capable of high-speed printing on natural kraft or bleached white top liners. We can print your brand logo, barcodes, QR codes, handling warnings, and custom promotional artwork.",
-    },
-    {
-      q: "How can I request a quotation?",
-      a: "You can request a quotation directly through our quote form on this website, email us at inquiry@boxpackaging.in, or call our Indian sales desk at +91 98765 43210. Provide your required box dimensions, ply preference (3/5/7-ply), target payload weight, and estimated monthly quantity for a quotation within 24 hours.",
-    },
-  ];
+  const toggleFAQ = (idx: number) => {
+    setOpenIdx(openIdx === idx ? null : idx);
+  };
 
   return (
-    <section className="w-full bg-[#FFFFFF] py-14 border-b border-[#E4DED3]">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section
+      id="faq"
+      className="w-full bg-[#FFFFFF] py-14 sm:py-14 lg:py-14 border-b border-[#E4DED3] relative overflow-hidden"
+      aria-label="Frequently Asked Questions"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* =========================================================================
+            1. SECTION HEADER (Matching 2-Column Split Theme)
+        ========================================================================= */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 sm:pb-10 mb-12 sm:mb-16 border-b border-[#E4DED3]">
+          {/* Left Column: Eyebrow + Main Big Headline */}
+          <div className="max-w-xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/20 mb-3.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
+              <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
+                PACKAGING KNOWLEDGE & ASSISTANCE
+              </span>
+            </div>
 
-        {/* Section Heading */}
-        <div className="text-center max-w-2xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E97835]/10 text-[#E97835] text-xs font-bold uppercase tracking-wider mb-3">
-            <HelpCircle className="w-3.5 h-3.5" /> Frequently Asked Questions
+            <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
+              Frequently Asked <span className="text-[#A65D32]">Questions</span>
+            </h2>
           </div>
-          <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-tight mb-4">
-            Questions About Corrugated Packaging
-          </h2>
-          <p className="text-base text-[#687378] leading-relaxed">
-            Clear, technical answers to help you choose the right board specification, flute profile, and print option for your supply chain.
-          </p>
+
+          {/* Right Column: Context Description with Accent Border */}
+          <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
+            <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
+              Clear, practical answers about board specifications, ply constructions, customized sizing, and box engineering.
+            </p>
+          </div>
         </div>
 
-        {/* Elegant Accordion Interface */}
-        <div className="space-y-4">
-          {faqs.map((faq, idx) => {
+        {/* =========================================================================
+            2. INTERACTIVE ANIMATED ACCORDION LIST (5 Technical Questions)
+        ========================================================================= */}
+        <div className="max-w-4xl mx-auto space-y-4 mb-14">
+          {FAQS.map((faq, idx) => {
             const isOpen = openIdx === idx;
+
             return (
               <div
-                key={idx}
-                className="border border-[#E4DED3] rounded-xl overflow-hidden transition-all duration-200"
+                key={faq.id}
+                className={`rounded-xl border transition-all duration-300 overflow-hidden ${isOpen
+                  ? "bg-[#FAF7F2] border-[#A65D32] shadow-sm ring-1 ring-[#A65D32]/20"
+                  : "bg-[#FAF7F2]/60 border-[#E4DED3] hover:border-[#A65D32]/50 hover:bg-[#FAF7F2]"
+                  }`}
               >
                 <button
                   type="button"
-                  onClick={() => setOpenIdx(isOpen ? null : idx)}
-                  className={`w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 transition-colors ${isOpen ? "bg-[#F5F2EB]" : "bg-white hover:bg-[#F5F2EB]/50"
-                    }`}
+                  onClick={() => toggleFAQ(idx)}
+                  className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 cursor-pointer select-none"
+                  aria-expanded={isOpen}
                 >
-                  <span className="font-heading font-bold text-lg sm:text-xl text-[#202A2E]">
-                    {faq.q}
-                  </span>
+                  <div className="flex items-center gap-4 sm:gap-5 flex-1 pr-2">
+                    <span
+                      className={`text-xs sm:text-sm font-bold font-mono transition-colors ${isOpen ? "text-[#A65D32]" : "text-[#62574D]/60"
+                        }`}
+                    >
+                      {faq.number}
+                    </span>
+
+                    <span className="font-heading font-bold text-base sm:text-lg lg:text-xl text-[#202A2E] leading-snug">
+                      {faq.q}
+                    </span>
+                  </div>
+
+                  {/* Animated Plus / Minus Toggle Button */}
                   <div
-                    className={`w-8 h-8 rounded-full bg-white border border-[#E4DED3] flex items-center justify-center shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180 bg-[#E97835] text-white border-[#E97835]" : "text-[#202A2E]"
+                    className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 border transition-all duration-300 ${isOpen
+                      ? "bg-[#A65D32] text-white border-[#A65D32] rotate-180 scale-105 shadow-sm"
+                      : "bg-white text-[#202A2E] border-[#E4DED3] hover:border-[#A65D32]"
                       }`}
                   >
-                    <ChevronDown className="w-4 h-4" />
+                    {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                   </div>
                 </button>
 
-                {isOpen && (
-                  <div className="p-5 sm:p-6 bg-white border-t border-[#E4DED3] text-sm sm:text-base text-[#687378] leading-relaxed animate-fadeIn">
-                    {faq.a}
+                {/* Animated Dropdown Answer Container */}
+                <div
+                  className={`grid transition-all duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                    }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="px-5 pb-6 sm:px-6 sm:pb-7 pt-4 text-sm sm:text-base text-[#62574D] leading-relaxed border-t border-[#E4DED3]/60">
+                      <div className="pl-7 sm:pl-9">
+                        <p>{faq.a}</p>
+                      </div>
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
             );
           })}
         </div>
-
-        {/* Still have questions banner */}
-        <div className="mt-12 text-center p-6 bg-[#F5F2EB] rounded-2xl border border-[#E4DED3] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-left">
-            <h4 className="font-heading font-bold text-lg text-[#202A2E]">
-              Have a technical question not answered here?
-            </h4>
-            <p className="text-xs text-[#687378] mt-0.5">
-              Speak directly with an application packaging engineer.
-            </p>
-          </div>
-          <a
-            href="tel:+919876543210"
-            className="px-5 py-2.5 bg-[#202A2E] text-white text-xs font-semibold rounded-lg hover:bg-[#E97835] transition-colors shrink-0"
-          >
-            Call Technical Support
-          </a>
-        </div>
-
       </div>
     </section>
   );

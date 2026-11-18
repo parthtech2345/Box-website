@@ -9,6 +9,7 @@ import ProductCategories from "@/components/home/ProductCategories";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import BoxConstruction from "@/components/home/BoxConstruction";
 import OurClients from "@/components/home/OurClients";
+import Testimonial from "@/components/home/Testimonial";
 import CustomPackaging from "@/components/home/CustomPackaging";
 import IndustriesWeServe from "@/components/home/IndustriesWeServe";
 import ManufacturingProcess from "@/components/home/ManufacturingProcess";
@@ -18,6 +19,7 @@ import CaseStudies from "@/components/home/CaseStudies";
 import FactoryGallery from "@/components/home/FactoryGallery";
 import Sustainability from "@/components/home/Sustainability";
 import FAQ from "@/components/home/FAQ";
+import CTA from "@/components/home/CTA";
 import FinalInquiryCTA from "@/components/home/FinalInquiryCTA";
 
 export default function Home() {
@@ -60,20 +62,14 @@ export default function Home() {
         {/* Section 8.6: Trusted by Businesses - Client Logo Marquee */}
         <OurClients />
 
-        {/* Section 9: Machinery and Infrastructure */}
-        <MachineryInfrastructure />
+        {/* Section 8.7: Testimonials – Animated Rotating Card Showcase */}
+        <Testimonial />
 
-        {/* Section 10: Quality Assurance */}
-        <QualityAssurance />
-
-        {/* Section 11: Factory Gallery / Video */}
-        <FactoryGallery />
-
-        {/* Section 12: FAQ */}
+        {/* Section 8.8: Frequently Asked Questions */}
         <FAQ />
 
-        {/* Section 14: Final Inquiry CTA */}
-        <FinalInquiryCTA />
+        {/* Section 8.9: Premium Kraft Industrial CTA */}
+        <CTA />
 
         {/* Section 15: Footer */}
         <Footer />
