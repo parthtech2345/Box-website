@@ -24,7 +24,7 @@ export default function AboutPage() {
       {/* 1. Official Header */}
       <Header />
 
-      <main className="flex-1 flex flex-col overflow-x-hidden">
+      <main className="flex-1 flex flex-col">
         {/* Section 1: Hero Banner */}
         <AboutHero />
 
