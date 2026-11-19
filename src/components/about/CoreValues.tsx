@@ -34,7 +34,7 @@ export default function CoreValues() {
       id="core-values"
       ref={sectionRef}
       aria-label="Our Core Values"
-      className="w-full bg-[#FFFFFF] py-14 sm:py-16 lg:py-20 border-b border-[#E4DED3] relative overflow-hidden"
+      className="w-full bg-[#FFFFFF] py-14 sm:py-14 lg:py-14 border-b border-[#E4DED3] relative overflow-hidden"
     >
       {/* Background Kraft Cardboard Ambient Details */}
       <div className="absolute inset-0 pointer-events-none">
@@ -91,20 +91,18 @@ export default function CoreValues() {
                   key={val.id}
                   onMouseEnter={() => setActiveValue(val.id)}
                   onClick={() => setActiveValue(val.id)}
-                  className={`flex-1 p-4 rounded-xl border transition-all duration-300 cursor-pointer flex flex-col justify-center ${
-                    isActive
-                      ? "bg-[#FAF7F2] border-[#A65D32] shadow-sm -translate-y-0.5 ring-1 ring-[#A65D32]/25"
-                      : "bg-white border-[#E4DED3] hover:border-[#D1B48C] hover:bg-[#FAF7F2]/60"
-                  }`}
+                  className={`flex-1 p-4 rounded-xl border transition-all duration-300 cursor-pointer flex flex-col justify-center ${isActive
+                    ? "bg-[#FAF7F2] border-[#A65D32] shadow-sm -translate-y-0.5 ring-1 ring-[#A65D32]/25"
+                    : "bg-white border-[#E4DED3] hover:border-[#D1B48C] hover:bg-[#FAF7F2]/60"
+                    }`}
                 >
                   <div className="flex items-start gap-3.5">
                     {/* Number Tag */}
                     <span
-                      className={`text-xs font-bold px-2 py-0.5 rounded transition-colors shrink-0 mt-0.5 ${
-                        isActive
-                          ? "bg-[#A65D32] text-white"
-                          : "bg-[#493629]/10 text-[#493629]"
-                      }`}
+                      className={`text-xs font-bold px-2 py-0.5 rounded transition-colors shrink-0 mt-0.5 ${isActive
+                        ? "bg-[#A65D32] text-white"
+                        : "bg-[#493629]/10 text-[#493629]"
+                        }`}
                     >
                       {val.number}
                     </span>
@@ -113,9 +111,8 @@ export default function CoreValues() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2 mb-1">
                         <h3
-                          className={`font-heading font-bold text-base transition-colors ${
-                            isActive ? "text-[#A65D32]" : "text-[#202A2E]"
-                          }`}
+                          className={`font-heading font-bold text-base transition-colors ${isActive ? "text-[#A65D32]" : "text-[#202A2E]"
+                            }`}
                         >
                           {val.title}
                         </h3>
@@ -140,9 +137,8 @@ export default function CoreValues() {
           <div className="lg:col-span-6 flex flex-col justify-between space-y-4">
             {/* Interactive Corrugated Cross-Section Card */}
             <div
-              className={`w-full flex-1 bg-[#FAF7F2] p-5 sm:p-6 rounded-2xl border-2 border-[#D1B48C] shadow-lg flex flex-col justify-between transition-all duration-700 ease-out ${
-                isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
-              }`}
+              className={`w-full flex-1 bg-[#FAF7F2] p-5 sm:p-6 rounded-2xl border-2 border-[#D1B48C] shadow-lg flex flex-col justify-between transition-all duration-700 ease-out ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+                }`}
             >
               <div className="flex items-center justify-between pb-3 border-b border-[#E4DED3]">
                 <span className="text-xs font-bold uppercase tracking-wider text-[#493629]">
@@ -163,26 +159,23 @@ export default function CoreValues() {
                       key={val.id}
                       onMouseEnter={() => setActiveValue(val.id)}
                       onClick={() => setActiveValue(val.id)}
-                      className={`relative w-full rounded-xl transition-all duration-300 cursor-pointer select-none overflow-hidden ${
-                        isActive
-                          ? "ring-2 ring-[#A65D32] shadow-md scale-[1.01]"
-                          : "hover:ring-1 hover:ring-[#A65D32]/50 opacity-85 hover:opacity-100"
-                      }`}
+                      className={`relative w-full rounded-xl transition-all duration-300 cursor-pointer select-none overflow-hidden ${isActive
+                        ? "ring-2 ring-[#A65D32] shadow-md scale-[1.01]"
+                        : "hover:ring-1 hover:ring-[#A65D32]/50 opacity-85 hover:opacity-100"
+                        }`}
                     >
                       <div
-                        className={`h-11 sm:h-12 px-4 flex items-center justify-between transition-colors duration-300 ${
-                          isActive
-                            ? "bg-gradient-to-r from-[#A65D32] to-[#8E4F2B] text-white"
-                            : "bg-[#E8D5B8] text-[#493629] border border-[#D1B48C]"
-                        }`}
+                        className={`h-11 sm:h-12 px-4 flex items-center justify-between transition-colors duration-300 ${isActive
+                          ? "bg-gradient-to-r from-[#A65D32] to-[#8E4F2B] text-white"
+                          : "bg-[#E8D5B8] text-[#493629] border border-[#D1B48C]"
+                          }`}
                       >
                         <div className="flex items-center gap-3">
                           <span
-                            className={`w-5 h-5 rounded text-[10px] font-bold flex items-center justify-center shrink-0 ${
-                              isActive
-                                ? "bg-white text-[#A65D32]"
-                                : "bg-[#493629] text-white"
-                            }`}
+                            className={`w-5 h-5 rounded text-[10px] font-bold flex items-center justify-center shrink-0 ${isActive
+                              ? "bg-white text-[#A65D32]"
+                              : "bg-[#493629] text-white"
+                              }`}
                           >
                             {val.number}
                           </span>
@@ -191,9 +184,8 @@ export default function CoreValues() {
                           </span>
                         </div>
                         <span
-                          className={`text-[10px] font-semibold uppercase tracking-wider hidden sm:inline ${
-                            isActive ? "text-white/90" : "text-[#62574D]"
-                          }`}
+                          className={`text-[10px] font-semibold uppercase tracking-wider hidden sm:inline ${isActive ? "text-white/90" : "text-[#62574D]"
+                            }`}
                         >
                           {val.title}
                         </span>
@@ -204,29 +196,14 @@ export default function CoreValues() {
               </div>
             </div>
 
-            {/* Quick Inspection Summary Card */}
-            <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#E4DED3] shadow-sm">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-7 h-7 rounded-lg bg-[#A65D32]/10 flex items-center justify-center text-[#A65D32]">
-                  <Layers className="w-3.5 h-3.5" />
-                </div>
-                <div>
-                  <h4 className="font-heading font-bold text-xs sm:text-sm text-[#202A2E]">
-                    The Kraft Foundation
-                  </h4>
-                  <p className="text-[10px] sm:text-[11px] text-[#687378]">
-                    5 Architectural Board Layers of Packaging Integrity
-                  </p>
-                </div>
+            {/* Kraft Quality Commitment Note */}
+            <div className="p-3.5 sm:p-4 rounded-xl bg-[#FAF7F2] border border-[#E4DED3] shadow-xs flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-[#A65D32]/10 flex items-center justify-center text-[#A65D32] shrink-0">
+                <Layers className="w-4 h-4" />
               </div>
-
-              <div className="flex items-center justify-between text-xs font-semibold pt-2 border-t border-[#E4DED3]">
-                <span className="text-[#687378]">Active Inspection:</span>
-                <span className="text-[#A65D32] font-bold">
-                  {CORE_VALUES_DATA[activeIndex]?.number} •{" "}
-                  {CORE_VALUES_DATA[activeIndex]?.layerName}
-                </span>
-              </div>
+              <p className="text-xs text-[#62574D] leading-relaxed">
+                <span className="font-bold text-[#493629]">Engineered with Purpose:</span> Every layer of our corrugated board mirrors our commitment to quality, durability, and trusted client partnerships.
+              </p>
             </div>
           </div>
         </div>

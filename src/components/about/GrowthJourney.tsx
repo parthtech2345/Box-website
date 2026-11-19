@@ -6,7 +6,7 @@ export default function GrowthJourney() {
   return (
     <section
       id="growth-journey"
-      className="w-full bg-[#FFFFFF] py-14 sm:py-16 border-b border-[#E4DED3] relative overflow-hidden"
+      className="w-full bg-[#FFFFFF] py-14 sm:py-14 border-b border-[#E4DED3] relative overflow-hidden"
       aria-label="Our Journey"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

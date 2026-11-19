@@ -23,8 +23,8 @@ export const OWNER_PROFILE: OwnerProfile = {
   name: "Rajeshwar Sharma",
   designation: "Founder & Managing Director",
   companyName: "Aavrit Packaging",
-  isPlaceholder: true,
-  photoUrl: null,
+  isPlaceholder: false,
+  photoUrl: "/about/management-team/founder-director-portrait.png",
   quote:
     "Packaging is not merely a box—it is the silent ambassador of our clients' products, engineered with precision, reliability and care.",
   bioParagraphs: [

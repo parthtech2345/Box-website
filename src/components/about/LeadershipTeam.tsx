@@ -20,7 +20,7 @@ export default function LeadershipTeam() {
   return (
     <section
       id="leadership-team"
-      className="relative py-24 md:py-32 bg-[#FAF7F2] text-[#202A2E] overflow-hidden"
+      className="relative py-14 md:py-14 bg-[#FAF7F2] text-[#202A2E] overflow-hidden"
       aria-label="Owner and Management Team"
     >
       {/* Subtle Kraft Grid Pattern */}
@@ -167,7 +167,7 @@ export default function LeadershipTeam() {
                 key={member.id}
                 className="group relative rounded-2xl bg-white border border-[#E8D5B8] overflow-hidden shadow-lg hover:shadow-2xl hover:border-[#A65D32]/50 transition-all duration-500 flex flex-col"
               >
-                {/* Portrait Image Container (Chest-up framing) */}
+                {/* Portrait Image Container (Clean photo, no text overlay) */}
                 <div className="relative w-full aspect-[4/5] bg-[#E8D5B8]/30 overflow-hidden">
                   <Image
                     src={member.photoUrl}
@@ -176,16 +176,6 @@ export default function LeadershipTeam() {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     className="object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
-
-                  {/* Gradient bottom shadow for depth */}
-                  <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
-
-                  {/* Department Tag Pill */}
-                  <div className="absolute top-3 left-3 z-10">
-                    <span className="px-2.5 py-1 rounded-md bg-[#493629]/85 backdrop-blur-md text-[10px] font-semibold text-[#E8D5B8] tracking-wider uppercase border border-[#E8D5B8]/20 shadow-sm">
-                      {member.department.split("&")[0].trim()}
-                    </span>
-                  </div>
                 </div>
 
                 {/* Member Info Panel */}
@@ -213,13 +203,7 @@ export default function LeadershipTeam() {
           </div>
 
           {/* Development / Editable Notice */}
-          <div className="mt-12 text-center">
-            <p className="text-xs text-[#62574D]/70 max-w-xl mx-auto">
-              * Note: Management profiles shown above are illustrative team
-              samples for development. Actual staff details can be customized
-              directly in the project data.
-            </p>
-          </div>
+
         </div>
       </div>
     </section>

@@ -108,7 +108,7 @@ export default function CompanyHistory() {
     <section
       id="company-history"
       aria-label="Company History and Our Journey"
-      className="w-full bg-[#FFFFFF] py-14 sm:py-16 lg:py-18 border-b border-[#E4DED3] overflow-hidden"
+      className="w-full bg-[#FFFFFF] py-14 sm:py-14 lg:py-14 border-b border-[#E4DED3] overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 

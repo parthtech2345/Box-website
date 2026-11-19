@@ -14,7 +14,7 @@ export default function AboutCTA() {
   return (
     <section
       id="about-cta"
-      className="relative w-full py-12 sm:py-14 lg:py-16 bg-white text-[#202A2E] border-t border-[#E4DED3] overflow-hidden"
+      className="relative w-full py-12 sm:py-14 lg:py-14 bg-white text-[#202A2E] border-t border-[#E4DED3] overflow-hidden"
       aria-label="Call to Action: Packaging Partnership"
     >
       {/* Background Subtle Kraft Ambient Lights */}

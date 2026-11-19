@@ -14,7 +14,7 @@ export default function AboutFAQ() {
   return (
     <section
       id="about-faq"
-      className="w-full bg-[#FFFFFF] py-20 sm:py-24 lg:py-28 border-b border-[#E4DED3] relative overflow-hidden"
+      className="w-full bg-[#FFFFFF] py-14 sm:py-14 lg:py-14 border-b border-[#E4DED3] relative overflow-hidden"
       aria-label="Frequently Asked Questions"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -54,11 +54,10 @@ export default function AboutFAQ() {
             return (
               <div
                 key={faq.id}
-                className={`rounded-xl border transition-all duration-300 overflow-hidden ${
-                  isOpen
-                    ? "bg-[#FAF7F2] border-[#A65D32] shadow-sm ring-1 ring-[#A65D32]/20"
-                    : "bg-[#FAF7F2]/60 border-[#E4DED3] hover:border-[#A65D32]/50 hover:bg-[#FAF7F2]"
-                }`}
+                className={`rounded-xl border transition-all duration-300 overflow-hidden ${isOpen
+                  ? "bg-[#FAF7F2] border-[#A65D32] shadow-sm ring-1 ring-[#A65D32]/20"
+                  : "bg-[#FAF7F2]/60 border-[#E4DED3] hover:border-[#A65D32]/50 hover:bg-[#FAF7F2]"
+                  }`}
               >
                 <button
                   type="button"
@@ -68,9 +67,8 @@ export default function AboutFAQ() {
                 >
                   <div className="flex items-center gap-4 sm:gap-5 flex-1 pr-2">
                     <span
-                      className={`text-xs sm:text-sm font-bold font-mono transition-colors ${
-                        isOpen ? "text-[#A65D32]" : "text-[#62574D]/60"
-                      }`}
+                      className={`text-xs sm:text-sm font-bold font-mono transition-colors ${isOpen ? "text-[#A65D32]" : "text-[#62574D]/60"
+                        }`}
                     >
                       {faq.number}
                     </span>
@@ -82,11 +80,10 @@ export default function AboutFAQ() {
 
                   {/* Animated Plus / Minus Toggle Button */}
                   <div
-                    className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 border transition-all duration-300 ${
-                      isOpen
-                        ? "bg-[#A65D32] text-white border-[#A65D32] rotate-180 scale-105 shadow-sm"
-                        : "bg-white text-[#202A2E] border-[#E4DED3] hover:border-[#A65D32]"
-                    }`}
+                    className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 border transition-all duration-300 ${isOpen
+                      ? "bg-[#A65D32] text-white border-[#A65D32] rotate-180 scale-105 shadow-sm"
+                      : "bg-white text-[#202A2E] border-[#E4DED3] hover:border-[#A65D32]"
+                      }`}
                   >
                     {isOpen ? (
                       <Minus className="w-4 h-4" />
@@ -98,11 +95,10 @@ export default function AboutFAQ() {
 
                 {/* Animated Dropdown Answer Container */}
                 <div
-                  className={`grid transition-all duration-300 ease-in-out ${
-                    isOpen
-                      ? "grid-rows-[1fr] opacity-100"
-                      : "grid-rows-[0fr] opacity-0"
-                  }`}
+                  className={`grid transition-all duration-300 ease-in-out ${isOpen
+                    ? "grid-rows-[1fr] opacity-100"
+                    : "grid-rows-[0fr] opacity-0"
+                    }`}
                 >
                   <div className="overflow-hidden">
                     <div className="px-5 pb-6 sm:px-6 sm:pb-7 pt-4 text-sm sm:text-base text-[#62574D] leading-relaxed border-t border-[#E4DED3]/60">

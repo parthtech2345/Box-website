@@ -27,7 +27,7 @@ export default function ManufacturingExperience() {
   return (
     <section
       id="manufacturing-experience"
-      className="relative py-14 sm:py-16 lg:py-20 bg-white text-[#202A2E] border-b border-[#E4DED3] overflow-hidden"
+      className="relative py-14 sm:py-14 lg:py-14 bg-white text-[#202A2E] border-b border-[#E4DED3] overflow-hidden"
       aria-label="Manufacturing Experience Project Showcase"
     >
       {/* Subtle Kraft card ambient lights */}
