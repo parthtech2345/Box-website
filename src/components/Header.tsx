@@ -90,7 +90,7 @@ export default function Header() {
           {/* Navigation Links - Immediately next to Logo with equivalent gap */}
           <div className="hidden lg:flex items-center gap-7 text-[14px] font-semibold text-[#202A2E]">
             <Link
-              href="#about"
+              href="/about"
               className="h-10 inline-flex items-center px-1 hover:text-[#E97835] transition-colors"
             >
               About Us
@@ -293,7 +293,7 @@ export default function Header() {
                 Home
               </Link>
               <Link
-                href="#about"
+                href="/about"
                 onClick={() => setMobileMenuOpen(false)}
                 className="py-2 hover:text-[#E97835]"
               >

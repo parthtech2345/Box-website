@@ -1,0 +1,236 @@
+"use client";
+
+import React, { useState, useEffect, useRef } from "react";
+import { CORE_VALUES_DATA, CoreValueItem } from "./coreValuesData";
+import { Layers } from "lucide-react";
+
+export default function CoreValues() {
+  const [isVisible, setIsVisible] = useState(false);
+  const [activeValue, setActiveValue] = useState<string>("value-1");
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    const el = sectionRef.current;
+    if (el) observer.observe(el);
+
+    return () => {
+      if (el) observer.unobserve(el);
+    };
+  }, []);
+
+  const activeIndex = CORE_VALUES_DATA.findIndex((v) => v.id === activeValue);
+
+  return (
+    <section
+      id="core-values"
+      ref={sectionRef}
+      aria-label="Our Core Values"
+      className="w-full bg-[#FFFFFF] py-14 sm:py-16 lg:py-20 border-b border-[#E4DED3] relative overflow-hidden"
+    >
+      {/* Background Kraft Cardboard Ambient Details */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-10 right-1/4 w-[500px] h-[500px] bg-[#E8D5B8]/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-10 left-10 w-[450px] h-[450px] bg-[#A65D32]/5 rounded-full blur-3xl" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* =========================================================================
+            1. SECTION HEADER (Matching Exact Homepage 2-Column Split Theme)
+        ========================================================================= */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 sm:pb-10 mb-10 sm:mb-12 border-b border-[#E4DED3]">
+          {/* Left Column: Eyebrow + Main Big Headline */}
+          <div className="max-w-xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-3.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
+              <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
+                OUR CORE VALUES
+              </span>
+            </div>
+
+            <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
+              What We Stand For Shapes{" "}
+              <span className="text-[#A65D32]">Everything We Do.</span>
+            </h2>
+          </div>
+
+          {/* Right Column: Context Description with Accent Border */}
+          <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
+            <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
+              Our values guide the way we work, the solutions we create and the
+              relationships we build. Much like corrugated cardboard derives its
+              integrity from synchronized paper layers, our company culture is
+              reinforced by each core principle.
+            </p>
+          </div>
+        </div>
+
+        {/* =========================================================================
+            2. BALANCED TWO-COLUMN MAIN CONTENT (EQUAL 50/50 SIDES):
+               - LEFT (6 cols): 5 Value Description Cards
+               - RIGHT (6 cols): Interactive 5-Ply Corrugated Cross-Section Diagram
+        ========================================================================= */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
+          {/* =======================================================================
+              LEFT SIDE (6 cols): Exactly 5 Value Description Cards
+          ======================================================================= */}
+          <div className="lg:col-span-6 flex flex-col justify-between space-y-3">
+            {CORE_VALUES_DATA.map((val) => {
+              const isActive = activeValue === val.id;
+
+              return (
+                <div
+                  key={val.id}
+                  onMouseEnter={() => setActiveValue(val.id)}
+                  onClick={() => setActiveValue(val.id)}
+                  className={`flex-1 p-4 rounded-xl border transition-all duration-300 cursor-pointer flex flex-col justify-center ${
+                    isActive
+                      ? "bg-[#FAF7F2] border-[#A65D32] shadow-sm -translate-y-0.5 ring-1 ring-[#A65D32]/25"
+                      : "bg-white border-[#E4DED3] hover:border-[#D1B48C] hover:bg-[#FAF7F2]/60"
+                  }`}
+                >
+                  <div className="flex items-start gap-3.5">
+                    {/* Number Tag */}
+                    <span
+                      className={`text-xs font-bold px-2 py-0.5 rounded transition-colors shrink-0 mt-0.5 ${
+                        isActive
+                          ? "bg-[#A65D32] text-white"
+                          : "bg-[#493629]/10 text-[#493629]"
+                      }`}
+                    >
+                      {val.number}
+                    </span>
+
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <h3
+                          className={`font-heading font-bold text-base transition-colors ${
+                            isActive ? "text-[#A65D32]" : "text-[#202A2E]"
+                          }`}
+                        >
+                          {val.title}
+                        </h3>
+                        <span className="text-[10px] font-semibold uppercase tracking-wider text-[#78846A] truncate">
+                          {val.layerName}
+                        </span>
+                      </div>
+
+                      <p className="text-xs sm:text-sm text-[#62574D] leading-relaxed">
+                        {val.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* =======================================================================
+              RIGHT SIDE (6 cols): Interactive 5-Ply Corrugated Cross-Section Diagram
+          ======================================================================= */}
+          <div className="lg:col-span-6 flex flex-col justify-between space-y-4">
+            {/* Interactive Corrugated Cross-Section Card */}
+            <div
+              className={`w-full flex-1 bg-[#FAF7F2] p-5 sm:p-6 rounded-2xl border-2 border-[#D1B48C] shadow-lg flex flex-col justify-between transition-all duration-700 ease-out ${
+                isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+              }`}
+            >
+              <div className="flex items-center justify-between pb-3 border-b border-[#E4DED3]">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#493629]">
+                  Interactive Corrugated Cross-Section
+                </span>
+                <span className="text-[11px] font-semibold text-[#78846A] bg-[#78846A]/10 px-2.5 py-0.5 rounded-full">
+                  5-Ply Structural Metaphor
+                </span>
+              </div>
+
+              {/* Stacked 5 Corrugated Board Layers */}
+              <div className="space-y-3 py-4 flex-1 flex flex-col justify-around">
+                {CORE_VALUES_DATA.map((val) => {
+                  const isActive = activeValue === val.id;
+
+                  return (
+                    <div
+                      key={val.id}
+                      onMouseEnter={() => setActiveValue(val.id)}
+                      onClick={() => setActiveValue(val.id)}
+                      className={`relative w-full rounded-xl transition-all duration-300 cursor-pointer select-none overflow-hidden ${
+                        isActive
+                          ? "ring-2 ring-[#A65D32] shadow-md scale-[1.01]"
+                          : "hover:ring-1 hover:ring-[#A65D32]/50 opacity-85 hover:opacity-100"
+                      }`}
+                    >
+                      <div
+                        className={`h-11 sm:h-12 px-4 flex items-center justify-between transition-colors duration-300 ${
+                          isActive
+                            ? "bg-gradient-to-r from-[#A65D32] to-[#8E4F2B] text-white"
+                            : "bg-[#E8D5B8] text-[#493629] border border-[#D1B48C]"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <span
+                            className={`w-5 h-5 rounded text-[10px] font-bold flex items-center justify-center shrink-0 ${
+                              isActive
+                                ? "bg-white text-[#A65D32]"
+                                : "bg-[#493629] text-white"
+                            }`}
+                          >
+                            {val.number}
+                          </span>
+                          <span className="text-xs sm:text-sm font-bold tracking-tight">
+                            {val.layerName}
+                          </span>
+                        </div>
+                        <span
+                          className={`text-[10px] font-semibold uppercase tracking-wider hidden sm:inline ${
+                            isActive ? "text-white/90" : "text-[#62574D]"
+                          }`}
+                        >
+                          {val.title}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Quick Inspection Summary Card */}
+            <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#E4DED3] shadow-sm">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-7 h-7 rounded-lg bg-[#A65D32]/10 flex items-center justify-center text-[#A65D32]">
+                  <Layers className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <h4 className="font-heading font-bold text-xs sm:text-sm text-[#202A2E]">
+                    The Kraft Foundation
+                  </h4>
+                  <p className="text-[10px] sm:text-[11px] text-[#687378]">
+                    5 Architectural Board Layers of Packaging Integrity
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between text-xs font-semibold pt-2 border-t border-[#E4DED3]">
+                <span className="text-[#687378]">Active Inspection:</span>
+                <span className="text-[#A65D32] font-bold">
+                  {CORE_VALUES_DATA[activeIndex]?.number} •{" "}
+                  {CORE_VALUES_DATA[activeIndex]?.layerName}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

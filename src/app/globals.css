@@ -61,3 +61,55 @@ h6,
 ::-webkit-scrollbar-thumb:hover {
   background: #202A2E;
 }
+
+/* Conveyor Roller Continuous Rotation Animation */
+@keyframes conveyorRoll {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+.animate-conveyor-roll {
+  animation: conveyorRoll 0.8s linear infinite;
+}
+
+/* Worker Friendly Hand Wave Animation */
+@keyframes workerWave {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(14deg);
+  }
+  75% {
+    transform: rotate(-14deg);
+  }
+}
+
+.animate-worker-wave {
+  transform-origin: 26px 54px;
+  animation: workerWave 0.7s ease-in-out infinite;
+}
+
+/* Continuous Marquee / Smooth Slider Animation */
+@keyframes continuousScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-infinite-scroll {
+  display: flex;
+  width: max-content;
+  animation: continuousScroll 35s linear infinite;
+}
+
+.pause-hover:hover {
+  animation-play-state: paused;
+}
