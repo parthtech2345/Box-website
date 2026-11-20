@@ -15,6 +15,8 @@ import {
   ChevronRight,
   Maximize2,
 } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 interface Stage {
   id: string;
@@ -122,24 +124,77 @@ const STAGES: Stage[] = [
 
 export default function ManufacturingProcess() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const showcaseRef = useRef<HTMLDivElement>(null);
   const [activeStage, setActiveStage] = useState<number>(0);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.15 }
-    );
+    if (typeof window === "undefined" || !sectionRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
+    const ctx = gsap.context(() => {
+      // 1. Consistent Section Heading Reveal
+      if (headerRef.current) {
+        gsap.fromTo(
+          headerRef.current,
+          { opacity: 0, y: 25 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: headerRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
 
-    return () => observer.disconnect();
+      // 2. Timeline Step Nodes Reveal
+      if (timelineRef.current) {
+        gsap.fromTo(
+          timelineRef.current.children,
+          { opacity: 0, y: 25 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.08,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: timelineRef.current,
+              start: "top 82%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+
+      // 3. Stage Visual Showcase Slide In
+      if (showcaseRef.current) {
+        gsap.fromTo(
+          showcaseRef.current,
+          { opacity: 0, y: 35, scale: 0.98 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: showcaseRef.current,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   const currentStage = STAGES[activeStage];
@@ -155,8 +210,8 @@ export default function ManufacturingProcess() {
 
         {/* Section Header: Matching ProductCategories & WhyChooseUs 2-Column Split */}
         <div
-          className={`flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 sm:pb-10 mb-10 sm:mb-12 border-b border-[#E4DED3] transition-all duration-700 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-            }`}
+          ref={headerRef}
+          className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 sm:pb-10 mb-10 sm:mb-12 border-b border-[#E4DED3]"
         >
           {/* Left Column: Eyebrow + Main Big Headline */}
           <div className="max-w-xl">
@@ -197,7 +252,7 @@ export default function ManufacturingProcess() {
             />
 
             {/* 6 Stage Interactive Trigger Nodes */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 relative z-10">
+            <div ref={timelineRef} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 relative z-10">
               {STAGES.map((stg, idx) => {
                 const IconComponent = stg.icon;
                 const isActive = activeStage === idx;
@@ -254,7 +309,7 @@ export default function ManufacturingProcess() {
         </div>
 
         {/* EXPANDED ACTIVE STAGE SHOWCASE (2-Column Editorial Box) */}
-        <div className="rounded-2xl bg-[#FAF7F2] border border-[#E4DED3] p-6 sm:p-8 lg:p-10 mb-12 shadow-xs transition-all duration-500">
+        <div ref={showcaseRef} className="rounded-2xl bg-[#FAF7F2] border border-[#E4DED3] p-6 sm:p-8 lg:p-10 mb-12 shadow-xs transition-all duration-500">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 
             {/* Left: Stage Information & Engineering Specs (6 cols) */}

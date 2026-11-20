@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import Link from "next/link";
 import {
   ShieldCheck,
@@ -12,6 +12,8 @@ import {
   ArrowRight,
   CheckCircle2,
 } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 interface Feature {
   number: string;
@@ -74,24 +76,57 @@ const FEATURES: Feature[] = [
 
 export default function WhyChooseUs() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.15 }
-    );
+    if (typeof window === "undefined" || !sectionRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
+    const ctx = gsap.context(() => {
+      // 1. Consistent Section Heading Reveal
+      if (headerRef.current) {
+        gsap.fromTo(
+          headerRef.current,
+          { opacity: 0, y: 25 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: headerRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
 
-    return () => observer.disconnect();
+      // 2. Feature Cards Stagger & Icon Pop
+      if (cardsRef.current) {
+        const cards = cardsRef.current.children;
+        gsap.fromTo(
+          cards,
+          { opacity: 0, y: 35, scale: 0.96 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.7,
+            stagger: 0.1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: cardsRef.current,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -101,10 +136,10 @@ export default function WhyChooseUs() {
       className="w-full bg-[#FFFFFF] py-14 sm:py-14 lg:py-14 border-b border-[#E4DED3] relative overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header: Consistent 2-Column Split matching ProductCategories */}
+        {/* Section Header: Consistent 2-Column Split */}
         <div
-          className={`flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 sm:pb-10 mb-10 sm:mb-12 border-b border-[#E4DED3] transition-all duration-700 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-            }`}
+          ref={headerRef}
+          className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 sm:pb-10 mb-10 sm:mb-12 border-b border-[#E4DED3]"
         >
           {/* Left Column: Eyebrow + Main Big Headline */}
           <div className="max-w-xl">
@@ -129,30 +164,18 @@ export default function WhyChooseUs() {
           </div>
         </div>
 
-        {/* 6 Feature Cards Grid in 3 Columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
-          {FEATURES.map((item, idx) => {
+        {/* 6 Feature Cards Grid with GSAP Stagger */}
+        <div
+          ref={cardsRef}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7"
+        >
+          {FEATURES.map((item) => {
             const Icon = item.icon;
-            const delayClass =
-              idx === 0
-                ? "transition-delay-[100ms]"
-                : idx === 1
-                  ? "transition-delay-[200ms]"
-                  : idx === 2
-                    ? "transition-delay-[300ms]"
-                    : idx === 3
-                      ? "transition-delay-[400ms]"
-                      : idx === 4
-                        ? "transition-delay-[500ms]"
-                        : "transition-delay-[600ms]";
 
             return (
               <div
                 key={item.number}
-                className={`relative bg-[#FFFFFF] rounded-2xl p-6 sm:p-7 border border-[#E4DED3] shadow-xs hover:border-[#D1B48C] hover:shadow-xl transition-all duration-300 ease-out transform hover:-translate-y-1 group flex flex-col justify-between ${isVisible
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-8"
-                  } ${delayClass}`}
+                className="relative bg-[#FFFFFF] rounded-2xl p-6 sm:p-7 border border-[#E4DED3] shadow-xs hover:border-[#D1B48C] hover:shadow-xl transition-all duration-300 ease-out transform hover:-translate-y-1 group flex flex-col justify-between"
               >
                 {/* Top Header: Icon + Number */}
                 <div>

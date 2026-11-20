@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -16,6 +16,8 @@ import {
   Printer,
   SlidersHorizontal,
 } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 // --- TYPES ---
 interface PlyOption {
@@ -262,19 +264,97 @@ export default function BoxConstruction() {
   const [activePlyTab, setActivePlyTab] = useState<string>("5ply");
   const [activeLayerHover, setActiveLayerHover] = useState<1 | 2 | 3 | null>(null);
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const cutawayRef = useRef<HTMLDivElement>(null);
+  const plyCardsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !sectionRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      // 1. Consistent Section Heading Reveal
+      if (headerRef.current) {
+        gsap.fromTo(
+          headerRef.current,
+          { opacity: 0, y: 25 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: headerRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+
+      // 2. Cutaway 3-Layer Visual Assembly Reveal
+      if (cutawayRef.current) {
+        gsap.fromTo(
+          cutawayRef.current,
+          { opacity: 0, y: 35, scale: 0.98 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.9,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: cutawayRef.current,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+
+      // 3. 3-Ply / 5-Ply / 7-Ply Cards Stagger
+      if (plyCardsRef.current) {
+        const cards = plyCardsRef.current.children;
+        gsap.fromTo(
+          cards,
+          { opacity: 0, y: 35 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.12,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: plyCardsRef.current,
+              start: "top 82%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   const activeRequirement =
     SELECTION_REQUIREMENTS.find((r) => r.id === selectedReqId) || SELECTION_REQUIREMENTS[1];
 
   return (
     <section
       id="specifications-guide"
+      ref={sectionRef}
       className="relative w-full bg-[#FFFFFF] py-14 sm:py-14 lg:py-14 text-[#202A2E] overflow-hidden border-b border-[#E4DED3]"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* =========================================================================
             1. SECTION INTRO & HEADER (Matching 2-Column Split of all other sections)
         ========================================================================= */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 sm:pb-10 mb-10 sm:mb-14 border-b border-[#E4DED3]">
+        <div
+          ref={headerRef}
+          className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 sm:pb-10 mb-10 sm:mb-14 border-b border-[#E4DED3]"
+        >
           {/* Left Column: Eyebrow + Main Big Headline */}
           <div className="max-w-xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/20 mb-3.5">
@@ -301,7 +381,7 @@ export default function BoxConstruction() {
         {/* =========================================================================
             2. UNDERSTANDING CORRUGATED BOARD (3-LAYER CUTAWAY VISUAL)
         ========================================================================= */}
-        <div className="bg-[#FAF7F2] rounded-2xl p-6 sm:p-8 lg:p-12 border border-[#E4DED3] shadow-sm mb-16 sm:mb-20">
+        <div ref={cutawayRef} className="bg-[#FAF7F2] rounded-2xl p-6 sm:p-8 lg:p-12 border border-[#E4DED3] shadow-sm mb-16 sm:mb-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left: Cutaway Photographic Visual with Precision Engineering Pointer Pins */}
             <div className="lg:col-span-7">
@@ -545,7 +625,7 @@ export default function BoxConstruction() {
           </div>
 
           {/* Ply Cards - Horizontal Comparison on Desktop, Stack on Mobile */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          <div ref={plyCardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
             {PLY_OPTIONS.map((ply) => (
               <div
                 key={ply.id}
