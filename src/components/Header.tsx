@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import {
   Phone,
   Mail,
@@ -22,25 +23,44 @@ import {
 } from "lucide-react";
 
 export default function Header() {
+  const pathname = usePathname();
+  const isHomepage = pathname === "/";
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      // On homepage: transparent until scrolled past top hero zone
+      setIsScrolled(window.scrollY > 40);
     };
     window.addEventListener("scroll", handleScroll);
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Determine if header should be transparent (homepage when not scrolled)
+  const isTransparent = isHomepage && !isScrolled;
+
   return (
-    <header className="sticky top-0 z-50 w-full transition-all duration-300">
-      {/* 1. Top Information Strip */}
-      <div className="bg-[#202A2E] text-[#F5F2EB] text-xs py-2 px-4 border-b border-[#202A2E]/20">
+    <header
+      className={`w-full z-50 transition-all duration-300 ${
+        isTransparent
+          ? "absolute top-0 left-0 bg-transparent"
+          : "sticky top-0 bg-[#FFFFFF] shadow-md border-b border-[#E4DED3]"
+      }`}
+    >
+      {/* 1. Top Information Strip (Dark translucent on transparent hero, solid dark otherwise) */}
+      <div
+        className={`text-xs py-2 px-4 transition-colors duration-300 ${
+          isTransparent
+            ? "bg-black/40 backdrop-blur-xs text-[#F5F2EB]/90 border-b border-white/10"
+            : "bg-[#202A2E] text-[#F5F2EB] border-b border-[#202A2E]/20"
+        }`}
+      >
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
           {/* Left Side: Phone & Email */}
-          <div className="flex items-center gap-4 text-[#F5F2EB]/90 text-[11px] sm:text-xs">
+          <div className="flex items-center gap-4 text-[11px] sm:text-xs">
             <a
               href="tel:+919876543210"
               className="flex items-center gap-1.5 hover:text-[#E97835] transition-colors"
@@ -54,12 +74,12 @@ export default function Header() {
               className="flex items-center gap-1.5 hover:text-[#E97835] transition-colors"
             >
               <Mail className="w-3.5 h-3.5 text-[#E97835]" />
-              <span>inquiry@aavritpackaging.com</span>
+              <span className="text-white/90">inquiry@aavritpackaging.com</span>
             </a>
           </div>
 
           {/* Right Side: Factory Address / Location only */}
-          <div className="flex items-center gap-1.5 text-[#F5F2EB]/80 text-[11px] sm:text-xs">
+          <div className="flex items-center gap-1.5 text-white/80 text-[11px] sm:text-xs">
             <MapPin className="w-3.5 h-3.5 text-[#D1B48C]" />
             <span>Plot No. 42, Phase II GIDC, Gujarat, India</span>
           </div>
@@ -68,17 +88,22 @@ export default function Header() {
 
       {/* 2. Main Navigation Bar */}
       <nav
-        className={`w-full bg-[#FFFFFF] transition-all duration-300 ${isScrolled
-            ? "shadow-md py-3.5 border-b border-[#E4DED3]"
-            : "py-4 border-b border-[#E4DED3]/80"
-          }`}
+        className={`w-full transition-all duration-300 ${
+          isTransparent
+            ? "bg-transparent py-4 text-white"
+            : "bg-[#FFFFFF] py-3.5 text-[#202A2E]"
+        }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-7">
           {/* Official AAVRIT PACKAGING Logo */}
           <Link href="/" className="flex items-center group shrink-0">
             <div className="relative h-10 sm:h-11 w-44 sm:w-52">
               <Image
-                src="/images/aavrit_logo_light_bg.svg"
+                src={
+                  isTransparent
+                    ? "/images/aavrit_logo_dark_bg.svg"
+                    : "/images/aavrit_logo_light_bg.svg"
+                }
                 alt="AAVRIT PACKAGING Logo"
                 fill
                 priority
@@ -87,8 +112,12 @@ export default function Header() {
             </div>
           </Link>
 
-          {/* Navigation Links - Immediately next to Logo with equivalent gap */}
-          <div className="hidden lg:flex items-center gap-7 text-[14px] font-semibold text-[#202A2E]">
+          {/* Navigation Links */}
+          <div
+            className={`hidden lg:flex items-center gap-7 text-[14px] font-semibold transition-colors duration-300 ${
+              isTransparent ? "text-white" : "text-[#202A2E]"
+            }`}
+          >
             <Link
               href="/about"
               className="h-10 inline-flex items-center px-1 hover:text-[#E97835] transition-colors"
@@ -104,21 +133,23 @@ export default function Header() {
             >
               <button
                 type="button"
-                className="h-10 inline-flex items-center gap-1 px-1 hover:text-[#E97835] transition-colors"
+                className="h-10 inline-flex items-center gap-1 px-1 hover:text-[#E97835] transition-colors cursor-pointer"
               >
                 <span>Products</span>
                 <ChevronDown
-                  className={`w-4 h-4 transition-transform duration-200 ${productsOpen ? "rotate-180 text-[#E97835]" : ""
-                    }`}
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    productsOpen ? "rotate-180 text-[#E97835]" : ""
+                  }`}
                 />
               </button>
 
               {/* Mega-menu dropdown */}
               <div
-                className={`absolute top-full -left-20 w-[680px] bg-white rounded-xl shadow-2xl border border-[#E4DED3] p-6 grid grid-cols-2 gap-4 transition-all duration-200 origin-top ${productsOpen
+                className={`absolute top-full -left-20 w-[680px] bg-white text-[#202A2E] rounded-xl shadow-2xl border border-[#E4DED3] p-6 grid grid-cols-2 gap-4 transition-all duration-200 origin-top z-50 ${
+                  productsOpen
                     ? "opacity-100 scale-100 visible"
                     : "opacity-0 scale-95 invisible pointer-events-none"
-                  }`}
+                }`}
               >
                 <div className="space-y-3">
                   <div className="text-xs uppercase tracking-wider font-bold text-[#687378] pb-1 border-b border-[#E4DED3]">
@@ -253,7 +284,7 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* Right Action: Request a Quote CTA pushed to the right */}
+          {/* Right Action: Request a Quote CTA */}
           <div className="hidden lg:flex items-center ml-auto">
             <a
               href="#quote"
@@ -265,96 +296,72 @@ export default function Header() {
           </div>
 
           {/* Mobile Menu Toggle Button */}
-          <div className="flex lg:hidden items-center">
+          <div className="flex lg:hidden items-center ml-auto">
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-[#202A2E] hover:bg-[#F5F2EB] transition-colors"
-              aria-label="Toggle Navigation"
+              className={`p-2 rounded-lg transition-colors ${
+                isTransparent ? "text-white hover:bg-white/10" : "text-[#202A2E] hover:bg-black/5"
+              }`}
+              aria-label="Toggle Navigation Menu"
             >
-              {mobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Slide-Out / Drawer Navigation */}
+        {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-[#E4DED3] bg-white px-4 pt-4 pb-6 space-y-4 shadow-xl">
-            <div className="flex flex-col space-y-3 font-semibold text-[#202A2E]">
-              <Link
-                href="/"
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-2 text-[#E97835]"
-              >
-                Home
-              </Link>
-              <Link
-                href="/about"
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-2 hover:text-[#E97835]"
-              >
-                About Us
-              </Link>
-              <Link
-                href="#products"
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-2 hover:text-[#E97835]"
-              >
-                Products & Categories
-              </Link>
-              <Link
-                href="#construction"
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-2 hover:text-[#E97835]"
-              >
-                Box Construction (3/5/7 Ply)
-              </Link>
-              <Link
-                href="#industries"
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-2 hover:text-[#E97835]"
-              >
-                Industries We Serve
-              </Link>
-              <Link
-                href="#manufacturing"
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-2 hover:text-[#E97835]"
-              >
-                Manufacturing Process
-              </Link>
-              <Link
-                href="#quality"
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-2 hover:text-[#E97835]"
-              >
-                Quality Assurance
-              </Link>
-              <Link
-                href="#contact"
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-2 hover:text-[#E97835]"
-              >
-                Contact
-              </Link>
-            </div>
-
-            <div className="pt-4 border-t border-[#E4DED3] flex flex-col gap-3">
-              <a
-                href="#quote"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center py-3 bg-[#E97835] text-white font-semibold rounded-lg shadow-sm"
-              >
-                Request a Quote
-              </a>
-              <div className="text-xs text-[#687378] text-center">
-                Need urgent assistance? Call: +91 98765 43210
-              </div>
-            </div>
+          <div className="lg:hidden bg-white text-[#202A2E] border-t border-[#E4DED3] px-4 pt-3 pb-6 space-y-3 shadow-xl">
+            <Link
+              href="/about"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-2 text-base font-semibold text-[#202A2E] hover:text-[#E97835]"
+            >
+              About Us
+            </Link>
+            <Link
+              href="#products"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-2 text-base font-semibold text-[#202A2E] hover:text-[#E97835]"
+            >
+              Products
+            </Link>
+            <Link
+              href="#industries"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-2 text-base font-semibold text-[#202A2E] hover:text-[#E97835]"
+            >
+              Industries We Serve
+            </Link>
+            <Link
+              href="#manufacturing"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-2 text-base font-semibold text-[#202A2E] hover:text-[#E97835]"
+            >
+              Manufacturing
+            </Link>
+            <Link
+              href="#quality"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-2 text-base font-semibold text-[#202A2E] hover:text-[#E97835]"
+            >
+              Quality
+            </Link>
+            <Link
+              href="#contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-2 text-base font-semibold text-[#202A2E] hover:text-[#E97835]"
+            >
+              Contact
+            </Link>
+            <a
+              href="#quote"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-center py-2.5 bg-[#E97835] text-white font-semibold rounded-lg"
+            >
+              Request a Quote
+            </a>
           </div>
         )}
       </nav>
