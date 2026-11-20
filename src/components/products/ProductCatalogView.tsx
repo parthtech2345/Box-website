@@ -1,30 +1,48 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef, useEffect, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   Search,
   X,
   ArrowRight,
   Filter,
-  CheckCircle2,
   Package,
-  Layers,
-  ShieldCheck,
-  Truck,
-  Sparkles,
   Phone,
-  Mail,
   ChevronRight,
-  SlidersHorizontal,
-  Boxes,
 } from "lucide-react";
-import { MAIN_CATEGORIES, ALL_PRODUCTS, ProductItem } from "@/data/productsData";
+import { MAIN_CATEGORIES, ALL_PRODUCTS } from "@/data/productsData";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function ProductCatalogView() {
+function ProductCatalogContent() {
+  const searchParams = useSearchParams();
+  const categoryParam = searchParams.get("category");
+
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+
+  // Sync category from URL search params (e.g., ?category=printed-corrugated-boxes)
+  useEffect(() => {
+    if (categoryParam) {
+      const match = MAIN_CATEGORIES.find((c) => c.id === categoryParam);
+      if (match) {
+        setSelectedCategory(match.id);
+        // Smoothly scroll down to catalog area if visiting with category query
+        if (catalogSectionRef.current) {
+          catalogSectionRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    }
+  }, [categoryParam]);
+
+  const catalogSectionRef = useRef<HTMLElement | null>(null);
+  const searchBarRef = useRef<HTMLDivElement | null>(null);
+  const sidebarRef = useRef<HTMLElement | null>(null);
+  const productGridRef = useRef<HTMLDivElement | null>(null);
+  const ctaSectionRef = useRef<HTMLElement | null>(null);
 
   // Filter products based on search term and selected category
   const filteredProducts = useMemo(() => {
@@ -54,10 +72,115 @@ export default function ProductCatalogView() {
     setSearchQuery("");
   };
 
+  // GSAP ScrollTrigger Animations
+  useEffect(() => {
+    if (typeof window === "undefined" || !catalogSectionRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      // 1. Top Search & Filter Bar Entrance
+      if (searchBarRef.current) {
+        gsap.fromTo(
+          searchBarRef.current,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: searchBarRef.current,
+              start: "top 88%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+
+      // 2. Left Sidebar Filter Entrance
+      if (sidebarRef.current) {
+        gsap.fromTo(
+          sidebarRef.current,
+          { opacity: 0, x: -25 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.7,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: sidebarRef.current,
+              start: "top 82%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+
+      // 3. Product Cards Stagger Entrance on Scroll
+      if (productGridRef.current && productGridRef.current.children.length > 0) {
+        gsap.fromTo(
+          productGridRef.current.children,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.05,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: productGridRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+
+      // 4. Custom Manufacturing CTA Strip Entrance
+      if (ctaSectionRef.current) {
+        gsap.fromTo(
+          ctaSectionRef.current,
+          { opacity: 0, y: 25 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: ctaSectionRef.current,
+              start: "top 88%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+    }, catalogSectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  // Smooth cards re-stagger when category or search changes
+  useEffect(() => {
+    if (typeof window === "undefined" || !productGridRef.current) return;
+    if (productGridRef.current.children.length > 0) {
+      gsap.fromTo(
+        productGridRef.current.children,
+        { opacity: 0, y: 15 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.4,
+          stagger: 0.03,
+          ease: "power2.out",
+        }
+      );
+    }
+  }, [selectedCategory, searchQuery]);
+
   return (
     <div className="w-full bg-[#FFFFFF]">
       {/* =========================================================================
-          1. COMPACT STANDARD PRODUCT PAGE HERO BANNER
+          1. COMPACT STANDARD PRODUCT PAGE HERO BANNER (UNTOUCHED)
           - Original aspect ratio preserved (aspect-[2048/768] on desktop)
           - No boxes cropped from top or bottom
           - Clean heading: "Our Products" + Breadcrumb (Home > Products)
@@ -108,11 +231,17 @@ export default function ProductCatalogView() {
           - Left Sidebar with all 6 Categories + All Products count
           - Right Side: Search input & Responsive Product Cards Grid
       ========================================================================= */}
-      <section className="w-full bg-[#FAF7F2] py-10 sm:py-14 border-b border-[#E4DED3]">
+      <section
+        ref={catalogSectionRef}
+        className="w-full bg-[#FAF7F2] py-10 sm:py-14 border-b border-[#E4DED3]"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Top Search & Filter Bar (Positioned comfortably below the banner) */}
-          <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-[#E4DED3] mb-8">
+          <div
+            ref={searchBarRef}
+            className="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-[#E4DED3] mb-8"
+          >
             <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
               {/* Search Field */}
               <div className="relative flex-1 flex items-center">
@@ -195,7 +324,10 @@ export default function ProductCatalogView() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
             {/* Left Column: Side Filter Bar (3 cols on desktop) */}
-            <aside className="hidden lg:block lg:col-span-3 bg-white rounded-2xl p-5 border border-[#E4DED3] shadow-xs sticky top-24">
+            <aside
+              ref={sidebarRef}
+              className="hidden lg:block lg:col-span-3 bg-white rounded-2xl p-5 border border-[#E4DED3] shadow-xs sticky top-24"
+            >
               <div className="flex items-center justify-between pb-3 mb-4 border-b border-[#E4DED3]">
                 <div className="flex items-center gap-2 text-sm font-bold text-[#202A2E]">
                   <Filter className="w-4 h-4 text-[#A65D32]" />
@@ -344,7 +476,10 @@ export default function ProductCatalogView() {
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+                <div
+                  ref={productGridRef}
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"
+                >
                   {filteredProducts.map((p) => (
                     <Link
                       key={p.id}
@@ -385,7 +520,10 @@ export default function ProductCatalogView() {
       {/* =========================================================================
           3. CUSTOM MANUFACTURING CTA STRIP
       ========================================================================= */}
-      <section className="w-full bg-[#202A2E] text-white py-12 px-4 sm:px-6 lg:px-8 border-t border-[#344247]">
+      <section
+        ref={ctaSectionRef}
+        className="w-full bg-[#202A2E] text-white py-12 px-4 sm:px-6 lg:px-8 border-t border-[#344247]"
+      >
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="max-w-2xl">
             <h3 className="font-heading font-bold text-2xl sm:text-3xl text-white mb-2">
@@ -416,5 +554,13 @@ export default function ProductCatalogView() {
         </div>
       </section>
     </div>
+  );
+}
+
+export default function ProductCatalogView() {
+  return (
+    <Suspense fallback={<div className="w-full min-h-[400px] bg-[#FAF7F2]" />}>
+      <ProductCatalogContent />
+    </Suspense>
   );
 }

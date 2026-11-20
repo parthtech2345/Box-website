@@ -11,27 +11,20 @@ import {
   ChevronDown,
   Menu,
   X,
-  Package,
-  Layers,
-  ShieldCheck,
-  Factory,
   ArrowRight,
-  Boxes,
-  Truck,
-  Leaf,
-  ExternalLink,
 } from "lucide-react";
+import { MAIN_CATEGORIES } from "@/data/productsData";
 
 export default function Header() {
   const pathname = usePathname();
   const isHomepage = pathname === "/";
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      // On homepage: transparent until scrolled past top hero zone
       setIsScrolled(window.scrollY > 40);
     };
     window.addEventListener("scroll", handleScroll);
@@ -39,7 +32,6 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Determine if header should be transparent (homepage when not scrolled)
   const isTransparent = isHomepage && !isScrolled;
 
   return (
@@ -50,7 +42,7 @@ export default function Header() {
           : "sticky top-0 bg-[#FFFFFF] shadow-md border-b border-[#E4DED3]"
       }`}
     >
-      {/* 1. Top Information Strip (Dark translucent on transparent hero, solid dark otherwise) */}
+      {/* 1. Top Information Strip */}
       <div
         className={`text-xs py-2 px-4 transition-colors duration-300 ${
           isTransparent
@@ -125,7 +117,7 @@ export default function Header() {
               About Us
             </Link>
 
-            {/* Products Mega-Menu trigger */}
+            {/* Products Dropdown Trigger */}
             <div
               className="relative group h-10 flex items-center"
               onMouseEnter={() => setProductsOpen(true)}
@@ -143,120 +135,46 @@ export default function Header() {
                 />
               </Link>
 
-              {/* Mega-menu dropdown */}
+              {/* Clean 2-Column Text-Only Dropdown (Reference Style) */}
               <div
-                className={`absolute top-full -left-20 w-[680px] bg-white text-[#202A2E] rounded-xl shadow-2xl border border-[#E4DED3] p-6 grid grid-cols-2 gap-4 transition-all duration-200 origin-top z-50 ${
+                className={`absolute top-full -left-6 w-[440px] bg-white text-[#202A2E] rounded-2xl shadow-xl border border-[#E4DED3] p-5 transition-all duration-200 origin-top z-50 ${
                   productsOpen
                     ? "opacity-100 scale-100 visible"
                     : "opacity-0 scale-95 invisible pointer-events-none"
                 }`}
               >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between pb-1 border-b border-[#E4DED3]">
-                    <span className="text-xs uppercase tracking-wider font-bold text-[#687378]">Core Categories</span>
-                    <Link href="/products" className="text-[11px] font-semibold text-[#E97835] hover:underline">
-                      View All &rarr;
-                    </Link>
-                  </div>
-                  <Link
-                    href="/products"
-                    className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-[#F5F2EB] transition-colors group/item"
-                  >
-                    <div className="p-2 rounded bg-[#F5F2EB] group-hover/item:bg-[#E97835] group-hover/item:text-white transition-colors">
-                      <Package className="w-5 h-5 text-[#202A2E] group-hover/item:text-white" />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-sm text-[#202A2E] group-hover/item:text-[#E97835]">
-                        Standard Corrugated Boxes
-                      </div>
-                      <p className="text-xs text-[#687378] mt-0.5">
-                        RSC & shipping master cartons in 3-ply and 5-ply.
-                      </p>
-                    </div>
-                  </Link>
-
-                  <Link
-                    href="/products"
-                    className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-[#F5F2EB] transition-colors group/item"
-                  >
-                    <div className="p-2 rounded bg-[#F5F2EB] group-hover/item:bg-[#E97835] group-hover/item:text-white transition-colors">
-                      <Layers className="w-5 h-5 text-[#202A2E] group-hover/item:text-white" />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-sm text-[#202A2E] group-hover/item:text-[#E97835]">
-                        Heavy-Duty 7-Ply Cartons
-                      </div>
-                      <p className="text-xs text-[#687378] mt-0.5">
-                        Engineered for heavy automotive & machinery export.
-                      </p>
-                    </div>
-                  </Link>
-
-                  <Link
-                    href="/products"
-                    className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-[#F5F2EB] transition-colors group/item"
-                  >
-                    <div className="p-2 rounded bg-[#F5F2EB] group-hover/item:bg-[#E97835] group-hover/item:text-white transition-colors">
-                      <Boxes className="w-5 h-5 text-[#202A2E] group-hover/item:text-white" />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-sm text-[#202A2E] group-hover/item:text-[#E97835]">
-                        Printed & Branded Boxes
-                      </div>
-                      <p className="text-xs text-[#687378] mt-0.5">
-                        High-speed multi-color flexo graphics on kraft board.
-                      </p>
-                    </div>
-                  </Link>
+                {/* Eyebrow Label */}
+                <div className="text-[11px] font-bold uppercase tracking-wider text-[#A65D32] mb-3 px-1">
+                  Packaging Categories
                 </div>
 
-                <div className="space-y-3">
-                  <div className="text-xs uppercase tracking-wider font-bold text-[#687378] pb-1 border-b border-[#E4DED3]">
-                    Specialized Solutions
-                  </div>
+                {/* 2 Columns of Clean Category Names */}
+                <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                  {MAIN_CATEGORIES.map((cat) => (
+                    <Link
+                      key={cat.id}
+                      href={`/products?category=${cat.id}`}
+                      onClick={() => setProductsOpen(false)}
+                      className="px-3 py-2.5 rounded-lg text-sm font-semibold text-[#202A2E] hover:text-[#A65D32] hover:bg-[#FAF7F2] transition-colors duration-150 block truncate"
+                    >
+                      {cat.title}
+                    </Link>
+                  ))}
+                </div>
+
+                {/* Bottom View All Link */}
+                <div className="pt-3 mt-3 border-t border-[#E4DED3]/70 flex items-center justify-between px-1">
+                  <span className="text-xs text-[#62574D]">
+                    Browse full product catalog
+                  </span>
                   <Link
                     href="/products"
-                    className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-[#F5F2EB] transition-colors group/item"
+                    onClick={() => setProductsOpen(false)}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#A65D32] hover:text-[#493629] transition-colors group/viewall"
                   >
-                    <div className="p-2 rounded bg-[#F5F2EB] group-hover/item:bg-[#E97835] group-hover/item:text-white transition-colors">
-                      <ShieldCheck className="w-5 h-5 text-[#202A2E] group-hover/item:text-white" />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-sm text-[#202A2E] group-hover/item:text-[#E97835]">
-                        Die-Cut & Self-Locking Mailers
-                      </div>
-                      <p className="text-xs text-[#687378] mt-0.5">
-                        Precision die-cut e-commerce and retail packaging.
-                      </p>
-                    </div>
+                    <span>View All Products</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover/viewall:translate-x-0.5 transition-transform" />
                   </Link>
-
-                  <Link
-                    href="/products"
-                    className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-[#F5F2EB] transition-colors group/item"
-                  >
-                    <div className="p-2 rounded bg-[#F5F2EB] group-hover/item:bg-[#E97835] group-hover/item:text-white transition-colors">
-                      <Truck className="w-5 h-5 text-[#202A2E] group-hover/item:text-white" />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-sm text-[#202A2E] group-hover/item:text-[#E97835]">
-                        Food & Agricultural Ventilated Boxes
-                      </div>
-                      <p className="text-xs text-[#687378] mt-0.5">
-                        Moisture-resistant, ventilated produce export boxes.
-                      </p>
-                    </div>
-                  </Link>
-
-                  <div className="p-3 bg-[#F5F2EB] rounded-lg mt-2 border border-[#E4DED3]">
-                    <div className="flex items-center justify-between text-xs font-bold text-[#202A2E]">
-                      <span>Custom Dimensions Required?</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-[#E97835]" />
-                    </div>
-                    <p className="text-[11px] text-[#687378] mt-1">
-                      Our CAD packaging engineers design custom die lines within 24 hours.
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>
@@ -315,7 +233,7 @@ export default function Header() {
 
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-white text-[#202A2E] border-t border-[#E4DED3] px-4 pt-3 pb-6 space-y-3 shadow-xl">
+          <div className="lg:hidden bg-white text-[#202A2E] border-t border-[#E4DED3] px-4 pt-3 pb-6 space-y-3 shadow-xl max-h-[85vh] overflow-y-auto">
             <Link
               href="/about"
               onClick={() => setMobileMenuOpen(false)}
@@ -323,13 +241,45 @@ export default function Header() {
             >
               About Us
             </Link>
-            <Link
-              href="/products"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block py-2 text-base font-semibold text-[#202A2E] hover:text-[#E97835]"
-            >
-              Products
-            </Link>
+
+            {/* Mobile Products Accordion */}
+            <div>
+              <button
+                type="button"
+                onClick={() => setMobileProductsOpen(!mobileProductsOpen)}
+                className="w-full flex items-center justify-between py-2 text-base font-semibold text-[#202A2E] hover:text-[#E97835]"
+              >
+                <span>Products</span>
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    mobileProductsOpen ? "rotate-180 text-[#E97835]" : ""
+                  }`}
+                />
+              </button>
+
+              {mobileProductsOpen && (
+                <div className="pl-3 pr-1 py-2 space-y-1 bg-[#FAF7F2] rounded-xl my-1 border border-[#E4DED3]">
+                  <Link
+                    href="/products"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block py-1.5 text-xs font-bold text-[#A65D32]"
+                  >
+                    All Products (30)
+                  </Link>
+                  {MAIN_CATEGORIES.map((c) => (
+                    <Link
+                      key={c.id}
+                      href={`/products?category=${c.id}`}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block py-1.5 text-xs text-[#62574D] hover:text-[#202A2E]"
+                    >
+                      {c.title}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <Link
               href="#industries"
               onClick={() => setMobileMenuOpen(false)}

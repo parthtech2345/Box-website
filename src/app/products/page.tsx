@@ -3,7 +3,6 @@ import { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCatalogView from "@/components/products/ProductCatalogView";
-import FinalInquiryCTA from "@/components/home/FinalInquiryCTA";
 
 export const metadata: Metadata = {
   title: "Packaging Solutions & Products | AAVRIT PACKAGING",
@@ -17,7 +16,6 @@ export default function ProductsPage() {
       <Header />
       <main className="flex-1 w-full">
         <ProductCatalogView />
-        <FinalInquiryCTA />
       </main>
       <Footer />
     </div>
