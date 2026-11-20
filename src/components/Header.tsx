@@ -131,8 +131,8 @@ export default function Header() {
               onMouseEnter={() => setProductsOpen(true)}
               onMouseLeave={() => setProductsOpen(false)}
             >
-              <button
-                type="button"
+              <Link
+                href="/products"
                 className="h-10 inline-flex items-center gap-1 px-1 hover:text-[#E97835] transition-colors cursor-pointer"
               >
                 <span>Products</span>
@@ -141,7 +141,7 @@ export default function Header() {
                     productsOpen ? "rotate-180 text-[#E97835]" : ""
                   }`}
                 />
-              </button>
+              </Link>
 
               {/* Mega-menu dropdown */}
               <div
@@ -152,11 +152,14 @@ export default function Header() {
                 }`}
               >
                 <div className="space-y-3">
-                  <div className="text-xs uppercase tracking-wider font-bold text-[#687378] pb-1 border-b border-[#E4DED3]">
-                    Core Categories
+                  <div className="flex items-center justify-between pb-1 border-b border-[#E4DED3]">
+                    <span className="text-xs uppercase tracking-wider font-bold text-[#687378]">Core Categories</span>
+                    <Link href="/products" className="text-[11px] font-semibold text-[#E97835] hover:underline">
+                      View All &rarr;
+                    </Link>
                   </div>
                   <Link
-                    href="#products"
+                    href="/products"
                     className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-[#F5F2EB] transition-colors group/item"
                   >
                     <div className="p-2 rounded bg-[#F5F2EB] group-hover/item:bg-[#E97835] group-hover/item:text-white transition-colors">
@@ -173,7 +176,7 @@ export default function Header() {
                   </Link>
 
                   <Link
-                    href="#products"
+                    href="/products"
                     className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-[#F5F2EB] transition-colors group/item"
                   >
                     <div className="p-2 rounded bg-[#F5F2EB] group-hover/item:bg-[#E97835] group-hover/item:text-white transition-colors">
@@ -190,7 +193,7 @@ export default function Header() {
                   </Link>
 
                   <Link
-                    href="#products"
+                    href="/products"
                     className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-[#F5F2EB] transition-colors group/item"
                   >
                     <div className="p-2 rounded bg-[#F5F2EB] group-hover/item:bg-[#E97835] group-hover/item:text-white transition-colors">
@@ -212,7 +215,7 @@ export default function Header() {
                     Specialized Solutions
                   </div>
                   <Link
-                    href="#products"
+                    href="/products"
                     className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-[#F5F2EB] transition-colors group/item"
                   >
                     <div className="p-2 rounded bg-[#F5F2EB] group-hover/item:bg-[#E97835] group-hover/item:text-white transition-colors">
@@ -229,7 +232,7 @@ export default function Header() {
                   </Link>
 
                   <Link
-                    href="#products"
+                    href="/products"
                     className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-[#F5F2EB] transition-colors group/item"
                   >
                     <div className="p-2 rounded bg-[#F5F2EB] group-hover/item:bg-[#E97835] group-hover/item:text-white transition-colors">
@@ -321,7 +324,7 @@ export default function Header() {
               About Us
             </Link>
             <Link
-              href="#products"
+              href="/products"
               onClick={() => setMobileMenuOpen(false)}
               className="block py-2 text-base font-semibold text-[#202A2E] hover:text-[#E97835]"
             >
