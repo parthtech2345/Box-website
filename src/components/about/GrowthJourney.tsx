@@ -37,19 +37,6 @@ export default function GrowthJourney() {
   const cardStepVW = 60;
   const currentTranslateVW = scrollProgress * (totalCards - 1) * cardStepVW;
 
-  // Jump to specific milestone on click
-  const jumpToMilestone = (idx: number) => {
-    const container = containerRef.current;
-    if (!container) return;
-    const totalScrollable = container.offsetHeight - window.innerHeight;
-    const targetProgress = idx / (totalCards - 1);
-    const targetY = container.offsetTop + targetProgress * totalScrollable;
-    window.scrollTo({
-      top: targetY,
-      behavior: "smooth",
-    });
-  };
-
   return (
     <section
       id="growth-journey"
@@ -94,9 +81,13 @@ export default function GrowthJourney() {
         </div>
 
         {/* =========================================================================
-            2. SCROLLER TRACK: Alternating ABOVE and BELOW the line!
-            Cards sit clearly ABOVE or BELOW the line with proper clearance,
-            so the line never cuts through any description or image.
+            2. SCROLLER TRACK:
+            The horizontal timeline line runs through the exact center.
+            Each milestone has its active node dot directly ON the line.
+            - Card 1 (2008): positioned ABOVE the line with clean clearance
+            - Card 2 (2013): positioned BELOW the line with clean clearance
+            - Card 3 (2018): positioned ABOVE the line with clean clearance
+            - Card 4 (2024 – Present): positioned BELOW the line with clean clearance
         ========================================================================= */}
         <div className="relative flex-1 w-full flex items-center overflow-visible my-auto">
           
@@ -111,7 +102,7 @@ export default function GrowthJourney() {
           {/* Cards Track: translates horizontally as user scrolls */}
           <div
             ref={trackRef}
-            className="relative flex items-center will-change-transform transition-transform duration-75 ease-out h-[68vh] max-h-[660px]"
+            className="relative flex items-center will-change-transform transition-transform duration-75 ease-out h-[70vh] max-h-[680px]"
             style={{
               transform: `translateX(calc(22vw - ${currentTranslateVW}vw))`,
               gap: "8vw",
@@ -128,23 +119,44 @@ export default function GrowthJourney() {
               return (
                 <article
                   key={m.id}
-                  className={`relative shrink-0 flex items-center justify-center transition-opacity duration-300 ${
+                  className={`relative shrink-0 transition-opacity duration-300 ${
                     isFocused ? "opacity-100" : "opacity-30"
                   }`}
                   style={{
                     width: "clamp(500px, 50vw, 760px)",
+                    height: "100%",
                   }}
                 >
-                  {/* Card Container placed cleanly ABOVE or BELOW the line */}
+                  {/* Active Node Dot directly on the central line */}
+                  <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none flex items-center justify-center">
+                    <span
+                      className={`rounded-full border-2 transition-all duration-300 ${
+                        isFocused
+                          ? "w-4 h-4 bg-[#A65D32] border-[#FFFFFF] shadow-md scale-125"
+                          : "w-3 h-3 bg-[#FFFFFF] border-[#A65D32]"
+                      }`}
+                    />
+                  </div>
+
+                  {/* Connecting Stem from the Dot to the Card */}
                   <div
-                    className={`relative z-20 grid grid-cols-12 gap-5 sm:gap-7 items-center w-full transition-all duration-300 ${
+                    className={`absolute left-1/2 -translate-x-1/2 w-[1.5px] bg-[#E4DED3] z-10 pointer-events-none ${
                       isAbove
-                        ? "mb-auto pb-6 translate-y-[-24px]"
-                        : "mt-auto pt-6 translate-y-[24px]"
+                        ? "bottom-1/2 h-7 bg-gradient-to-t from-[#A65D32] to-[#E4DED3]"
+                        : "top-1/2 h-7 bg-gradient-to-b from-[#A65D32] to-[#E4DED3]"
+                    }`}
+                  />
+
+                  {/* Card Container placed clearly ABOVE or BELOW the line */}
+                  <div
+                    className={`absolute left-0 right-0 z-30 grid grid-cols-12 gap-5 sm:gap-7 items-center w-full transition-transform duration-300 ${
+                      isAbove
+                        ? "bottom-[calc(50%+28px)]"
+                        : "top-[calc(50%+28px)]"
                     } ${isFocused ? "scale-100" : "scale-95"}`}
                   >
                     {/* Media: 100% clean photo with NO text, NO watermarks */}
-                    <div className="col-span-5 relative h-[140px] sm:h-[160px] lg:h-[180px] rounded-lg overflow-hidden border border-[#E8D5B8] bg-white shadow-sm shrink-0">
+                    <div className="col-span-5 relative h-[140px] sm:h-[160px] lg:h-[175px] rounded-lg overflow-hidden border border-[#E8D5B8] bg-white shadow-sm shrink-0">
                       <Image
                         src={m.image}
                         alt={`${m.year} - ${m.headline}`}
@@ -168,33 +180,6 @@ export default function GrowthJourney() {
                     </div>
                   </div>
                 </article>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* =========================================================================
-            3. BOTTOM TIMELINE: Clickable Milestone Years
-        ========================================================================= */}
-        <div className="max-w-7xl mx-auto w-full z-30 shrink-0 pt-3 border-t border-[#E4DED3]">
-          <div className="w-full flex justify-between items-center text-xs">
-            {JOURNEY_MILESTONES.map((m, idx) => {
-              const cardProgress = idx / (totalCards - 1);
-              const isActive = Math.abs(scrollProgress - cardProgress) < 0.16;
-
-              return (
-                <button
-                  key={m.id}
-                  onClick={() => jumpToMilestone(idx)}
-                  className={`cursor-pointer transition-all duration-200 flex flex-col items-center ${
-                    isActive
-                      ? "text-[#A65D32] font-bold scale-105"
-                      : "text-[#7D7166] font-medium hover:text-[#202A2E]"
-                  }`}
-                >
-                  <span className="text-xs sm:text-sm tracking-wider font-semibold">{m.year}</span>
-                  <span className="hidden sm:inline text-[10px] text-[#A29486]">{m.phaseTitle}</span>
-                </button>
               );
             })}
           </div>
