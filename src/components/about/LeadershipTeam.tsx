@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import Image from "next/image";
 import {
-  User,
   Quote,
   ShieldCheck,
   Building2,
@@ -15,11 +14,86 @@ import {
   OWNER_PROFILE,
   MANAGEMENT_TEAM,
 } from "./teamData";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function LeadershipTeam() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const founderCardRef = useRef<HTMLDivElement | null>(null);
+  const teamHeaderRef = useRef<HTMLDivElement | null>(null);
+  const teamGridRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !sectionRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      // 1. Founder Spotlight Entrance (Fade & Slide Up)
+      if (founderCardRef.current) {
+        gsap.fromTo(
+          founderCardRef.current,
+          { opacity: 0, y: 35 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: founderCardRef.current,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+
+      // 2. Team Header Reveal
+      if (teamHeaderRef.current) {
+        gsap.fromTo(
+          teamHeaderRef.current,
+          { opacity: 0, y: 25 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: teamHeaderRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+
+      // 3. Team Cards Stagger
+      if (teamGridRef.current) {
+        gsap.fromTo(
+          teamGridRef.current.children,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.12,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: teamGridRef.current,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
       id="leadership-team"
+      ref={sectionRef}
       className="relative py-14 md:py-14 bg-[#FAF7F2] text-[#202A2E] overflow-hidden"
       aria-label="Owner and Management Team"
     >
@@ -37,7 +111,10 @@ export default function LeadershipTeam() {
             PART ONE: OWNER / FOUNDER SPOTLIGHT
         ========================================================================= */}
         <div className="mb-24 lg:mb-32">
-          <div className="relative rounded-3xl bg-white border border-[#E8D5B8] p-8 sm:p-12 lg:p-16 shadow-xl overflow-hidden">
+          <div
+            ref={founderCardRef}
+            className="relative rounded-3xl bg-white border border-[#E8D5B8] p-8 sm:p-12 lg:p-16 shadow-xl overflow-hidden"
+          >
             {/* Ambient Kraft Warm Glows */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-[#E8D5B8]/25 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute -bottom-10 -left-10 w-80 h-80 bg-[#A65D32]/10 rounded-full blur-3xl pointer-events-none" />
@@ -146,7 +223,7 @@ export default function LeadershipTeam() {
         ========================================================================= */}
         <div>
           {/* Section Introduction */}
-          <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-16">
+          <div ref={teamHeaderRef} className="text-center max-w-3xl mx-auto mb-14 sm:mb-16">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#E8D5B8]/40 border border-[#A65D32]/30 text-[#A65D32] text-xs font-bold uppercase tracking-widest mb-4">
               <Users className="w-3.5 h-3.5" />
               <span>THE PEOPLE BEHIND OUR WORK</span>
@@ -161,7 +238,7 @@ export default function LeadershipTeam() {
           </div>
 
           {/* Four-Column Management Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          <div ref={teamGridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {MANAGEMENT_TEAM.map((member) => (
               <div
                 key={member.id}
@@ -201,9 +278,6 @@ export default function LeadershipTeam() {
               </div>
             ))}
           </div>
-
-          {/* Development / Editable Notice */}
-
         </div>
       </div>
     </section>

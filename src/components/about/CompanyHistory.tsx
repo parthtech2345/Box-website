@@ -1,19 +1,20 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import Image from "next/image";
 import { Award, Users, Package, MapPin, Check } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export interface StatisticItem {
   id: string;
-  value: number | string;
+  value: number;
   suffix: string;
   label: string;
   subtext?: string;
   icon: React.ElementType;
 }
 
-// Exactly matching verified single data source for the 4 statistics counters
 const STATISTICS_DATA: StatisticItem[] = [
   {
     id: "stat-1",
@@ -50,75 +51,134 @@ const STATISTICS_DATA: StatisticItem[] = [
 ];
 
 export default function CompanyHistory() {
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const [counts, setCounts] = useState<{ [key: string]: number }>({});
-  const statsSectionRef = useRef<HTMLDivElement | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const imageRef = useRef<HTMLDivElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const qualitiesRef = useRef<HTMLDivElement | null>(null);
+  const statsRef = useRef<HTMLDivElement | null>(null);
+  const counterRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
-  // Reusing the exact animated counter implementation from homepage
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting && !hasAnimated) {
-          setHasAnimated(true);
+    if (typeof window === "undefined" || !sectionRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
 
-          STATISTICS_DATA.forEach((stat) => {
-            if (typeof stat.value === "number") {
-              const target = stat.value;
-              const duration = 1800; // 1.8s
-              const frameRate = 30;
-              const totalFrames = Math.round((duration / 1000) * frameRate);
-              let frame = 0;
+    const ctx = gsap.context(() => {
+      // 1. Facility Image Reveal
+      if (imageRef.current) {
+        gsap.fromTo(
+          imageRef.current,
+          { opacity: 0, x: -40, scale: 0.96 },
+          {
+            opacity: 1,
+            x: 0,
+            scale: 1,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: imageRef.current,
+              start: "top 82%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
 
-              const counterInterval = setInterval(() => {
-                frame++;
-                const progress = frame / totalFrames;
-                // Ease-out quad matching homepage
-                const currentCount = Math.round(target * (1 - Math.pow(1 - progress, 2)));
+      // 2. Company Story Content Entrance
+      if (contentRef.current) {
+        gsap.fromTo(
+          contentRef.current,
+          { opacity: 0, x: 40 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: contentRef.current,
+              start: "top 82%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
 
-                setCounts((prev) => ({
-                  ...prev,
-                  [stat.id]: currentCount,
-                }));
+      // 3. Qualities Stagger
+      if (qualitiesRef.current) {
+        gsap.fromTo(
+          qualitiesRef.current.children,
+          { opacity: 0, y: 15 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            stagger: 0.08,
+            ease: "power1.out",
+            scrollTrigger: {
+              trigger: qualitiesRef.current,
+              start: "top 88%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
 
-                if (frame >= totalFrames) {
-                  clearInterval(counterInterval);
-                  setCounts((prev) => ({
-                    ...prev,
-                    [stat.id]: target,
-                  }));
-                }
-              }, 1000 / frameRate);
-            }
+      // 4. 4 Stat Cards & Counting Animation
+      if (statsRef.current) {
+        gsap.fromTo(
+          statsRef.current.children,
+          { opacity: 0, y: 35 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.12,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: statsRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+
+        STATISTICS_DATA.forEach((stat, idx) => {
+          const el = counterRefs.current[idx];
+          if (!el) return;
+
+          const obj = { val: 0 };
+          gsap.to(obj, {
+            val: stat.value,
+            duration: 2,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: statsRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+            onUpdate: () => {
+              el.innerText = `${Math.floor(obj.val)}${stat.suffix}`;
+            },
           });
-        }
-      },
-      { threshold: 0.25 }
-    );
+        });
+      }
+    }, sectionRef);
 
-    const el = statsSectionRef.current;
-    if (el) observer.observe(el);
-
-    return () => {
-      if (el) observer.unobserve(el);
-    };
-  }, [hasAnimated]);
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section
       id="company-history"
-      aria-label="Company History and Our Journey"
+      ref={sectionRef}
       className="w-full bg-[#FFFFFF] py-14 sm:py-14 lg:py-14 border-b border-[#E4DED3] overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
         {/* ========================================================= */}
-        {/* TOP TWO-COLUMN SECTION: 50% IMAGE LEFT, 50% TEXT RIGHT   */}
+        {/* TOP TWO-COLUMN INTRODUCTION: 50% IMAGE LEFT, 50% TEXT RIGHT */}
         {/* ========================================================= */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-16 lg:mb-20">
-
-          {/* Left Column: Manufacturing Facility Image (Matching Homepage Treatment) */}
-          <div className="lg:col-span-6 relative w-full flex items-center justify-center">
+          {/* Left Column: Manufacturing Facility Image */}
+          <div ref={imageRef} className="lg:col-span-6 relative w-full flex items-center justify-center">
             <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden border border-[#D1B48C]/60 shadow-xl group bg-[#202A2E]/5">
               <Image
                 src="/home/company img.png"
@@ -131,32 +191,31 @@ export default function CompanyHistory() {
             </div>
           </div>
 
-          {/* Right Column: Company History & Journey Content */}
-          <div className="lg:col-span-6 flex flex-col justify-center">
-
-            {/* Eyebrow Label: OUR JOURNEY */}
+          {/* Right Column: Company Introduction Content */}
+          <div ref={contentRef} className="lg:col-span-6 flex flex-col justify-center">
+            {/* Small uppercase category label */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#493629]/10 text-[#493629] text-xs font-bold uppercase tracking-widest mb-3 self-start">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
-              <span>OUR JOURNEY</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#E97835]" />
+              <span>ABOUT AAVRIT PACKAGING</span>
             </div>
 
-            {/* Main Heading: The Story Behind Our Company */}
+            {/* Main Heading */}
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-[42px] text-[#202A2E] leading-[1.12] tracking-tight mb-4">
-              The Story Behind Our Company
+              Protection Begins With Better Packaging.
             </h2>
 
-            {/* Description Paragraph 1 */}
+            {/* First Paragraph */}
             <p className="text-base text-[#62574D] font-normal leading-relaxed mb-3">
-              At AAVRIT PACKAGING, our journey began with a clear conviction: packaging is not just a container, but an essential shield that protects goods, safeguards reputations, and enables businesses to ship with complete confidence.
+              At AAVRIT Packaging, we believe packaging is more than just a box. It is an essential part of protecting products, maintaining quality and helping businesses deliver with confidence.
             </p>
 
-            {/* Description Paragraph 2 */}
+            {/* Second Paragraph */}
             <p className="text-sm sm:text-[15px] text-[#687378] font-normal leading-relaxed mb-6">
-              Over the years, we have grown from focused beginnings into a dependable corrugated box manufacturer in Gujarat, India. By pairing robust 3-ply, 5-ply and 7-ply board engineering with modern automated machinery and stringent quality testing, we create corrugated solutions built around our customers&apos; real transit demands.
+              From customized corrugated boxes to dependable bulk packaging solutions, our focus is on understanding business requirements and creating packaging that combines strength, practicality and value.
             </p>
 
-            {/* 6 Core Brand Principles Grid with Interactive Hover Animation */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5 w-full">
+            {/* 6 Brand Qualities Grid with Staggered Entrance */}
+            <div ref={qualitiesRef} className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5 w-full">
               {[
                 "Built Around Your Requirements",
                 "Certified In-House Lab Testing",
@@ -169,53 +228,54 @@ export default function CompanyHistory() {
                   key={idx}
                   className="group/item flex items-center gap-3 cursor-pointer py-1.5 transition-all duration-200 select-none"
                 >
-                  <div className="w-5 h-5 rounded-md bg-[#A65D32]/15 border-[1.5px] border-[#A65D32]/40 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover/item:bg-[#A65D32] group-hover/item:border-[#A65D32] group-hover/item:scale-110 group-hover/item:shadow-md group-hover/item:shadow-[#A65D32]/30">
-                    <Check className="w-3.5 h-3.5 text-[#A65D32] stroke-[2.5] transition-all duration-300 ease-out group-hover/item:text-white group-hover/item:stroke-[3.5] group-hover/item:scale-110" />
+                  <div className="w-5 h-5 rounded-md bg-[#E97835]/15 border-[1.5px] border-[#E97835]/40 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover/item:bg-[#E97835] group-hover/item:border-[#E97835] group-hover/item:scale-110 group-hover/item:shadow-md group-hover/item:shadow-[#E97835]/30">
+                    <Check className="w-3.5 h-3.5 text-[#E97835] stroke-[2.5] transition-all duration-300 ease-out group-hover/item:text-white group-hover/item:stroke-[3.5] group-hover/item:scale-110" />
                   </div>
-                  <span className="text-[13px] sm:text-[14px] font-semibold text-[#202A2E] transition-all duration-200 group-hover/item:text-[#A65D32] group-hover/item:translate-x-0.5 leading-snug">
+                  <span className="text-[13px] sm:text-[14px] font-semibold text-[#202A2E] transition-all duration-200 group-hover/item:text-[#E97835] group-hover/item:translate-x-0.5 leading-snug">
                     {quality}
                   </span>
                 </div>
               ))}
             </div>
-
           </div>
-
         </div>
 
         {/* ========================================================= */}
-        {/* SUBTLE DIVIDER                                            */}
+        {/* SUBTLE DIVIDER / TRANSITION                               */}
         {/* ========================================================= */}
         <div className="w-full border-t border-[#E4DED3] mb-12" />
 
         {/* ========================================================= */}
-        {/* BOTTOM: 4 STATISTICS COUNTERS IN INDUSTRIAL SQUARE BOXES   */}
+        {/* BOTTOM: FOUR STATISTICS WITH LIVE COUNTERS                */}
         {/* ========================================================= */}
         <div
-          ref={statsSectionRef}
+          ref={statsRef}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
-          {STATISTICS_DATA.map((stat) => {
-            const displayValue =
-              typeof stat.value === "number"
-                ? (counts[stat.id] ?? 0) + stat.suffix
-                : `${stat.value}${stat.suffix}`;
+          {STATISTICS_DATA.map((stat, idx) => {
+            const Icon = stat.icon;
 
             return (
               <div
                 key={stat.id}
                 className="bg-[#F5F2EB]/60 hover:bg-[#F5F2EB] rounded-2xl border border-[#E4DED3] hover:border-[#D1B48C] p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-md group relative overflow-hidden"
               >
-                {/* Top accent line */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-[#E4DED3] group-hover:bg-[#A65D32] transition-colors" />
+                {/* Subtle top accent bar */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-[#E4DED3] group-hover:bg-[#E97835] transition-colors" />
 
                 <div>
-                  {/* Large Numerical Counter in Barlow Semi Condensed */}
-                  <div className="font-heading font-bold text-4xl sm:text-5xl text-[#A65D32] tracking-tight leading-none mb-3">
-                    {displayValue}
+                  {/* Large Numerical Counter with Live GSAP Ref */}
+                  <div className="font-heading font-bold text-4xl sm:text-5xl text-[#E97835] tracking-tight leading-none mb-3">
+                    <span
+                      ref={(el) => {
+                        counterRefs.current[idx] = el;
+                      }}
+                    >
+                      0{stat.suffix}
+                    </span>
                   </div>
 
-                  {/* Primary Label in Charcoal */}
+                  {/* Primary Label */}
                   <div className="font-heading font-semibold text-lg sm:text-xl text-[#202A2E] leading-snug">
                     {stat.label}
                   </div>
@@ -231,7 +291,6 @@ export default function CompanyHistory() {
             );
           })}
         </div>
-
       </div>
     </section>
   );

@@ -1,12 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { VISION_MISSION_DATA } from "./visionMissionData";
 import { Compass, Sparkles, Check } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function VisionMission() {
   const { eyebrow, mainHeading, supportingText, vision, mission } =
     VISION_MISSION_DATA;
+
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const headerRef = useRef<HTMLDivElement | null>(null);
+  const visionCardRef = useRef<HTMLDivElement | null>(null);
+  const missionCardRef = useRef<HTMLDivElement | null>(null);
 
   // Track hover/checked status for checkpoints
   const [activeVisionChecks, setActiveVisionChecks] = useState<number[]>([]);
@@ -24,9 +31,76 @@ export default function VisionMission() {
     }
   };
 
+  useEffect(() => {
+    if (typeof window === "undefined" || !sectionRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      // 1. Header Reveal
+      if (headerRef.current) {
+        gsap.fromTo(
+          headerRef.current,
+          { opacity: 0, y: 25 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: headerRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+
+      // 2. Vision Card Entrance (from Left)
+      if (visionCardRef.current) {
+        gsap.fromTo(
+          visionCardRef.current,
+          { opacity: 0, x: -35 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: visionCardRef.current,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+
+      // 3. Mission Card Entrance (from Right)
+      if (missionCardRef.current) {
+        gsap.fromTo(
+          missionCardRef.current,
+          { opacity: 0, x: 35 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: missionCardRef.current,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
       id="vision-mission"
+      ref={sectionRef}
       aria-label="Our Vision and Mission"
       className="w-full bg-[#FAF7F2] py-12 sm:py-14 lg:py-14 border-b border-[#E4DED3] relative overflow-hidden"
     >
@@ -40,7 +114,10 @@ export default function VisionMission() {
         {/* =========================================================================
             1. SECTION HEADER (Clean 2-Column Split Theme)
         ========================================================================= */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 sm:pb-8 mb-8 sm:mb-10 border-b border-[#E4DED3]">
+        <div
+          ref={headerRef}
+          className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 sm:pb-8 mb-8 sm:mb-10 border-b border-[#E4DED3]"
+        >
           {/* Left Column: Eyebrow + Main Big Headline */}
           <div className="max-w-xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-3">
@@ -69,7 +146,10 @@ export default function VisionMission() {
         ========================================================================= */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch max-w-5xl mx-auto">
           {/* CARD 01: OUR VISION */}
-          <div className="group relative rounded-xl p-5 sm:p-6 bg-white border border-[#E4DED3] hover:border-[#A65D32]/50 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+          <div
+            ref={visionCardRef}
+            className="group relative rounded-xl p-5 sm:p-6 bg-white border border-[#E4DED3] hover:border-[#A65D32]/50 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
+          >
             <div>
               {/* Card Header: Centered Pill */}
               <div className="flex items-center justify-center mb-4">
@@ -109,21 +189,24 @@ export default function VisionMission() {
                       onMouseEnter={() => handleVisionHover(idx)}
                       tabIndex={0}
                       onFocus={() => handleVisionHover(idx)}
-                      className={`flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all duration-200 cursor-pointer border ${isChecked
+                      className={`flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all duration-200 cursor-pointer border ${
+                        isChecked
                           ? "bg-[#FAF7F2] border-[#A65D32]/40 text-[#202A2E] shadow-2xs"
                           : "bg-[#FAF7F2]/40 border-transparent text-[#62574D] hover:bg-[#FAF7F2] hover:border-[#E8D5B8] hover:text-[#202A2E]"
-                        }`}
+                      }`}
                     >
                       {/* Check Icon with dynamic tick animation */}
                       <div
-                        className={`w-4.5 h-4.5 rounded-md flex items-center justify-center shrink-0 transition-all duration-200 ${isChecked
+                        className={`w-4.5 h-4.5 rounded-md flex items-center justify-center shrink-0 transition-all duration-200 ${
+                          isChecked
                             ? "bg-[#A65D32] text-white scale-100 shadow-xs"
                             : "bg-white border border-[#D1B48C] text-transparent scale-90"
-                          }`}
+                        }`}
                       >
                         <Check
-                          className={`w-3 h-3 stroke-[3] transition-all duration-200 ${isChecked ? "scale-100 opacity-100" : "scale-75 opacity-0"
-                            }`}
+                          className={`w-3 h-3 stroke-[3] transition-all duration-200 ${
+                            isChecked ? "scale-100 opacity-100" : "scale-75 opacity-0"
+                          }`}
                         />
                       </div>
                       <span className="text-xs font-medium leading-snug">
@@ -137,7 +220,10 @@ export default function VisionMission() {
           </div>
 
           {/* CARD 02: OUR MISSION */}
-          <div className="group relative rounded-xl p-5 sm:p-6 bg-white border border-[#E4DED3] hover:border-[#A65D32]/50 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+          <div
+            ref={missionCardRef}
+            className="group relative rounded-xl p-5 sm:p-6 bg-white border border-[#E4DED3] hover:border-[#A65D32]/50 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
+          >
             <div>
               {/* Card Header: Centered Pill */}
               <div className="flex items-center justify-center mb-4">
@@ -177,21 +263,24 @@ export default function VisionMission() {
                       onMouseEnter={() => handleMissionHover(idx)}
                       tabIndex={0}
                       onFocus={() => handleMissionHover(idx)}
-                      className={`flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all duration-200 cursor-pointer border ${isChecked
+                      className={`flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all duration-200 cursor-pointer border ${
+                        isChecked
                           ? "bg-[#FAF7F2] border-[#A65D32]/40 text-[#202A2E] shadow-2xs"
                           : "bg-[#FAF7F2]/40 border-transparent text-[#62574D] hover:bg-[#FAF7F2] hover:border-[#E8D5B8] hover:text-[#202A2E]"
-                        }`}
+                      }`}
                     >
                       {/* Check Icon with dynamic tick animation */}
                       <div
-                        className={`w-4.5 h-4.5 rounded-md flex items-center justify-center shrink-0 transition-all duration-200 ${isChecked
+                        className={`w-4.5 h-4.5 rounded-md flex items-center justify-center shrink-0 transition-all duration-200 ${
+                          isChecked
                             ? "bg-[#A65D32] text-white scale-100 shadow-xs"
                             : "bg-white border border-[#D1B48C] text-transparent scale-90"
-                          }`}
+                        }`}
                       >
                         <Check
-                          className={`w-3 h-3 stroke-[3] transition-all duration-200 ${isChecked ? "scale-100 opacity-100" : "scale-75 opacity-0"
-                            }`}
+                          className={`w-3 h-3 stroke-[3] transition-all duration-200 ${
+                            isChecked ? "scale-100 opacity-100" : "scale-75 opacity-0"
+                          }`}
                         />
                       </div>
                       <span className="text-xs font-medium leading-snug">

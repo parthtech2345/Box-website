@@ -1,33 +1,85 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { CORE_VALUES_DATA, CoreValueItem } from "./coreValuesData";
+import React, { useState, useRef, useEffect } from "react";
+import { CORE_VALUES_DATA } from "./coreValuesData";
 import { Layers } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function CoreValues() {
-  const [isVisible, setIsVisible] = useState(false);
   const [activeValue, setActiveValue] = useState<string>("value-1");
   const sectionRef = useRef<HTMLElement | null>(null);
+  const headerRef = useRef<HTMLDivElement | null>(null);
+  const cardsRef = useRef<HTMLDivElement | null>(null);
+  const diagramRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.15 }
-    );
+    if (typeof window === "undefined" || !sectionRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
 
-    const el = sectionRef.current;
-    if (el) observer.observe(el);
+    const ctx = gsap.context(() => {
+      // 1. Header Reveal
+      if (headerRef.current) {
+        gsap.fromTo(
+          headerRef.current,
+          { opacity: 0, y: 25 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: headerRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
 
-    return () => {
-      if (el) observer.unobserve(el);
-    };
+      // 2. Left Cards Staggered Reveal
+      if (cardsRef.current) {
+        gsap.fromTo(
+          cardsRef.current.children,
+          { opacity: 0, x: -30 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.6,
+            stagger: 0.09,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: cardsRef.current,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+
+      // 3. Right Cross Section Slide-in
+      if (diagramRef.current) {
+        gsap.fromTo(
+          diagramRef.current,
+          { opacity: 0, x: 35, scale: 0.98 },
+          {
+            opacity: 1,
+            x: 0,
+            scale: 1,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: diagramRef.current,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
-
-  const activeIndex = CORE_VALUES_DATA.findIndex((v) => v.id === activeValue);
 
   return (
     <section
@@ -46,7 +98,10 @@ export default function CoreValues() {
         {/* =========================================================================
             1. SECTION HEADER (Matching Exact Homepage 2-Column Split Theme)
         ========================================================================= */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 sm:pb-10 mb-10 sm:mb-12 border-b border-[#E4DED3]">
+        <div
+          ref={headerRef}
+          className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 sm:pb-10 mb-10 sm:mb-12 border-b border-[#E4DED3]"
+        >
           {/* Left Column: Eyebrow + Main Big Headline */}
           <div className="max-w-xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-3.5">
@@ -82,7 +137,7 @@ export default function CoreValues() {
           {/* =======================================================================
               LEFT SIDE (6 cols): Exactly 5 Value Description Cards
           ======================================================================= */}
-          <div className="lg:col-span-6 flex flex-col justify-between space-y-3">
+          <div ref={cardsRef} className="lg:col-span-6 flex flex-col justify-between space-y-3">
             {CORE_VALUES_DATA.map((val) => {
               const isActive = activeValue === val.id;
 
@@ -91,18 +146,20 @@ export default function CoreValues() {
                   key={val.id}
                   onMouseEnter={() => setActiveValue(val.id)}
                   onClick={() => setActiveValue(val.id)}
-                  className={`flex-1 p-4 rounded-xl border transition-all duration-300 cursor-pointer flex flex-col justify-center ${isActive
-                    ? "bg-[#FAF7F2] border-[#A65D32] shadow-sm -translate-y-0.5 ring-1 ring-[#A65D32]/25"
-                    : "bg-white border-[#E4DED3] hover:border-[#D1B48C] hover:bg-[#FAF7F2]/60"
-                    }`}
+                  className={`flex-1 p-4 rounded-xl border transition-all duration-300 cursor-pointer flex flex-col justify-center ${
+                    isActive
+                      ? "bg-[#FAF7F2] border-[#A65D32] shadow-sm -translate-y-0.5 ring-1 ring-[#A65D32]/25"
+                      : "bg-white border-[#E4DED3] hover:border-[#D1B48C] hover:bg-[#FAF7F2]/60"
+                  }`}
                 >
                   <div className="flex items-start gap-3.5">
                     {/* Number Tag */}
                     <span
-                      className={`text-xs font-bold px-2 py-0.5 rounded transition-colors shrink-0 mt-0.5 ${isActive
-                        ? "bg-[#A65D32] text-white"
-                        : "bg-[#493629]/10 text-[#493629]"
-                        }`}
+                      className={`text-xs font-bold px-2 py-0.5 rounded transition-colors shrink-0 mt-0.5 ${
+                        isActive
+                          ? "bg-[#A65D32] text-white"
+                          : "bg-[#493629]/10 text-[#493629]"
+                      }`}
                     >
                       {val.number}
                     </span>
@@ -111,8 +168,9 @@ export default function CoreValues() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2 mb-1">
                         <h3
-                          className={`font-heading font-bold text-base transition-colors ${isActive ? "text-[#A65D32]" : "text-[#202A2E]"
-                            }`}
+                          className={`font-heading font-bold text-base transition-colors ${
+                            isActive ? "text-[#A65D32]" : "text-[#202A2E]"
+                          }`}
                         >
                           {val.title}
                         </h3>
@@ -134,12 +192,9 @@ export default function CoreValues() {
           {/* =======================================================================
               RIGHT SIDE (6 cols): Interactive 5-Ply Corrugated Cross-Section Diagram
           ======================================================================= */}
-          <div className="lg:col-span-6 flex flex-col justify-between space-y-4">
+          <div ref={diagramRef} className="lg:col-span-6 flex flex-col justify-between space-y-4">
             {/* Interactive Corrugated Cross-Section Card */}
-            <div
-              className={`w-full flex-1 bg-[#FAF7F2] p-5 sm:p-6 rounded-2xl border-2 border-[#D1B48C] shadow-lg flex flex-col justify-between transition-all duration-700 ease-out ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
-                }`}
-            >
+            <div className="w-full flex-1 bg-[#FAF7F2] p-5 sm:p-6 rounded-2xl border-2 border-[#D1B48C] shadow-lg flex flex-col justify-between transition-all duration-700 ease-out">
               <div className="flex items-center justify-between pb-3 border-b border-[#E4DED3]">
                 <span className="text-xs font-bold uppercase tracking-wider text-[#493629]">
                   Interactive Corrugated Cross-Section
@@ -159,23 +214,26 @@ export default function CoreValues() {
                       key={val.id}
                       onMouseEnter={() => setActiveValue(val.id)}
                       onClick={() => setActiveValue(val.id)}
-                      className={`relative w-full rounded-xl transition-all duration-300 cursor-pointer select-none overflow-hidden ${isActive
-                        ? "ring-2 ring-[#A65D32] shadow-md scale-[1.01]"
-                        : "hover:ring-1 hover:ring-[#A65D32]/50 opacity-85 hover:opacity-100"
-                        }`}
+                      className={`relative w-full rounded-xl transition-all duration-300 cursor-pointer select-none overflow-hidden ${
+                        isActive
+                          ? "ring-2 ring-[#A65D32] shadow-md scale-[1.01]"
+                          : "hover:ring-1 hover:ring-[#A65D32]/50 opacity-85 hover:opacity-100"
+                      }`}
                     >
                       <div
-                        className={`h-11 sm:h-12 px-4 flex items-center justify-between transition-colors duration-300 ${isActive
-                          ? "bg-gradient-to-r from-[#A65D32] to-[#8E4F2B] text-white"
-                          : "bg-[#E8D5B8] text-[#493629] border border-[#D1B48C]"
-                          }`}
+                        className={`h-11 sm:h-12 px-4 flex items-center justify-between transition-colors duration-300 ${
+                          isActive
+                            ? "bg-gradient-to-r from-[#A65D32] to-[#8E4F2B] text-white"
+                            : "bg-[#E8D5B8] text-[#493629] border border-[#D1B48C]"
+                        }`}
                       >
                         <div className="flex items-center gap-3">
                           <span
-                            className={`w-5 h-5 rounded text-[10px] font-bold flex items-center justify-center shrink-0 ${isActive
-                              ? "bg-white text-[#A65D32]"
-                              : "bg-[#493629] text-white"
-                              }`}
+                            className={`w-5 h-5 rounded text-[10px] font-bold flex items-center justify-center shrink-0 ${
+                              isActive
+                                ? "bg-white text-[#A65D32]"
+                                : "bg-[#493629] text-white"
+                            }`}
                           >
                             {val.number}
                           </span>
@@ -184,8 +242,9 @@ export default function CoreValues() {
                           </span>
                         </div>
                         <span
-                          className={`text-[10px] font-semibold uppercase tracking-wider hidden sm:inline ${isActive ? "text-white/90" : "text-[#62574D]"
-                            }`}
+                          className={`text-[10px] font-semibold uppercase tracking-wider hidden sm:inline ${
+                            isActive ? "text-white/90" : "text-[#62574D]"
+                          }`}
                         >
                           {val.title}
                         </span>
