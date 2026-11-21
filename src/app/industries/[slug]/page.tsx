@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
@@ -39,12 +39,12 @@ export async function generateMetadata({
   };
 }
 
-export default async function IndustryDetailPage({
-  params,
+async function IndustryContent({
+  paramsPromise,
 }: {
-  params: Promise<{ slug: string }>;
+  paramsPromise: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params;
+  const { slug } = await paramsPromise;
   const industry = INDUSTRIES_DATA.find((ind) => ind.slug === slug);
 
   if (!industry) {
@@ -52,57 +52,77 @@ export default async function IndustryDetailPage({
   }
 
   return (
+    <>
+      {/* 1. Common Industry Banner & Breadcrumbs */}
+      <IndustryDetailBanner
+        industryName={industry.name}
+        heroTagline={industry.heroTagline}
+      />
+
+      {/* 2. Industry Overview: Left Description + Right Realistic Image */}
+      <IndustryOverview
+        industryName={industry.name}
+        image={industry.image}
+        overviewParagraphs={industry.detailedOverview}
+        challenges={industry.packagingChallenges}
+        benefits={industry.corrugatedBenefits}
+      />
+
+      {/* 3. Specific Packaging Requirements */}
+      <IndustryRequirements
+        industryName={industry.name}
+        requirements={industry.packagingRequirements}
+      />
+
+      {/* 4. Examples of Businesses in This Industry */}
+      <IndustryBusinesses
+        industryName={industry.name}
+        businesses={industry.businessExamples}
+      />
+
+      {/* 5. Common Packaging Applications */}
+      <IndustryApplications
+        industryName={industry.name}
+        applications={industry.packagingApplications}
+      />
+
+      {/* 6. Recommended Packaging Products from Existing Catalogue */}
+      <IndustryRelatedProducts
+        industryName={industry.name}
+        relatedSlugs={industry.relatedProductSlugs}
+      />
+
+      {/* 7. Industry-Specific FAQs (5 Questions) */}
+      <IndustryFAQs
+        industryName={industry.name}
+        faqs={industry.faqs}
+      />
+
+      {/* 8. Industry-Specific Request a Quote CTA */}
+      <IndustryCTA industryName={industry.name} />
+    </>
+  );
+}
+
+export default function IndustryDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  return (
     <div className="min-h-screen flex flex-col bg-[#FFFFFF] text-[#202A2E]">
       <Header />
 
       <main className="flex-1 w-full">
-        {/* 1. Common Industry Banner & Breadcrumbs */}
-        <IndustryDetailBanner
-          industryName={industry.name}
-          heroTagline={industry.heroTagline}
-        />
-
-        {/* 2. Industry Overview: Left Description + Right Realistic Image */}
-        <IndustryOverview
-          industryName={industry.name}
-          image={industry.image}
-          overviewParagraphs={industry.detailedOverview}
-          challenges={industry.packagingChallenges}
-          benefits={industry.corrugatedBenefits}
-        />
-
-        {/* 3. Specific Packaging Requirements */}
-        <IndustryRequirements
-          industryName={industry.name}
-          requirements={industry.packagingRequirements}
-        />
-
-        {/* 4. Examples of Businesses in This Industry */}
-        <IndustryBusinesses
-          industryName={industry.name}
-          businesses={industry.businessExamples}
-        />
-
-        {/* 5. Common Packaging Applications */}
-        <IndustryApplications
-          industryName={industry.name}
-          applications={industry.packagingApplications}
-        />
-
-        {/* 6. Recommended Packaging Products from Existing Catalogue */}
-        <IndustryRelatedProducts
-          industryName={industry.name}
-          relatedSlugs={industry.relatedProductSlugs}
-        />
-
-        {/* 7. Industry-Specific FAQs (5 Questions) */}
-        <IndustryFAQs
-          industryName={industry.name}
-          faqs={industry.faqs}
-        />
-
-        {/* 8. Industry-Specific Request a Quote CTA */}
-        <IndustryCTA industryName={industry.name} />
+        <Suspense
+          fallback={
+            <div className="w-full min-h-[400px] flex items-center justify-center bg-[#FAF7F2]">
+              <div className="w-8 h-8 border-3 border-[#A65D32] border-t-transparent rounded-full animate-spin" />
+            </div>
+          }
+        >
+          <IndustryContent paramsPromise={params} />
+        </Suspense>
       </main>
 
       <Footer />
