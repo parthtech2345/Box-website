@@ -5,222 +5,161 @@ import {
   Phone,
   Mail,
   MapPin,
-  Clock,
-  ShieldCheck,
 } from "lucide-react";
 
 export default function Footer() {
   return (
-    <>
-      <footer id="contact" className="w-full bg-[#202A2E] text-white pt-16 pb-12 border-t border-[#202A2E]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="w-full bg-[#182023] text-[#F5F2EB] border-t border-[#344247]">
+      {/* Main Footer Navigation */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
+          {/* Brand Column (2 cols) */}
+          <div className="lg:col-span-2 space-y-4">
+            <div className="relative h-10 w-48">
+              <Image
+                src="/images/aavrit_logo_dark_bg.svg"
+                alt="AAVRIT PACKAGING Logo"
+                fill
+                className="object-contain object-left"
+              />
+            </div>
+            <p className="text-sm text-[#8C989E] leading-relaxed max-w-sm">
+              Manufacturers of heavy-duty industrial cartons, 3-ply, 5-ply, 7-ply corrugated boxes,
+              custom printed master packaging, and precision die-cut shipping solutions.
+            </p>
 
-          {/* Main Footer Content Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-white/10">
-
-            {/* Col 1: Brand & Overview (4 cols) */}
-            <div className="lg:col-span-4 flex flex-col">
-              <Link href="/" className="flex items-center gap-3 mb-5 group">
-                <div className="relative h-12 w-56">
-                  <Image
-                    src="/images/aavrit_logo_dark_bg.svg"
-                    alt="AAVRIT PACKAGING Logo"
-                    fill
-                    className="object-contain object-left"
-                  />
-                </div>
-              </Link>
-
-              {/* 2-line Description */}
-              <p className="text-xs sm:text-sm text-[#F5F2EB]/80 leading-relaxed mb-5 line-clamp-2">
-                AAVRIT PACKAGING engineers heavy-duty 3, 5, and 7-ply corrugated cartons delivering certified strength and reliable protection across industrial supply chains.
-              </p>
-
-              {/* Social Media Icons (SVG) */}
-              <div className="flex items-center gap-3 mb-5">
-                {/* Instagram */}
-                <a
-                  href="https://instagram.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#E97835] flex items-center justify-center text-white/80 hover:text-white transition-all duration-200"
-                  aria-label="Instagram"
-                >
-                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                  </svg>
-                </a>
-                {/* LinkedIn */}
-                <a
-                  href="https://linkedin.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#E97835] flex items-center justify-center text-white/80 hover:text-white transition-all duration-200"
-                  aria-label="LinkedIn"
-                >
-                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                  </svg>
-                </a>
-                {/* Facebook */}
-                <a
-                  href="https://facebook.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#E97835] flex items-center justify-center text-white/80 hover:text-white transition-all duration-200"
-                  aria-label="Facebook"
-                >
-                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                    <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z" />
-                  </svg>
-                </a>
-                {/* X (formerly Twitter) */}
-                <a
-                  href="https://x.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#E97835] flex items-center justify-center text-white/80 hover:text-white transition-all duration-200"
-                  aria-label="X"
-                >
-                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                  </svg>
-                </a>
+            <div className="pt-2 text-xs text-[#8C989E] space-y-1">
+              <div>
+                <strong className="text-[#F5F2EB]">GST:</strong> 24ABCDE1234F1Z5
               </div>
-            </div>
-
-            {/* Col 2: Quick Links (Navbar navigation) (2 cols) */}
-            <div className="lg:col-span-2">
-              <h4 className="font-heading font-bold text-white mb-4 uppercase tracking-wider text-xs">
-                Quick Links
-              </h4>
-              <ul className="space-y-2.5 text-xs sm:text-sm text-[#F5F2EB]/80">
-                <li>
-                  <Link href="/about" className="hover:text-[#E97835] transition-colors">
-                    About Us
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#products" className="hover:text-[#E97835] transition-colors">
-                    Products
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#industries" className="hover:text-[#E97835] transition-colors">
-                    Industries We Serve
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#manufacturing" className="hover:text-[#E97835] transition-colors">
-                    Manufacturing
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="hover:text-[#E97835] transition-colors">
-                    Contact Us
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Col 3: Product Categories (shifted from col 2) (3 cols) */}
-            <div className="lg:col-span-3">
-              <h4 className="font-heading font-bold text-white mb-4 uppercase tracking-wider text-xs">
-                Product Categories
-              </h4>
-              <ul className="space-y-2.5 text-xs sm:text-sm text-[#F5F2EB]/80">
-                <li>
-                  <Link href="#products" className="hover:text-[#E97835] transition-colors">
-                    Standard Corrugated Boxes (RSC)
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#products" className="hover:text-[#E97835] transition-colors">
-                    Heavy-Duty 7-Ply Export Cartons
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#products" className="hover:text-[#E97835] transition-colors">
-                    Multi-Color Flexo Printed Boxes
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#products" className="hover:text-[#E97835] transition-colors">
-                    Die-Cut Self-Locking Mailers
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#products" className="hover:text-[#E97835] transition-colors">
-                    Ventilated Fruit & Produce Packaging
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#products" className="hover:text-[#E97835] transition-colors">
-                    Corrugated Partitions & Pads
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Col 4: Contact & Office (Clear & Easy to Understand) (3 cols) */}
-            <div className="lg:col-span-3">
-              <h4 className="font-heading font-bold text-white mb-4 uppercase tracking-wider text-xs">
-                Contact & Factory Location
-              </h4>
-              <div className="space-y-3 text-xs text-[#F5F2EB]/80">
-                <div className="flex items-start gap-2.5">
-                  <MapPin className="w-4 h-4 text-[#E97835] shrink-0 mt-0.5" />
-                  <span>
-                    Plot No. 42, Phase II GIDC, Gujarat, India
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-2.5">
-                  <Phone className="w-4 h-4 text-[#E97835] shrink-0" />
-                  <a href="tel:+919876543210" className="hover:text-[#E97835] transition-colors">
-                    +91 98765 43210
-                  </a>
-                </div>
-
-                <div className="flex items-center gap-2.5">
-                  <Mail className="w-4 h-4 text-[#E97835] shrink-0" />
-                  <a href="mailto:inquiry@aavritpackaging.com" className="hover:text-[#E97835] transition-colors">
-                    inquiry@aavritpackaging.com
-                  </a>
-                </div>
-
-                <div className="flex items-center gap-2.5">
-                  <Clock className="w-4 h-4 text-[#D1B48C] shrink-0" />
-                  <span>Mon – Sat: 8:30 AM – 7:30 PM IST</span>
-                </div>
+              <div>
+                <strong className="text-[#F5F2EB]">ISO Certification:</strong> ISO 9001:2015 Compliant
               </div>
-            </div>
-
-          </div>
-
-          {/* Bottom Copyright & Legal Strip */}
-          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#687378]">
-            <div>
-              © 2026 AAVRIT PACKAGING. All rights reserved.
-            </div>
-
-            <div className="flex items-center gap-6">
-              <span className="hover:text-white transition-colors cursor-pointer">
-                Privacy Policy
-              </span>
-              <span>•</span>
-              <span className="hover:text-white transition-colors cursor-pointer">
-                Terms of Supply
-              </span>
-              <span>•</span>
-              <span className="hover:text-white transition-colors cursor-pointer">
-                Quality Warranty
-              </span>
             </div>
           </div>
 
+          {/* Quick Links */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider">
+              Navigation
+            </h4>
+            <ul className="space-y-2 text-sm text-[#8C989E]">
+              <li>
+                <Link href="/" className="hover:text-[#E97835] transition-colors">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="hover:text-[#E97835] transition-colors">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link href="/products" className="hover:text-[#E97835] transition-colors">
+                  Products
+                </Link>
+              </li>
+              <li>
+                <Link href="/custom-packaging" className="hover:text-[#E97835] transition-colors">
+                  Custom Packaging
+                </Link>
+              </li>
+              <li>
+                <Link href="/industries" className="hover:text-[#E97835] transition-colors">
+                  Industries
+                </Link>
+              </li>
+              <li>
+                <Link href="#contact" className="hover:text-[#E97835] transition-colors">
+                  Contact Us
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Core Categories */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider">
+              Products
+            </h4>
+            <ul className="space-y-2 text-sm text-[#8C989E]">
+              <li>
+                <Link href="/products?category=corrugated-boxes" className="hover:text-[#E97835] transition-colors">
+                  Corrugated Boxes
+                </Link>
+              </li>
+              <li>
+                <Link href="/products?category=printed-corrugated-boxes" className="hover:text-[#E97835] transition-colors">
+                  Printed Boxes
+                </Link>
+              </li>
+              <li>
+                <Link href="/products?category=die-cut-boxes" className="hover:text-[#E97835] transition-colors">
+                  Die-Cut Mailers
+                </Link>
+              </li>
+              <li>
+                <Link href="/products?category=industrial-packaging" className="hover:text-[#E97835] transition-colors">
+                  Industrial Packaging
+                </Link>
+              </li>
+              <li>
+                <Link href="/products?category=food-packaging" className="hover:text-[#E97835] transition-colors">
+                  Food Packaging
+                </Link>
+              </li>
+              <li>
+                <Link href="/products?category=ecommerce-packaging" className="hover:text-[#E97835] transition-colors">
+                  E-commerce Cartons
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Factory & Direct Contacts */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider">
+              Plant & Office
+            </h4>
+            <div className="space-y-2.5 text-sm text-[#8C989E]">
+              <div className="flex items-start gap-2.5">
+                <MapPin className="w-4 h-4 text-[#E97835] shrink-0 mt-0.5" />
+                <span>Plot No. 42, Phase II GIDC Industrial Estate, Gujarat 382445, India</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <Phone className="w-4 h-4 text-[#E97835] shrink-0" />
+                <a href="tel:+919876543210" className="hover:text-white transition-colors">
+                  +91 98765 43210
+                </a>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <Mail className="w-4 h-4 text-[#E97835] shrink-0" />
+                <a href="mailto:inquiry@aavritpackaging.com" className="hover:text-white transition-colors">
+                  inquiry@aavritpackaging.com
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
-      </footer>
-    </>
+      </div>
+
+      {/* Bottom Legal Sub-Footer */}
+      <div className="border-t border-[#2C383D] py-5 px-4 sm:px-6 lg:px-8 text-xs text-[#8C989E]">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+          <p>© 2026 AAVRIT PACKAGING. All Rights Reserved.</p>
+          <div className="flex items-center gap-6">
+            <Link href="/privacy" className="hover:text-white transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="hover:text-white transition-colors">
+              Terms of Supply
+            </Link>
+            <Link href="/sitemap" className="hover:text-white transition-colors">
+              Sitemap
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
   );
 }

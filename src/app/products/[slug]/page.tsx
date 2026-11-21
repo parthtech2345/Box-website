@@ -197,9 +197,9 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         {/* ---------------------------------------------------- */}
         {/* 2. MAIN PRODUCT OVERVIEW (Image Left + Info Right)    */}
         {/* ---------------------------------------------------- */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
-            
+
             {/* LEFT SIDE: Single high-quality product image */}
             <div className="lg:col-span-5 flex flex-col gap-4">
               <div className="relative w-full aspect-[4/3] sm:aspect-square bg-[#FAF7F2] rounded-2xl border border-[#E4DED3] overflow-hidden shadow-sm group">
