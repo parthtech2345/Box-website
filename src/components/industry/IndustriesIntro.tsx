@@ -115,20 +115,6 @@ export default function IndustriesIntro() {
                 sizes="(max-width: 1024px) 100vw, 45vw"
                 className="object-cover object-center"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md rounded-xl p-3.5 border border-[#E8D5B8] shadow-md flex items-center justify-between">
-                <div>
-                  <span className="text-xs font-bold text-[#493629] block">
-                    Certified Packaging Quality
-                  </span>
-                  <span className="text-[11px] text-[#8C7E72]">
-                    Burst factor & edge crush certified testing
-                  </span>
-                </div>
-                <span className="text-xs font-mono font-bold text-[#A65D32] bg-[#A65D32]/10 px-2.5 py-1 rounded-md">
-                  6 Core Sectors
-                </span>
-              </div>
             </div>
           </div>
         </div>

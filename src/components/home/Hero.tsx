@@ -73,7 +73,7 @@ export default function Hero() {
     const renderLoop = () => {
       const diff = targetFrameRef.current - currentFrameRef.current;
       if (Math.abs(diff) > 0.01) {
-        currentFrameRef.current += diff * 0.16;
+        currentFrameRef.current += diff * 0.10;
         const frameToDraw = Math.min(
           Math.max(Math.round(currentFrameRef.current), 0),
           TOTAL_FRAMES - 1
@@ -133,7 +133,7 @@ export default function Hero() {
 
       if (scrollingDown && progressRef.current < 1) {
         e.preventDefault();
-        const step = Math.min(Math.max(Math.abs(delta) / 1200, 0.02), 0.08);
+        const step = Math.min(Math.max(Math.abs(delta) / 3600, 0.005), 0.022);
         const next = Math.min(progressRef.current + step, 1);
         progressRef.current = next;
 
@@ -143,7 +143,7 @@ export default function Hero() {
         );
       } else if (scrollingUp && progressRef.current > 0) {
         e.preventDefault();
-        const step = Math.min(Math.max(Math.abs(delta) / 1200, 0.02), 0.08);
+        const step = Math.min(Math.max(Math.abs(delta) / 3600, 0.005), 0.022);
         const next = Math.max(progressRef.current - step, 0);
         progressRef.current = next;
 

@@ -111,18 +111,6 @@ export default function Header() {
             }`}
           >
             <Link
-              href="/"
-              className={`h-10 inline-flex items-center hover:text-[#E97835] transition-colors relative ${
-                pathname === "/" ? "text-[#E97835]" : ""
-              }`}
-            >
-              <span>Home</span>
-              {pathname === "/" && (
-                <span className="absolute bottom-1 left-0 w-full h-0.5 bg-[#E97835] rounded-full" />
-              )}
-            </Link>
-
-            <Link
               href="/about"
               className={`h-10 inline-flex items-center hover:text-[#E97835] transition-colors relative ${
                 pathname === "/about" ? "text-[#E97835]" : ""
@@ -279,14 +267,6 @@ export default function Header() {
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
           <div className="lg:hidden bg-white text-[#202A2E] border-t border-[#E4DED3] px-4 pt-3 pb-6 space-y-3 shadow-xl max-h-[85vh] overflow-y-auto">
-            <Link
-              href="/"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block py-2 text-sm font-bold uppercase tracking-wider text-[#202A2E] hover:text-[#E97835]"
-            >
-              Home
-            </Link>
-
             <Link
               href="/about"
               onClick={() => setMobileMenuOpen(false)}

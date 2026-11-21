@@ -113,26 +113,15 @@ export default function IndustriesCategories() {
                 />
               </div>
 
-              {/* Card Body */}
-              <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between gap-4 bg-white">
-                <div>
-                  <h3 className="font-heading font-bold text-lg sm:text-xl text-[#202A2E] group-hover:text-[#A65D32] transition-colors leading-snug mb-2">
-                    {ind.name}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-[#62574D] leading-relaxed">
-                    {ind.shortDescription}
-                  </p>
-                </div>
+              {/* Card Body: Headline & Explore Button Only */}
+              <div className="p-4 sm:p-5 flex items-center justify-between gap-3 bg-white">
+                <h3 className="font-heading font-bold text-base sm:text-lg text-[#202A2E] group-hover:text-[#A65D32] transition-colors leading-snug">
+                  {ind.name}
+                </h3>
 
-                {/* Explore Industry Button */}
-                <div className="pt-3 border-t border-[#E4DED3]/60 flex items-center justify-between">
-                  <span className="text-xs font-semibold text-[#8C7E72] group-hover:text-[#202A2E] transition-colors">
-                    View Specifications & Case Studies
-                  </span>
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#FAF7F2] group-hover:bg-[#493629] text-[#A65D32] group-hover:text-white transition-all duration-200 border border-[#E8D5B8] group-hover:border-[#493629]">
-                    <span className="text-xs font-bold">Explore</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                  </div>
+                <div className="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#FAF7F2] group-hover:bg-[#493629] text-[#A65D32] group-hover:text-white transition-all duration-200 border border-[#E8D5B8] group-hover:border-[#493629]">
+                  <span className="text-xs font-bold">Explore</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </div>
             </Link>

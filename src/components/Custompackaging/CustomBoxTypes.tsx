@@ -209,9 +209,6 @@ export default function CustomBoxTypes() {
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 />
-                <span className="absolute top-3 left-3 px-3 py-1 rounded-full bg-white/90 backdrop-blur-xs text-[11px] font-bold text-[#A65D32] border border-[#E4DED3] shadow-xs">
-                  {item.category}
-                </span>
               </div>
 
               <div className="p-5 flex-1 flex flex-col justify-between gap-4">
