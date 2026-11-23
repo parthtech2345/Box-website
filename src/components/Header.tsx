@@ -71,10 +71,18 @@ export default function Header() {
           </div>
 
           {/* Right Side: Factory Address */}
-          <div className="flex items-center gap-1.5 text-white/80 text-[11px] sm:text-xs">
-            <MapPin className="w-3.5 h-3.5 text-[#D1B48C]" />
-            <span>Plot No. 42, Phase II GIDC, Gujarat, India</span>
-          </div>
+          <a
+            href="https://maps.google.com/?q=Plot+No.+42,+Phase+II+GIDC+Industrial+Estate,+Gujarat+382445,+India"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Open in Google Maps"
+            className="flex items-center gap-1.5 text-white/80 hover:text-white transition-colors text-[11px] sm:text-xs cursor-pointer group"
+          >
+            <MapPin className="w-3.5 h-3.5 text-[#D1B48C] group-hover:text-[#E97835] transition-colors" />
+            <span className="group-hover:text-[#E97835] transition-colors">
+              Plot No. 42, Phase II GIDC, Gujarat, India
+            </span>
+          </a>
         </div>
       </div>
 

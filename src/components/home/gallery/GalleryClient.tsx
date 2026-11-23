@@ -138,7 +138,7 @@ const GALLERY_SECTIONS: GallerySectionData[] = [
       {
         id: "cust-4",
         title: "Self-Locking Shipping Boxes",
-        image: "/Product/items/self-locking-shipping-boxes.png",
+        image: "/Product/items/real-returnable-self-locking-shipping-boxes.png",
         category: "Custom Packaging",
         description: "Interlocking side tabs and roll-over front flaps providing structural reinforcement and tamper-evident transit security.",
         keypoints: [
@@ -159,7 +159,7 @@ const GALLERY_SECTIONS: GallerySectionData[] = [
       {
         id: "prod-1",
         title: "3-Ply Single Wall Corrugated Box",
-        image: "/Product/items/3-ply-corrugated-boxes.png",
+        image: "/Product/items/real-3-ply-corrugated-boxes.png",
         category: "Products & Packaging",
         description: "Lightweight and dependable shipping cartons engineered for retail distribution, consumer goods, and e-commerce packaging.",
         keypoints: [
@@ -173,7 +173,7 @@ const GALLERY_SECTIONS: GallerySectionData[] = [
       {
         id: "prod-2",
         title: "5-Ply Double Wall Heavy-Duty Box",
-        image: "/Product/items/5-ply-corrugated-boxes.png",
+        image: "/Product/items/real-5-ply-corrugated-boxes.png",
         category: "Products & Packaging",
         description: "Dual fluting layers delivering superior compression strength, stackability, and puncture resistance for heavier freight.",
         keypoints: [
@@ -187,7 +187,7 @@ const GALLERY_SECTIONS: GallerySectionData[] = [
       {
         id: "prod-3",
         title: "7-Ply Triple Wall Export Container",
-        image: "/Product/items/7-ply-corrugated-boxes.png",
+        image: "/Product/items/real-7-ply-corrugated-boxes.png",
         category: "Products & Packaging",
         description: "Maximum-caliper heavy industrial containers designed for automotive parts, machinery exports, and heavy payload transit.",
         keypoints: [

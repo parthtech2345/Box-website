@@ -29,7 +29,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     title: "3-Ply Single Wall Corrugated Box",
     category: "Products & Packaging",
     description: "Lightweight, dependable corrugated shipping carton engineered for retail distribution and e-commerce mailings.",
-    image: "/Product/items/3-ply-corrugated-boxes.png",
+    image: "/Product/items/real-3-ply-corrugated-boxes.png",
     aspectRatio: "square",
   },
   {
@@ -37,7 +37,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     title: "5-Ply Double Wall Heavy-Duty Box",
     category: "Products & Packaging",
     description: "Dual fluting layers delivering superior compression strength and puncture resistance for industrial goods.",
-    image: "/Product/items/5-ply-corrugated-boxes.png",
+    image: "/Product/items/real-5-ply-corrugated-boxes.png",
     aspectRatio: "landscape",
     featured: true,
   },
@@ -46,7 +46,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     title: "7-Ply Triple Wall Heavy Industrial Shipper",
     category: "Products & Packaging",
     description: "Maximum-caliper heavy-duty container engineered for heavy industrial equipment, automotive engines, and export freight.",
-    image: "/Product/items/7-ply-corrugated-boxes.png",
+    image: "/Product/items/real-7-ply-corrugated-boxes.png",
     aspectRatio: "square",
   },
   {
@@ -70,7 +70,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     title: "Food-Grade Corrugated Pizza Box",
     category: "Products & Packaging",
     description: "Ventilated thermal retaining kraft box maintaining food warmth while preventing steam sogginess.",
-    image: "/Product/items/pizza-boxes.png",
+    image: "/Product/items/real-corrugated-pizza-boxes.png",
     aspectRatio: "square",
   },
   {
@@ -78,7 +78,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     title: "Ventilated Fresh Produce Container",
     category: "Products & Packaging",
     description: "Moisture-resistant kraft carton with side ventilation apertures designed for cold storage and orchard transit.",
-    image: "/Product/items/fruit-boxes.png",
+    image: "/Product/items/real-ventilated-fruit-produce-boxes.png",
     aspectRatio: "portrait",
   },
   {
@@ -94,7 +94,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     title: "Reinforced Master Export Carton",
     category: "Products & Packaging",
     description: "Engineered stacking resilience designed for cross-country logistics and palletized container shipping.",
-    image: "/Product/items/heavy-duty-boxes.png",
+    image: "/Product/items/heavy-duty-industrial-shipping-box.png",
     aspectRatio: "landscape",
   },
   {
@@ -102,7 +102,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     title: "Protective Corrugated Grid Partitions",
     category: "Products & Packaging",
     description: "Interlocking cellular dividers providing individual cavity protection for delicate components and bottles.",
-    image: "/Product/items/industrial-partitions.png",
+    image: "/Product/items/real-industrial-partitions-dividers.png",
     aspectRatio: "square",
   },
   {
@@ -110,7 +110,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     title: "Heavy-Duty Pallet Gaylord Shipper",
     category: "Products & Packaging",
     description: "Bulk cargo shipping container fitted directly onto wooden or plastic pallets for voluminous transport.",
-    image: "/Product/items/pallet-boxes.png",
+    image: "/Product/items/real-pallet-gaylord-boxes.png",
     aspectRatio: "portrait",
     featured: true,
   },
@@ -119,7 +119,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     title: "Multi-Colour Flexo Printed Carton",
     category: "Products & Packaging",
     description: "High-definition branded packaging printed with water-based eco-friendly inks for corporate identity.",
-    image: "/Product/items/flexographic-printed-boxes.png",
+    image: "/Product/items/real-flexographic-printed-boxes.png",
     aspectRatio: "square",
   },
 
@@ -156,7 +156,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     title: "Tamper-Resistant Self-Locking Box",
     category: "Custom Packaging",
     description: "Interlocking side tabs and front flap creating a secure seal without requiring external packing tape.",
-    image: "/Product/items/self-locking-shipping-boxes.png",
+    image: "/Product/items/real-returnable-self-locking-shipping-boxes.png",
     aspectRatio: "square",
   },
   {
@@ -164,7 +164,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     title: "Die-Cut Carry Handle Carton",
     category: "Custom Packaging",
     description: "Integrated hand-hole die cuts facilitating comfortable manual lifting and retail transport.",
-    image: "/Product/items/handle-boxes.png",
+    image: "/Product/items/real-corrugated-handle-boxes.png",
     aspectRatio: "square",
   },
   {

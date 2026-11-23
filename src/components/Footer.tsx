@@ -192,10 +192,18 @@ export default function Footer() {
               Plant & Office
             </h4>
             <div className="space-y-2.5 text-sm text-[#8C989E]">
-              <div className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-[#E97835] shrink-0 mt-0.5" />
-                <span>Plot No. 42, Phase II GIDC Industrial Estate, Gujarat 382445, India</span>
-              </div>
+              <a
+                href="https://maps.google.com/?q=Plot+No.+42,+Phase+II+GIDC+Industrial+Estate,+Gujarat+382445,+India"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Open in Google Maps"
+                className="flex items-start gap-2.5 group hover:text-white transition-colors cursor-pointer"
+              >
+                <MapPin className="w-4 h-4 text-[#E97835] shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+                <span className="group-hover:text-[#E97835] transition-colors">
+                  Plot No. 42, Phase II GIDC Industrial Estate, Gujarat 382445, India
+                </span>
+              </a>
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-[#E97835] shrink-0" />
                 <a href="tel:+919876543210" className="hover:text-white transition-colors">

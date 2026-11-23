@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
@@ -55,7 +55,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function MachineryDetailPage({
+async function MachineryDetailContent({
   params,
 }: MachineryDetailPageProps) {
   const { slug } = await params;
@@ -108,5 +108,19 @@ export default async function MachineryDetailPage({
       </main>
       <Footer />
     </div>
+  );
+}
+
+export default function MachineryDetailPage(props: MachineryDetailPageProps) {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-white flex items-center justify-center">
+          <div className="w-8 h-8 border-3 border-[#E97835] border-t-transparent rounded-full animate-spin" />
+        </div>
+      }
+    >
+      <MachineryDetailContent {...props} />
+    </Suspense>
   );
 }

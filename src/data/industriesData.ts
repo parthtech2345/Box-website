@@ -104,12 +104,12 @@ export const INDUSTRIES_DATA: IndustryDetailData[] = [
       {
         name: "Industrial Partitions & Dividers",
         description: "Custom interlocking corrugated grid matrices that secure multiple components within a single master carton.",
-        image: "/Product/items/industrial-partitions.png",
+        image: "/Product/items/real-industrial-partitions-dividers.png",
       },
       {
         name: "Heavy-Duty Corrugated Pallet Boxes",
         description: "Triple-wall Gaylord containers built for heavy bulk shipments and export container logistics.",
-        image: "/Product/items/pallet-boxes.png",
+        image: "/Product/items/real-pallet-gaylord-boxes.png",
       },
       {
         name: "Regular Slotted Cartons (RSC)",
@@ -217,7 +217,7 @@ export const INDUSTRIES_DATA: IndustryDetailData[] = [
       {
         name: "Pharmaceutical Secondary Master Cartons",
         description: "Hygienic 3-ply and 5-ply RSC shippers designed for medicine bottles and bulk blister packs.",
-        image: "/Product/items/3-ply-corrugated-boxes.png",
+        image: "/Product/items/real-3-ply-corrugated-boxes.png",
       },
       {
         name: "Die-Cut Diagnostic Mailer Boxes",
@@ -227,12 +227,12 @@ export const INDUSTRIES_DATA: IndustryDetailData[] = [
       {
         name: "Vial & Bottle Dividing Partitions",
         description: "Custom grid dividers that cushion glass medicine bottles and diagnostic reagents.",
-        image: "/Product/items/industrial-partitions.png",
+        image: "/Product/items/real-industrial-partitions-dividers.png",
       },
       {
         name: "Printed Healthcare Product Cartons",
         description: "Sharp flexographic printed boxes with batch identification, handling caution icons, and barcodes.",
-        image: "/Product/items/flexographic-printed-boxes.png",
+        image: "/Product/items/real-flexographic-printed-boxes.png",
       },
     ],
     relatedProductSlugs: [
@@ -335,17 +335,17 @@ export const INDUSTRIES_DATA: IndustryDetailData[] = [
       {
         name: "Ventilated Fruit & Produce Boxes",
         description: "Telescopic and self-locking crates with precision die-cut air vents for fresh farm produce.",
-        image: "/Product/items/fruit-boxes.png",
+        image: "/Product/items/real-ventilated-fruit-produce-boxes.png",
       },
       {
         name: "FMCG Master Shipper Cartons",
         description: "High-volume 3-ply and 5-ply RSC boxes engineered for automated food packaging lines.",
-        image: "/Product/items/fmcg-boxes.png",
+        image: "/Product/items/real-fmcg-master-shipper-cartons.png",
       },
       {
         name: "Corrugated Pizza & Bakery Boxes",
         description: "Food-grade die-cut boxes with thermal heat retention and grease-resistant kraft board.",
-        image: "/Product/items/pizza-boxes.png",
+        image: "/Product/items/real-corrugated-pizza-boxes.png",
       },
       {
         name: "Food-Grade Corrugated Boxes",
@@ -458,17 +458,17 @@ export const INDUSTRIES_DATA: IndustryDetailData[] = [
       {
         name: "Tamper-Evident Courier Boxes",
         description: "Secure cartons engineered with reinforced flaps to protect parcels throughout sorting networks.",
-        image: "/Product/items/courier-boxes.png",
+        image: "/Product/items/real-tamper-evident-courier-boxes.png",
       },
       {
         name: "Standard E-commerce Shipping Boxes",
         description: "Cost-effective 3-ply RSC boxes sized to match standard courier volumetric billing tiers.",
-        image: "/Product/items/shipping-boxes.png",
+        image: "/Product/items/real-standard-ecommerce-shipping-boxes.png",
       },
       {
         name: "Returnable Self-Locking Shipping Boxes",
         description: "Dual adhesive strip cartons enabling easy, tape-free customer returns in the original box.",
-        image: "/Product/items/self-locking-shipping-boxes.png",
+        image: "/Product/items/real-returnable-self-locking-shipping-boxes.png",
       },
     ],
     relatedProductSlugs: [
@@ -581,12 +581,12 @@ export const INDUSTRIES_DATA: IndustryDetailData[] = [
       {
         name: "Industrial Partitions & Dividers",
         description: "Interlocking grid cells that cushion multiple electronics components within one master pack.",
-        image: "/Product/items/industrial-partitions.png",
+        image: "/Product/items/real-industrial-partitions-dividers.png",
       },
       {
         name: "Heavy-Duty Appliance Master Cartons",
         description: "5-ply and 7-ply RSC containers engineered to support heavy vertical stacking loads.",
-        image: "/Product/items/heavy-duty-boxes.png",
+        image: "/Product/items/heavy-duty-industrial-shipping-box.png",
       },
     ],
     relatedProductSlugs: [
@@ -699,12 +699,12 @@ export const INDUSTRIES_DATA: IndustryDetailData[] = [
       {
         name: "Large Size Textile Pallet Boxes",
         description: "Heavy-duty large-volume cartons designed for bulky bed linens, blankets, and fabric rolls.",
-        image: "/Product/items/pallet-boxes.png",
+        image: "/Product/items/real-pallet-gaylord-boxes.png",
       },
       {
         name: "Self-Locking Apparel Mailer Boxes",
         description: "Premium die-cut tuck-top cartons designed for high-end designer garments and fashion e-commerce.",
-        image: "/Product/items/self-locking-boxes.png",
+        image: "/Product/items/real-self-locking-boxes.png",
       },
     ],
     relatedProductSlugs: [

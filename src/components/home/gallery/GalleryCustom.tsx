@@ -35,7 +35,7 @@ const CUSTOM_DATA: CustomCard[] = [
   {
     title: "Self-Locking Shipping Boxes",
     description: "Interlocking side tabs and roll-over front flaps providing structural reinforcement and tamper-evident transit security.",
-    image: "/Product/items/self-locking-shipping-boxes.png",
+    image: "/Product/items/real-returnable-self-locking-shipping-boxes.png",
     tag: "Self-Locking",
   },
 ];

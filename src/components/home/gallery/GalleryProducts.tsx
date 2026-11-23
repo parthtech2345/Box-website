@@ -17,19 +17,19 @@ const PRODUCTS_DATA: ProductCard[] = [
   {
     title: "3-Ply Single Wall Corrugated Box",
     description: "Lightweight and dependable shipping cartons engineered for retail distribution, consumer goods, and e-commerce packaging.",
-    image: "/Product/items/3-ply-corrugated-boxes.png",
+    image: "/Product/items/real-3-ply-corrugated-boxes.png",
     tag: "Single Wall",
   },
   {
     title: "5-Ply Double Wall Heavy-Duty Box",
     description: "Dual fluting layers delivering superior compression strength, stackability, and puncture resistance for heavier freight.",
-    image: "/Product/items/5-ply-corrugated-boxes.png",
+    image: "/Product/items/real-5-ply-corrugated-boxes.png",
     tag: "Double Wall",
   },
   {
     title: "7-Ply Triple Wall Export Container",
     description: "Maximum-caliper heavy industrial containers designed for automotive parts, machinery exports, and heavy payload transit.",
-    image: "/Product/items/7-ply-corrugated-boxes.png",
+    image: "/Product/items/real-7-ply-corrugated-boxes.png",
     tag: "Triple Wall",
   },
   {

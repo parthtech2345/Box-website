@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -77,7 +77,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   };
 }
 
-export default async function ProductDetailPage({ params }: ProductPageProps) {
+async function ProductDetailContent({ params }: ProductPageProps) {
   const { slug } = await params;
   const product = ALL_PRODUCTS.find((p) => p.slug === slug);
 
@@ -211,26 +211,23 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                   sizes="(max-width: 1024px) 100vw, 40vw"
                   className="object-cover object-center group-hover:scale-102 transition-transform duration-300"
                 />
-                <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-xs text-[#493629] text-xs font-bold px-3 py-1.5 rounded-lg border border-[#E4DED3] shadow-xs">
-                  {product.categoryName}
-                </div>
               </div>
 
               {/* Quality Badges */}
               <div className="grid grid-cols-3 gap-3 pt-1">
-                <div className="bg-[#FAF7F2] border border-[#E4DED3] rounded-xl p-3 text-center">
-                  <Leaf className="w-5 h-5 text-[#A65D32] mx-auto mb-1" />
-                  <span className="text-[11px] font-bold text-[#202A2E] block">100% Eco Kraft</span>
+                <div className="group/badge bg-[#FAF7F2] hover:bg-white border border-[#E4DED3] hover:border-[#E97835] rounded-xl p-3 text-center transition-all duration-300 hover:shadow-md hover:-translate-y-1 cursor-pointer">
+                  <Leaf className="w-5 h-5 text-[#A65D32] group-hover/badge:text-[#E97835] group-hover/badge:scale-110 mx-auto mb-1 transition-all duration-300" />
+                  <span className="text-[11px] font-bold text-[#202A2E] group-hover/badge:text-[#E97835] block transition-colors duration-300">100% Eco Kraft</span>
                   <span className="text-[10px] text-[#7D7166]">Recyclable</span>
                 </div>
-                <div className="bg-[#FAF7F2] border border-[#E4DED3] rounded-xl p-3 text-center">
-                  <ShieldCheck className="w-5 h-5 text-[#A65D32] mx-auto mb-1" />
-                  <span className="text-[11px] font-bold text-[#202A2E] block">High ECT</span>
+                <div className="group/badge bg-[#FAF7F2] hover:bg-white border border-[#E4DED3] hover:border-[#E97835] rounded-xl p-3 text-center transition-all duration-300 hover:shadow-md hover:-translate-y-1 cursor-pointer">
+                  <ShieldCheck className="w-5 h-5 text-[#A65D32] group-hover/badge:text-[#E97835] group-hover/badge:scale-110 mx-auto mb-1 transition-all duration-300" />
+                  <span className="text-[11px] font-bold text-[#202A2E] group-hover/badge:text-[#E97835] block transition-colors duration-300">High ECT</span>
                   <span className="text-[10px] text-[#7D7166]">Crush Resistant</span>
                 </div>
-                <div className="bg-[#FAF7F2] border border-[#E4DED3] rounded-xl p-3 text-center">
-                  <Settings className="w-5 h-5 text-[#A65D32] mx-auto mb-1" />
-                  <span className="text-[11px] font-bold text-[#202A2E] block">Precision Cut</span>
+                <div className="group/badge bg-[#FAF7F2] hover:bg-white border border-[#E4DED3] hover:border-[#E97835] rounded-xl p-3 text-center transition-all duration-300 hover:shadow-md hover:-translate-y-1 cursor-pointer">
+                  <Settings className="w-5 h-5 text-[#A65D32] group-hover/badge:text-[#E97835] group-hover/badge:scale-110 mx-auto mb-1 transition-all duration-300" />
+                  <span className="text-[11px] font-bold text-[#202A2E] group-hover/badge:text-[#E97835] block transition-colors duration-300">Precision Cut</span>
                   <span className="text-[10px] text-[#7D7166]">±0.5mm Accuracy</span>
                 </div>
               </div>
@@ -266,9 +263,12 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {product.keyFeatures.map((feat, idx) => (
-                    <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-[#493629]">
-                      <CheckCircle2 className="w-4 h-4 text-[#A65D32] shrink-0 mt-0.5" />
-                      <span>{feat}</span>
+                    <div
+                      key={idx}
+                      className="group/feat flex items-start gap-2.5 p-2.5 rounded-lg bg-white/70 hover:bg-white border border-transparent hover:border-[#E97835]/40 hover:shadow-xs text-xs sm:text-sm text-[#493629] transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
+                    >
+                      <CheckCircle2 className="w-4 h-4 text-[#A65D32] group-hover/feat:text-[#E97835] group-hover/feat:scale-110 shrink-0 mt-0.5 transition-all duration-200" />
+                      <span className="group-hover/feat:text-[#202A2E] transition-colors">{feat}</span>
                     </div>
                   ))}
                 </div>
@@ -371,5 +371,19 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
 
       <Footer />
     </div>
+  );
+}
+
+export default function ProductDetailPage(props: ProductPageProps) {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-white flex items-center justify-center">
+          <div className="w-8 h-8 border-3 border-[#E97835] border-t-transparent rounded-full animate-spin" />
+        </div>
+      }
+    >
+      <ProductDetailContent {...props} />
+    </Suspense>
   );
 }
