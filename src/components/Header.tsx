@@ -218,10 +218,15 @@ export default function Header() {
 
             {/* Contact Link */}
             <Link
-              href="/#contact"
-              className="h-10 inline-flex items-center hover:text-[#E97835] transition-colors"
+              href="/contact"
+              className={`h-10 inline-flex items-center hover:text-[#E97835] transition-colors relative ${
+                pathname === "/contact" ? "text-[#E97835]" : ""
+              }`}
             >
               <span>Contact</span>
+              {pathname === "/contact" && (
+                <span className="absolute bottom-1 left-0 w-full h-0.5 bg-[#E97835] rounded-full" />
+              )}
             </Link>
           </div>
 
@@ -242,7 +247,7 @@ export default function Header() {
 
             {/* Rounded Pill CTA Button (Matching reference design) */}
             <Link
-              href="/#quote"
+              href="/contact"
               className="h-10 inline-flex items-center justify-center gap-2 px-6 bg-[#E97835] hover:bg-[#d46927] text-white text-xs font-bold tracking-wider uppercase rounded-full shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98]"
             >
               <span>Contact Us</span>
@@ -333,16 +338,18 @@ export default function Header() {
 
 
             <Link
-              href="/#contact"
+              href="/contact"
               onClick={() => setMobileMenuOpen(false)}
-              className="block py-2 text-sm font-bold uppercase tracking-wider text-[#202A2E] hover:text-[#E97835]"
+              className={`block py-2 text-sm font-bold uppercase tracking-wider hover:text-[#E97835] ${
+                pathname === "/contact" ? "text-[#E97835]" : "text-[#202A2E]"
+              }`}
             >
               Contact
             </Link>
 
             <div className="pt-2">
               <Link
-                href="/#quote"
+                href="/contact"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block text-center py-2.5 bg-[#E97835] hover:bg-[#d46927] text-white font-bold text-xs uppercase tracking-wider rounded-full shadow-sm"
               >
