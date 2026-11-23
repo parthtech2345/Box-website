@@ -77,7 +77,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   };
 }
 
-async function ProductDetailContent({ params }: ProductPageProps) {
+export default async function ProductDetailPage({ params }: ProductPageProps) {
   const { slug } = await params;
   const product = ALL_PRODUCTS.find((p) => p.slug === slug);
 
@@ -285,6 +285,24 @@ async function ProductDetailContent({ params }: ProductPageProps) {
                 </a>
 
                 <a
+                  href={`https://wa.me/919876543210?text=${encodeURIComponent(
+                    `Hello, I am interested in your ${product.name}. Please share specifications and quotation.`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#25D366] hover:bg-[#20BD5A] text-white text-sm font-bold tracking-wide transition-all shadow-md hover:shadow-lg cursor-pointer"
+                >
+                  <svg
+                    className="w-4 h-4 fill-current shrink-0"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M12.031 2C6.495 2 2 6.494 2 12.029c0 1.97.57 3.81 1.558 5.36L2 22l4.773-1.524a10.007 10.007 0 005.258 1.488c5.536 0 10.03-4.494 10.03-10.035C22.061 6.494 17.567 2 12.031 2zm0 18.358c-1.745 0-3.37-.53-4.73-1.442l-.339-.228-2.825.902.919-2.753-.222-.352a8.316 8.316 0 01-1.282-4.456c0-4.606 3.748-8.353 8.354-8.353 4.607 0 8.355 3.747 8.355 8.353 0 4.607-3.748 8.353-8.355 8.353zm4.582-6.262c-.251-.126-1.484-.733-1.714-.816-.23-.084-.397-.126-.565.126-.168.251-.649.816-.795.984-.147.168-.293.189-.544.063-.251-.126-1.06-.391-2.02-1.246-.747-.666-1.252-1.489-1.399-1.74-.146-.251-.016-.387.11-.512.113-.113.251-.293.377-.44.125-.146.168-.251.251-.418.084-.168.042-.314-.021-.44-.063-.126-.565-1.36-.775-1.863-.204-.49-.412-.423-.565-.431-.146-.008-.314-.008-.481-.008-.168 0-.44.063-.67.314-.23.251-.88 8.6-.88 2.098 0 1.238.901 2.434 1.027 2.602.126.168 1.772 2.706 4.293 3.794.6.259 1.069.414 1.435.53.603.192 1.152.165 1.586.1.483-.072 1.484-.607 1.693-1.193.21-.586.21-1.089.147-1.193-.063-.105-.23-.168-.481-.293z" />
+                  </svg>
+                  <span>WhatsApp Inquiry</span>
+                </a>
+
+                <a
                   href="mailto:inquiry@aavritpackaging.com"
                   className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-[#FAF7F2] hover:bg-[#E4DED3]/40 text-[#202A2E] text-sm font-semibold border border-[#E4DED3] transition-colors"
                 >
@@ -371,19 +389,5 @@ async function ProductDetailContent({ params }: ProductPageProps) {
 
       <Footer />
     </div>
-  );
-}
-
-export default function ProductDetailPage(props: ProductPageProps) {
-  return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen bg-white flex items-center justify-center">
-          <div className="w-8 h-8 border-3 border-[#E97835] border-t-transparent rounded-full animate-spin" />
-        </div>
-      }
-    >
-      <ProductDetailContent {...props} />
-    </Suspense>
   );
 }

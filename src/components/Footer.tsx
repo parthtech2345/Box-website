@@ -226,14 +226,11 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
           <p>© 2026 AAVRIT PACKAGING. All Rights Reserved.</p>
           <div className="flex items-center gap-6">
-            <Link href="/privacy" className="hover:text-white transition-colors">
+            <Link href="/privacy-policy" className="hover:text-white transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="hover:text-white transition-colors">
-              Terms of Supply
-            </Link>
-            <Link href="/sitemap" className="hover:text-white transition-colors">
-              Sitemap
+            <Link href="/terms-and-conditions" className="hover:text-white transition-colors">
+              Terms & Conditions
             </Link>
           </div>
         </div>

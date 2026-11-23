@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ScrollToTop from "@/components/ScrollToTop";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 
 export const metadata: Metadata = {
   title: "AAVRIT PACKAGING | Industrial Corrugated Box Manufacturing India",
@@ -40,6 +41,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-[#F5F2EB] text-[#202A2E] font-sans selection:bg-[#E97835] selection:text-white">
         <ScrollToTop />
+        <FloatingWhatsApp />
         {children}
       </body>
     </html>
