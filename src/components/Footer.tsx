@@ -120,6 +120,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/machinery" className="hover:text-[#E97835] transition-colors">
+                  Machinery & Technology
+                </Link>
+              </li>
+              <li>
                 <Link href="#contact" className="hover:text-[#E97835] transition-colors">
                   Contact Us
                 </Link>

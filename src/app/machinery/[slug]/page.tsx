@@ -1,0 +1,112 @@
+import React from "react";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { MACHINERY_DATA } from "@/data/machineryData";
+
+import MachineryDetailBanner from "@/components/machinery/MachineryDetailBanner";
+import MachineryOverview from "@/components/machinery/MachineryOverview";
+import MachineryHowItWorks from "@/components/machinery/MachineryHowItWorks";
+import MachineryRole from "@/components/machinery/MachineryRole";
+import MachineryGallery from "@/components/machinery/MachineryGallery";
+import MachineryFAQs from "@/components/machinery/MachineryFAQs";
+import MachineryDetailCTA from "@/components/machinery/MachineryDetailCTA";
+
+interface MachineryDetailPageProps {
+  params: Promise<{
+    slug: string;
+  }>;
+}
+
+export async function generateStaticParams() {
+  return MACHINERY_DATA.map((machine) => ({
+    slug: machine.slug,
+  }));
+}
+
+export async function generateMetadata({
+  params,
+}: MachineryDetailPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const machine = MACHINERY_DATA.find((m) => m.slug === slug);
+
+  if (!machine) {
+    return {
+      title: "Machine Not Found | AAVRIT PACKAGING",
+    };
+  }
+
+  return {
+    title: machine.seo.title,
+    description: machine.seo.description,
+    openGraph: {
+      title: machine.seo.title,
+      description: machine.seo.description,
+      images: [
+        {
+          url: machine.image,
+          width: 1200,
+          height: 630,
+          alt: machine.name,
+        },
+      ],
+    },
+  };
+}
+
+export default async function MachineryDetailPage({
+  params,
+}: MachineryDetailPageProps) {
+  const { slug } = await params;
+  const machine = MACHINERY_DATA.find((m) => m.slug === slug);
+
+  if (!machine) {
+    notFound();
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col bg-[#FFFFFF] text-[#202A2E]">
+      <Header />
+      <main className="flex-1 w-full">
+        {/* 1. Common Machinery Banner with Breadcrumbs */}
+        <MachineryDetailBanner
+          name={machine.name}
+          category={machine.category}
+          shortDescription={machine.shortDescription}
+        />
+
+        {/* 2. Main Machinery Overview: Description Left + Image Right */}
+        <MachineryOverview machine={machine} />
+
+        {/* 3. How This Machine Works: 5–6 Checkpoints */}
+        <MachineryHowItWorks
+          steps={machine.workingSteps}
+          machineName={machine.name}
+        />
+
+        {/* 4. Role in Corrugated Box Manufacturing */}
+        <MachineryRole
+          rolePoints={machine.rolePoints}
+          machineName={machine.name}
+        />
+
+        {/* 5. Machine Image Gallery (Front, Working, Processing with Lightbox) */}
+        <MachineryGallery
+          gallery={machine.gallery}
+          machineName={machine.name}
+        />
+
+        {/* 6. Machine-Specific FAQs (5 relevant questions) */}
+        <MachineryFAQs
+          faqs={machine.faqs}
+          machineName={machine.name}
+        />
+
+        {/* 7. Final Contact CTA */}
+        <MachineryDetailCTA />
+      </main>
+      <Footer />
+    </div>
+  );
+}

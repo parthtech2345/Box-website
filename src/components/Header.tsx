@@ -215,6 +215,7 @@ export default function Header() {
               )}
             </Link>
 
+
             {/* Contact Link */}
             <Link
               href="/#contact"
@@ -329,6 +330,7 @@ export default function Header() {
             >
               Industries
             </Link>
+
 
             <Link
               href="/#contact"
