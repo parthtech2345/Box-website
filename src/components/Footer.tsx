@@ -125,6 +125,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/sustainability" className="hover:text-[#E97835] transition-colors">
+                  Sustainability
+                </Link>
+              </li>
+              <li>
                 <Link href="#contact" className="hover:text-[#E97835] transition-colors">
                   Contact Us
                 </Link>

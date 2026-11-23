@@ -185,10 +185,17 @@ export default function Sustainability() {
             </div>
 
             {/* Supporting Highlighted Editorial Statement below the GIF */}
-            <div className="p-4 sm:p-5 rounded-xl bg-[#FAF7F2] border-l-4 border-[#A65D32] border border-[#E4DED3]">
+            <div className="p-4 sm:p-5 rounded-xl bg-[#FAF7F2] border-l-4 border-[#A65D32] border border-[#E4DED3] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <p className="text-xs sm:text-sm text-[#493629] font-medium leading-relaxed italic">
                 “Thoughtful packaging starts with the right material, the right design and the right fit for every product.”
               </p>
+              <Link
+                href="/sustainability"
+                className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#78846A] hover:text-[#A65D32] shrink-0 transition-colors"
+              >
+                <span>Learn More</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
           </div>
         </div>

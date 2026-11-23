@@ -1,0 +1,9 @@
+export { default as SustainabilityHero } from "./SustainabilityHero";
+export { default as SustainabilityIntro } from "./SustainabilityIntro";
+export { default as CorrugatedDifference } from "./CorrugatedDifference";
+export { default as ResponsibleManufacturing } from "./ResponsibleManufacturing";
+export { default as SustainableSolutions } from "./SustainableSolutions";
+export { default as ReducingPackagingWaste } from "./ReducingPackagingWaste";
+export { default as SustainabilityVision } from "./SustainabilityVision";
+export { default as SustainabilityFAQs } from "./SustainabilityFAQs";
+export { default as SustainabilityCTA } from "./SustainabilityCTA";
