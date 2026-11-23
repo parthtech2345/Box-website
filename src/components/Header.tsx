@@ -215,6 +215,19 @@ export default function Header() {
               )}
             </Link>
 
+            {/* Contact Us Link */}
+            <Link
+              href="/contact"
+              className={`h-10 inline-flex items-center hover:text-[#E97835] transition-colors relative ${
+                pathname === "/contact" ? "text-[#E97835]" : ""
+              }`}
+            >
+              <span>Contact Us</span>
+              {pathname === "/contact" && (
+                <span className="absolute bottom-1 left-0 w-full h-0.5 bg-[#E97835] rounded-full" />
+              )}
+            </Link>
+
             {/* Blogs Link */}
             <Link
               href="/blogs"
@@ -227,42 +240,16 @@ export default function Header() {
                 <span className="absolute bottom-1 left-0 w-full h-0.5 bg-[#E97835] rounded-full" />
               )}
             </Link>
-
-            {/* Contact Link */}
-            <Link
-              href="/contact"
-              className={`h-10 inline-flex items-center hover:text-[#E97835] transition-colors relative ${
-                pathname === "/contact" ? "text-[#E97835]" : ""
-              }`}
-            >
-              <span>Contact</span>
-              {pathname === "/contact" && (
-                <span className="absolute bottom-1 left-0 w-full h-0.5 bg-[#E97835] rounded-full" />
-              )}
-            </Link>
           </div>
 
-          {/* Right Action: Contact / Phone & Request a Quote CTA */}
-          <div className="hidden lg:flex items-center gap-4 shrink-0">
-            {/* Phone quick call (as seen in reference pill) */}
-            <a
-              href="tel:+919876543210"
-              className={`flex items-center gap-1.5 text-xs font-semibold tracking-normal transition-colors ${
-                isTransparent
-                  ? "text-white/90 hover:text-white"
-                  : "text-[#62574D] hover:text-[#202A2E]"
-              }`}
-            >
-              <Phone className="w-3.5 h-3.5 text-[#E97835]" />
-              <span>+91 98765 43210</span>
-            </a>
-
-            {/* Rounded Pill CTA Button (Matching reference design) */}
+          {/* Right Action: Request a Quote CTA */}
+          <div className="hidden lg:flex items-center shrink-0">
+            {/* Rounded Pill CTA Button */}
             <Link
-              href="/contact"
+              href="/contact#inquiry-form"
               className="h-10 inline-flex items-center justify-center gap-2 px-6 bg-[#E97835] hover:bg-[#d46927] text-white text-xs font-bold tracking-wider uppercase rounded-full shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98]"
             >
-              <span>Contact Us</span>
+              <span>Request a Quote</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -349,6 +336,16 @@ export default function Header() {
             </Link>
 
             <Link
+              href="/contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`block py-2 text-sm font-bold uppercase tracking-wider hover:text-[#E97835] ${
+                pathname === "/contact" ? "text-[#E97835]" : "text-[#202A2E]"
+              }`}
+            >
+              Contact Us
+            </Link>
+
+            <Link
               href="/blogs"
               onClick={() => setMobileMenuOpen(false)}
               className={`block py-2 text-sm font-bold uppercase tracking-wider hover:text-[#E97835] ${
@@ -358,23 +355,13 @@ export default function Header() {
               Blogs
             </Link>
 
-            <Link
-              href="/contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className={`block py-2 text-sm font-bold uppercase tracking-wider hover:text-[#E97835] ${
-                pathname === "/contact" ? "text-[#E97835]" : "text-[#202A2E]"
-              }`}
-            >
-              Contact
-            </Link>
-
             <div className="pt-2">
               <Link
-                href="/contact"
+                href="/contact#inquiry-form"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block text-center py-2.5 bg-[#E97835] hover:bg-[#d46927] text-white font-bold text-xs uppercase tracking-wider rounded-full shadow-sm"
               >
-                Contact Us
+                Request a Quote
               </Link>
             </div>
           </div>

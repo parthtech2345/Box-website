@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
@@ -71,7 +71,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogDetailPage({ params }: PageProps) {
+// Internal async content component reading URL params behind a Suspense boundary
+// This adheres to Next.js Cache Components / Partial Prefetching requirements
+async function BlogDetailContent({ params }: PageProps) {
   const { slug } = await params;
   const blog = getBlogBySlug(slug);
 
@@ -132,23 +134,36 @@ export default async function BlogDetailPage({ params }: PageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2] text-[#202A2E] flex flex-col">
+    <>
       {/* JSON-LD Structured Data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* 1. Global Navigation */}
-      <Header />
-
       <main className="flex-1 w-full">
-        {/* 2. Blog Detail Hero */}
-        <BlogDetailHero blog={blog} />
+        {/* 1. Blog Detail Hero (Clean banner with small heading and breadcrumbs) */}
+        <BlogDetailHero />
 
-        {/* 3. Main Editorial Content Area */}
-        <div className="w-full bg-[#FAF7F2] py-12 sm:py-14">
+        {/* 2. Main Editorial Content Area */}
+        <div className="w-full bg-[#FAF7F2] py-12 sm:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Article Heading & Metadata */}
+            <div className="mb-8 max-w-4xl">
+              <div className="flex flex-wrap items-center gap-3 text-xs text-[#62574D] mb-3">
+                <span className="px-3 py-1 rounded-full bg-[#A65D32]/10 text-[#A65D32] border border-[#A65D32]/25 font-bold uppercase tracking-wider text-[11px]">
+                  {blog.category}
+                </span>
+                <span>•</span>
+                <span>{blog.publishedDate}</span>
+                <span>•</span>
+                <span>{blog.readTime}</span>
+              </div>
+              <h1 className="font-heading font-bold text-2xl sm:text-3xl lg:text-4xl text-[#202A2E] leading-tight">
+                {blog.title}
+              </h1>
+            </div>
+
             {/* Large Cover Image */}
             <BlogCoverImage
               src={blog.coverImage}
@@ -240,10 +255,11 @@ export default async function BlogDetailPage({ params }: PageProps) {
                                 {row.map((cell, cIdx) => (
                                   <td
                                     key={cIdx}
-                                    className={`p-3 sm:p-3.5 text-[#62574D] ${cIdx === 0
+                                    className={`p-3 sm:p-3.5 text-[#62574D] ${
+                                      cIdx === 0
                                         ? "font-semibold text-[#202A2E]"
                                         : ""
-                                      }`}
+                                    }`}
                                   >
                                     {cell}
                                   </td>
@@ -278,8 +294,29 @@ export default async function BlogDetailPage({ params }: PageProps) {
           </div>
         </div>
       </main>
+    </>
+  );
+}
 
-      {/* 5. Global Footer */}
+// Page Shell keeping global layout in the App Shell while URL data streams within Suspense
+export default function BlogDetailPage({ params }: PageProps) {
+  return (
+    <div className="min-h-screen bg-[#FAF7F2] text-[#202A2E] flex flex-col">
+      {/* 1. Global Navigation in App Shell */}
+      <Header />
+
+      {/* 2. Dynamic Article Content wrapped in Suspense */}
+      <Suspense
+        fallback={
+          <div className="flex-1 w-full min-h-[60vh] bg-[#FAF7F2] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full border-2 border-[#A65D32] border-t-transparent animate-spin" />
+          </div>
+        }
+      >
+        <BlogDetailContent params={params} />
+      </Suspense>
+
+      {/* 3. Global Footer in App Shell */}
       <Footer />
     </div>
   );
