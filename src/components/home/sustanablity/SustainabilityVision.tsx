@@ -52,7 +52,7 @@ export default function SustainabilityVision() {
   return (
     <section
       ref={sectionRef}
-      className="w-full bg-[#FAF7F2] py-14 sm:py-16 lg:py-20 border-b border-[#E4DED3] relative overflow-hidden"
+      className="w-full bg-[#FAF7F2] py-14 sm:py-14 lg:py-14 border-b border-[#E4DED3] relative overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div

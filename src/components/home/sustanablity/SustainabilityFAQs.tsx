@@ -73,7 +73,7 @@ export default function SustainabilityFAQs() {
   return (
     <section
       ref={sectionRef}
-      className="w-full bg-[#FFFFFF] py-14 sm:py-16 lg:py-20 border-b border-[#E4DED3]"
+      className="w-full bg-[#FFFFFF] py-14 sm:py-14 lg:py-14 border-b border-[#E4DED3]"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header 2-Column Split */}
@@ -106,11 +106,10 @@ export default function SustainabilityFAQs() {
             return (
               <div
                 key={index}
-                className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
-                  isOpen
-                    ? "bg-[#FAF7F2] border-[#78846A]/50 shadow-xs"
-                    : "bg-white border-[#E4DED3] hover:border-[#78846A]/40"
-                }`}
+                className={`rounded-2xl border transition-all duration-200 overflow-hidden ${isOpen
+                  ? "bg-[#FAF7F2] border-[#78846A]/50 shadow-xs"
+                  : "bg-white border-[#E4DED3] hover:border-[#78846A]/40"
+                  }`}
               >
                 <button
                   type="button"
@@ -125,11 +124,10 @@ export default function SustainabilityFAQs() {
                     {faq.question}
                   </span>
                   <div
-                    className={`w-8 h-8 rounded-full shrink-0 flex items-center justify-center transition-transform duration-300 ${
-                      isOpen
-                        ? "bg-[#78846A] text-white rotate-180"
-                        : "bg-[#FAF7F2] text-[#202A2E] border border-[#E4DED3]"
-                    }`}
+                    className={`w-8 h-8 rounded-full shrink-0 flex items-center justify-center transition-transform duration-300 ${isOpen
+                      ? "bg-[#78846A] text-white rotate-180"
+                      : "bg-[#FAF7F2] text-[#202A2E] border border-[#E4DED3]"
+                      }`}
                   >
                     <ChevronDown className="w-4 h-4" />
                   </div>

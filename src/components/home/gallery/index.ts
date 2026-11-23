@@ -1,0 +1,10 @@
+export { default as GalleryHero } from "./GalleryHero";
+export { default as GalleryIntro } from "./GalleryIntro";
+export { default as GalleryProducts } from "./GalleryProducts";
+export { default as GalleryCustom } from "./GalleryCustom";
+export { default as GalleryMachinery } from "./GalleryMachinery";
+export { default as GalleryManufacturing } from "./GalleryManufacturing";
+export { default as GalleryIndustries } from "./GalleryIndustries";
+export { default as GalleryLightbox } from "./GalleryLightbox";
+export { default as GalleryCTA } from "./GalleryCTA";
+export { default as GalleryClient } from "./GalleryClient";
