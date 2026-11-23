@@ -215,6 +215,18 @@ export default function Header() {
               )}
             </Link>
 
+            {/* Blogs Link */}
+            <Link
+              href="/blogs"
+              className={`h-10 inline-flex items-center hover:text-[#E97835] transition-colors relative ${
+                pathname.startsWith("/blogs") ? "text-[#E97835]" : ""
+              }`}
+            >
+              <span>Blogs</span>
+              {pathname.startsWith("/blogs") && (
+                <span className="absolute bottom-1 left-0 w-full h-0.5 bg-[#E97835] rounded-full" />
+              )}
+            </Link>
 
             {/* Contact Link */}
             <Link
@@ -336,6 +348,15 @@ export default function Header() {
               Industries
             </Link>
 
+            <Link
+              href="/blogs"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`block py-2 text-sm font-bold uppercase tracking-wider hover:text-[#E97835] ${
+                pathname.startsWith("/blogs") ? "text-[#E97835]" : "text-[#202A2E]"
+              }`}
+            >
+              Blogs
+            </Link>
 
             <Link
               href="/contact"
