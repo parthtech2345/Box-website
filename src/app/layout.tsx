@@ -6,6 +6,17 @@ export const metadata: Metadata = {
   title: "AAVRIT PACKAGING | Industrial Corrugated Box Manufacturing India",
   description:
     "AAVRIT PACKAGING – Protection in Every Layer. Engineered corrugated boxes, heavy-duty 3/5/7-ply industrial packaging, die-cut cartons, and sustainable kraft solutions manufactured in India.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/icon.png", sizes: "48x48", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
 };
 
 export default function RootLayout({
