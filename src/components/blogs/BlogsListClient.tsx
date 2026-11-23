@@ -74,7 +74,7 @@ export default function BlogsListClient({
   };
 
   return (
-    <section ref={sectionRef} className="w-full bg-[#FAF7F2] py-12 sm:py-16">
+    <section ref={sectionRef} className="w-full bg-[#FAF7F2] py-12 sm:py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* =========================================================================
             1. Featured Blog Section (Only visible when no specific search/filter is active)
@@ -143,11 +143,10 @@ export default function BlogsListClient({
                   key={cat}
                   type="button"
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-4 py-2 rounded-full text-xs font-bold tracking-wider transition-all duration-200 shrink-0 cursor-pointer ${
-                    isActive
+                  className={`px-4 py-2 rounded-full text-xs font-bold tracking-wider transition-all duration-200 shrink-0 cursor-pointer ${isActive
                       ? "bg-[#202A2E] text-white shadow-xs"
                       : "bg-[#FAF7F2] text-[#62574D] hover:bg-[#E4DED3]/60 hover:text-[#202A2E] border border-[#E4DED3]"
-                  }`}
+                    }`}
                 >
                   {cat}
                 </button>

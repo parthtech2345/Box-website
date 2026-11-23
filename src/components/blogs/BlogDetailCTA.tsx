@@ -36,7 +36,7 @@ export default function BlogDetailCTA() {
   return (
     <section
       ref={ctaRef}
-      className="w-full bg-[#FAF7F2] py-12 sm:py-16 border-t border-[#E4DED3] relative overflow-hidden"
+      className="w-full bg-[#FAF7F2] py-12 sm:py-14 border-t border-[#E4DED3] relative overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="bg-[#202A2E] rounded-3xl p-8 sm:p-12 text-white border border-[#344247] shadow-xl relative overflow-hidden">
