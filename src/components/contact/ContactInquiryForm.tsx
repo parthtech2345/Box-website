@@ -517,7 +517,7 @@ export default function ContactInquiryForm() {
               <div>
                 <div className="relative w-full aspect-[16/11] rounded-2xl overflow-hidden bg-[#FAF7F2] mb-4">
                   <Image
-                    src="/custom pack/Minimal Kraft Packaging Arrangement.png"
+                    src="/custom pack/custom-corrugated-solutions.png"
                     alt="AAVRIT PACKAGING Custom Kraft Packaging Solutions"
                     fill
                     sizes="(max-width: 1024px) 100vw, 450px"

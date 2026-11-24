@@ -95,13 +95,13 @@ const GALLERY_SECTIONS: GallerySectionData[] = [
     items: [
       {
         id: "cust-1",
-        title: "Minimal Kraft Packaging Arrangement",
-        image: "/custom pack/Minimal Kraft Packaging Arrangement.png",
+        title: "Precision Corrugated Box Solutions",
+        image: "/custom pack/custom-corrugated-solutions.png",
         category: "Custom Packaging",
-        description: "Bespoke engineered kraft corrugated packaging designed for direct-to-consumer presentation and branded retail shipments.",
+        description: "Bespoke engineered kraft corrugated cartons and master shippers designed for direct-to-consumer and industrial freight.",
         keypoints: [
           "Tailored internal dimensions for exact fit",
-          "Natural kraft aesthetic with zero void-fill",
+          "High-burst strength kraft board with zero void-fill",
           "Optimized package weight and transport freight",
         ],
         link: "/custom-packaging",

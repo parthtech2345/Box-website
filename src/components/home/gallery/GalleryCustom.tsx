@@ -16,10 +16,10 @@ interface CustomCard {
 
 const CUSTOM_DATA: CustomCard[] = [
   {
-    title: "Minimal Kraft Packaging Arrangement",
-    description: "Bespoke engineered kraft corrugated packaging designed for direct-to-consumer presentation and branded retail shipments.",
-    image: "/custom pack/Minimal Kraft Packaging Arrangement.png",
-    tag: "Bespoke Kraft",
+    title: "Precision Corrugated Box Solutions",
+    description: "Bespoke engineered kraft corrugated cartons and master shippers designed for direct-to-consumer and industrial freight.",
+    image: "/custom pack/custom-corrugated-solutions.png",
+    tag: "Bespoke Corrugated",
   },
   {
     title: "Custom Prototyped Box Formats",
