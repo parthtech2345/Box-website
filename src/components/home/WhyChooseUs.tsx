@@ -12,6 +12,7 @@ import {
   ArrowRight,
   CheckCircle2,
 } from "lucide-react";
+import Card3DTilt from "@/components/ui/Card3DTilt";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -173,35 +174,34 @@ export default function WhyChooseUs() {
             const Icon = item.icon;
 
             return (
-              <div
-                key={item.number}
-                className="relative bg-[#FFFFFF] rounded-2xl p-6 sm:p-7 border border-[#E4DED3] shadow-xs hover:border-[#D1B48C] hover:shadow-xl transition-all duration-300 ease-out transform hover:-translate-y-1 group flex flex-col justify-between"
-              >
-                {/* Top Header: Icon + Number */}
-                <div>
-                  <div className="flex items-center justify-between mb-5">
-                    {/* Warm Light-Beige Icon Container */}
-                    <div className="w-12 h-12 rounded-xl bg-[#FAF7F2] border border-[#E4DED3] flex items-center justify-center text-[#A65D32] group-hover:bg-[#493629] group-hover:text-white group-hover:border-[#493629] transition-all duration-300 shadow-2xs">
-                      <Icon className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+              <Card3DTilt key={item.number} className="h-full rounded-2xl">
+                <div className="relative h-full bg-[#FFFFFF] rounded-2xl p-6 sm:p-7 border border-[#E4DED3] shadow-xs hover:border-[#D1B48C] hover:shadow-xl transition-all duration-300 ease-out group flex flex-col justify-between">
+                  {/* Top Header: Icon + Number */}
+                  <div>
+                    <div className="flex items-center justify-between mb-5">
+                      {/* Warm Light-Beige Icon Container */}
+                      <div className="w-12 h-12 rounded-xl bg-[#FAF7F2] border border-[#E4DED3] flex items-center justify-center text-[#A65D32] group-hover:bg-[#493629] group-hover:text-white group-hover:border-[#493629] transition-all duration-300 shadow-2xs">
+                        <Icon className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+                      </div>
+
+                      {/* Sequential Number */}
+                      <span className="font-heading font-bold text-sm tracking-widest text-[#A65D32]/70 group-hover:text-[#A65D32] transition-colors">
+                        {item.number}
+                      </span>
                     </div>
 
-                    {/* Sequential Number */}
-                    <span className="font-heading font-bold text-sm tracking-widest text-[#A65D32]/70 group-hover:text-[#A65D32] transition-colors">
-                      {item.number}
-                    </span>
+                    {/* Title */}
+                    <h3 className="font-heading font-bold text-xl text-[#202A2E] mb-2.5 group-hover:text-[#A65D32] transition-colors duration-200">
+                      {item.title}
+                    </h3>
+
+                    {/* Description */}
+                    <p className="text-sm text-[#62574D] font-normal leading-relaxed">
+                      {item.description}
+                    </p>
                   </div>
-
-                  {/* Title */}
-                  <h3 className="font-heading font-bold text-xl text-[#202A2E] mb-2.5 group-hover:text-[#A65D32] transition-colors duration-200">
-                    {item.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-sm text-[#62574D] font-normal leading-relaxed">
-                    {item.description}
-                  </p>
                 </div>
-              </div>
+              </Card3DTilt>
             );
           })}
         </div>

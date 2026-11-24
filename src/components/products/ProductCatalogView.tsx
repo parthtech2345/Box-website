@@ -14,6 +14,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { MAIN_CATEGORIES, ALL_PRODUCTS } from "@/data/productsData";
+import Card3DTilt from "@/components/ui/Card3DTilt";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -71,6 +72,27 @@ function ProductCatalogContent() {
   const clearSearch = () => {
     setSearchQuery("");
   };
+
+  // Fluid entrance animation when category or search query changes
+  useEffect(() => {
+    if (!productGridRef.current) return;
+    const cards = productGridRef.current.children;
+    if (cards.length === 0) return;
+
+    gsap.fromTo(
+      cards,
+      { opacity: 0, y: 16, scale: 0.98 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.35,
+        stagger: 0.03,
+        ease: "power2.out",
+        clearProps: "transform,opacity",
+      }
+    );
+  }, [selectedCategory, searchQuery]);
 
   // GSAP ScrollTrigger Animations
   useEffect(() => {
@@ -481,34 +503,35 @@ function ProductCatalogContent() {
                   className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"
                 >
                   {filteredProducts.map((p) => (
-                    <Link
-                      key={p.id}
-                      href={`/products/${p.slug}`}
-                      className="group flex flex-col bg-white rounded-xl border border-[#E4DED3] overflow-hidden shadow-xs hover:border-[#D1B48C] hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 cursor-pointer block"
-                    >
-                      {/* Product Photography */}
-                      <div className="relative w-full aspect-[4/3] bg-[#FAF7F2] overflow-hidden">
-                        <Image
-                          src={p.image}
-                          alt={`${p.name} - AAVRIT PACKAGING`}
-                          fill
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
-                        />
-                      </div>
-
-                      {/* Card Content: Title on first line, View Details button below */}
-                      <div className="p-4 sm:p-5 flex flex-col justify-between flex-1 gap-3.5 bg-white border-t border-[#E4DED3]/60">
-                        <h3 className="font-heading font-bold text-base sm:text-lg text-[#202A2E] group-hover:text-[#A65D32] transition-colors leading-snug">
-                          {p.name}
-                        </h3>
-
-                        <div className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-lg bg-[#493629] text-white text-xs sm:text-sm font-semibold tracking-wide group-hover:bg-[#A65D32] transition-colors duration-200 shadow-xs">
-                          <span>View Details</span>
-                          <ChevronRight className="w-4 h-4 text-[#D1B48C] group-hover:translate-x-0.5 transition-transform" />
+                    <Card3DTilt key={p.id} className="h-full rounded-xl">
+                      <Link
+                        href={`/products/${p.slug}`}
+                        className="group flex flex-col h-full bg-white rounded-xl border border-[#E4DED3] overflow-hidden shadow-xs hover:border-[#D1B48C] hover:shadow-lg transition-all duration-300 cursor-pointer block"
+                      >
+                        {/* Product Photography */}
+                        <div className="relative w-full aspect-[4/3] bg-[#FAF7F2] overflow-hidden">
+                          <Image
+                            src={p.image}
+                            alt={`${p.name} - AAVRIT PACKAGING`}
+                            fill
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
+                          />
                         </div>
-                      </div>
-                    </Link>
+
+                        {/* Card Content: Title on first line, View Details button below */}
+                        <div className="p-4 sm:p-5 flex flex-col justify-between flex-1 gap-3.5 bg-white border-t border-[#E4DED3]/60">
+                          <h3 className="font-heading font-bold text-base sm:text-lg text-[#202A2E] group-hover:text-[#A65D32] transition-colors leading-snug">
+                            {p.name}
+                          </h3>
+
+                          <div className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-lg bg-[#493629] text-white text-xs sm:text-sm font-semibold tracking-wide group-hover:bg-[#A65D32] transition-colors duration-200 shadow-xs">
+                            <span>View Details</span>
+                            <ChevronRight className="w-4 h-4 text-[#D1B48C] group-hover:translate-x-0.5 transition-transform" />
+                          </div>
+                        </div>
+                      </Link>
+                    </Card3DTilt>
                   ))}
                 </div>
               )}

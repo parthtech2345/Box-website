@@ -4,6 +4,7 @@ import React, { useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import Card3DTilt from "@/components/ui/Card3DTilt";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -151,39 +152,40 @@ export default function ProductCategories() {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"
         >
           {CATEGORIES.map((cat) => (
-            <Link
-              key={cat.id}
-              href={cat.href}
-              className="group flex flex-col bg-[#FFFFFF] rounded-xl border border-[#E4DED3] overflow-hidden shadow-xs hover:border-[#D1B48C] hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer block"
-            >
-              {/* Image Container with compact aspect ratio (4/3) and NO text overlay */}
-              <div className="relative w-full aspect-[4/3] bg-[#FAF7F2] overflow-hidden">
-                <Image
-                  src={cat.image}
-                  alt={`${cat.title} - Natural kraft corrugated cardboard packaging`}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
-                />
-              </div>
+            <Card3DTilt key={cat.id} className="h-full rounded-xl">
+              <Link
+                href={cat.href}
+                className="group flex flex-col h-full bg-[#FFFFFF] rounded-xl border border-[#E4DED3] overflow-hidden shadow-xs hover:border-[#D1B48C] hover:shadow-lg transition-all duration-300 cursor-pointer block"
+              >
+                {/* Image Container with compact aspect ratio (4/3) and NO text overlay */}
+                <div className="relative w-full aspect-[4/3] bg-[#FAF7F2] overflow-hidden">
+                  <Image
+                    src={cat.image}
+                    alt={`${cat.title} - Natural kraft corrugated cardboard packaging`}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
+                  />
+                </div>
 
-              {/* Card Footer: Category Name, Explore Label & Arrow Action Button */}
-              <div className="p-4 sm:p-5 flex flex-col justify-between flex-1 gap-4 bg-[#FFFFFF] border-t border-[#E4DED3]/60">
-                <h3 className="font-heading font-bold text-lg sm:text-xl text-[#202A2E] group-hover:text-[#A65D32] transition-colors leading-snug">
-                  {cat.title}
-                </h3>
+                {/* Card Footer: Category Name, Explore Label & Arrow Action Button */}
+                <div className="p-4 sm:p-5 flex flex-col justify-between flex-1 gap-4 bg-[#FFFFFF] border-t border-[#E4DED3]/60">
+                  <h3 className="font-heading font-bold text-lg sm:text-xl text-[#202A2E] group-hover:text-[#A65D32] transition-colors leading-snug">
+                    {cat.title}
+                  </h3>
 
-                <div className="flex items-center justify-between pt-2 border-t border-[#E4DED3]/40">
-                  <span className="text-xs font-semibold text-[#8C7E72] group-hover:text-[#202A2E] transition-colors">
-                    Explore Category
-                  </span>
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#FAF7F2] group-hover:bg-[#493629] text-[#A65D32] group-hover:text-white transition-all duration-200 border border-[#E4DED3] group-hover:border-[#493629]">
-                    <span className="text-xs font-bold">Explore</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-[#A65D32] group-hover:text-white group-hover:translate-x-0.5 transition-all" />
+                  <div className="flex items-center justify-between pt-2 border-t border-[#E4DED3]/40">
+                    <span className="text-xs font-semibold text-[#8C7E72] group-hover:text-[#202A2E] transition-colors">
+                      Explore Category
+                    </span>
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#FAF7F2] group-hover:bg-[#493629] text-[#A65D32] group-hover:text-white transition-all duration-200 border border-[#E4DED3] group-hover:border-[#493629]">
+                      <span className="text-xs font-bold">Explore</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-[#A65D32] group-hover:text-white group-hover:translate-x-0.5 transition-all" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </Card3DTilt>
           ))}
         </div>
       </div>

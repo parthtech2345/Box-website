@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Card3DTilt from "@/components/ui/Card3DTilt";
 
 // --- TYPES ---
 interface PlyOption {
@@ -627,41 +628,42 @@ export default function BoxConstruction() {
           {/* Ply Cards - Horizontal Comparison on Desktop, Stack on Mobile */}
           <div ref={plyCardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
             {PLY_OPTIONS.map((ply) => (
-              <div
-                key={ply.id}
-                onMouseEnter={() => setActivePlyTab(ply.id)}
-                className={`bg-[#FAF7F2] rounded-xl border transition-all duration-300 flex flex-col overflow-hidden ${activePlyTab === ply.id
-                  ? "border-[#A65D32] shadow-md -translate-y-1"
-                  : "border-[#E4DED3] hover:border-[#A65D32]/50 hover:shadow-sm"
-                  }`}
-              >
-                {/* Visual Image Header (Clean cross-section without overlapping badge text) */}
-                <div className="relative w-full h-48 sm:h-52 bg-white p-3 border-b border-[#E4DED3]">
-                  <div className="relative w-full h-full rounded-lg overflow-hidden">
-                    <Image
-                      src={ply.image}
-                      alt={`${ply.name} cross section view`}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover object-center"
-                    />
-                  </div>
-                </div>
-
-                {/* Card Content */}
-                <div className="p-6 flex-1 flex flex-col justify-start">
-                  <h4 className="font-heading font-bold text-xl text-[#202A2E] mb-1">
-                    {ply.name}
-                  </h4>
-                  <div className="inline-block text-xs font-semibold text-[#A65D32] mb-3 bg-white px-2.5 py-0.5 rounded border border-[#E4DED3] self-start">
-                    Construction: {ply.construction}
+              <Card3DTilt key={ply.id} className="h-full rounded-xl">
+                <div
+                  onMouseEnter={() => setActivePlyTab(ply.id)}
+                  className={`h-full bg-[#FAF7F2] rounded-xl border transition-all duration-300 flex flex-col overflow-hidden ${activePlyTab === ply.id
+                    ? "border-[#A65D32] shadow-md"
+                    : "border-[#E4DED3] hover:border-[#A65D32]/50 hover:shadow-sm"
+                    }`}
+                >
+                  {/* Visual Image Header (Clean cross-section without overlapping badge text) */}
+                  <div className="relative w-full h-48 sm:h-52 bg-white p-3 border-b border-[#E4DED3]">
+                    <div className="relative w-full h-full rounded-lg overflow-hidden">
+                      <Image
+                        src={ply.image}
+                        alt={`${ply.name} cross section view`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className="object-cover object-center"
+                      />
+                    </div>
                   </div>
 
-                  <p className="text-sm text-[#62574D] leading-relaxed">
-                    {ply.description}
-                  </p>
+                  {/* Card Content */}
+                  <div className="p-6 flex-1 flex flex-col justify-start">
+                    <h4 className="font-heading font-bold text-xl text-[#202A2E] mb-1">
+                      {ply.name}
+                    </h4>
+                    <div className="inline-block text-xs font-semibold text-[#A65D32] mb-3 bg-white px-2.5 py-0.5 rounded border border-[#E4DED3] self-start">
+                      Construction: {ply.construction}
+                    </div>
+
+                    <p className="text-sm text-[#62574D] leading-relaxed">
+                      {ply.description}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </Card3DTilt>
             ))}
           </div>
         </div>

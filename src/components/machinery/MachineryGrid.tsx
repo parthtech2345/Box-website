@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { MACHINERY_DATA } from "@/data/machineryData";
+import Card3DTilt from "@/components/ui/Card3DTilt";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -98,34 +99,35 @@ export default function MachineryGrid() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7"
         >
           {MACHINERY_DATA.map((machine) => (
-            <Link
-              key={machine.id}
-              href={`/machinery/${machine.slug}`}
-              className="group flex flex-col bg-white rounded-2xl border border-[#E4DED3] overflow-hidden shadow-xs hover:border-[#A65D32] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer block"
-            >
-              {/* Machine Image (Clean, No Text Overlay) */}
-              <div className="relative w-full aspect-[16/10] bg-[#FAF7F2] overflow-hidden">
-                <Image
-                  src={machine.image}
-                  alt={`${machine.name} - AAVRIT PACKAGING`}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
-                />
-              </div>
-
-              {/* Card Body: Machine Headline & Explore Button Only */}
-              <div className="p-4 sm:p-5 flex items-center justify-between gap-3 bg-white">
-                <h3 className="font-heading font-bold text-base sm:text-lg text-[#202A2E] group-hover:text-[#A65D32] transition-colors leading-snug">
-                  {machine.name}
-                </h3>
-
-                <div className="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#FAF7F2] group-hover:bg-[#493629] text-[#A65D32] group-hover:text-white transition-all duration-200 border border-[#E8D5B8] group-hover:border-[#493629]">
-                  <span className="text-xs font-bold">Explore</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            <Card3DTilt key={machine.id} className="h-full rounded-2xl">
+              <Link
+                href={`/machinery/${machine.slug}`}
+                className="group flex flex-col h-full bg-white rounded-2xl border border-[#E4DED3] overflow-hidden shadow-xs hover:border-[#A65D32] hover:shadow-xl transition-all duration-300 cursor-pointer block"
+              >
+                {/* Machine Image (Clean, No Text Overlay) */}
+                <div className="relative w-full aspect-[16/10] bg-[#FAF7F2] overflow-hidden">
+                  <Image
+                    src={machine.image}
+                    alt={`${machine.name} - AAVRIT PACKAGING`}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+                  />
                 </div>
-              </div>
-            </Link>
+
+                {/* Card Body: Machine Headline & Explore Button Only */}
+                <div className="p-4 sm:p-5 flex items-center justify-between gap-3 bg-white">
+                  <h3 className="font-heading font-bold text-base sm:text-lg text-[#202A2E] group-hover:text-[#A65D32] transition-colors leading-snug">
+                    {machine.name}
+                  </h3>
+
+                  <div className="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#FAF7F2] group-hover:bg-[#493629] text-[#A65D32] group-hover:text-white transition-all duration-200 border border-[#E8D5B8] group-hover:border-[#493629]">
+                    <span className="text-xs font-bold">Explore</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                  </div>
+                </div>
+              </Link>
+            </Card3DTilt>
           ))}
         </div>
       </div>

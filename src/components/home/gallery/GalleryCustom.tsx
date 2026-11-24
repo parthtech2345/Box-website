@@ -3,6 +3,7 @@
 import React, { useRef, useEffect } from "react";
 import Image from "next/image";
 import { ZoomIn } from "lucide-react";
+import Card3DTilt from "@/components/ui/Card3DTilt";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -108,40 +109,41 @@ export default function GalleryCustom({ onSelectImage }: GalleryCustomProps) {
         {/* 4 Cards Grid */}
         <div ref={cardsRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {CUSTOM_DATA.map((item, idx) => (
-            <div
-              key={idx}
-              onClick={() => onSelectImage({ ...item, category: "Custom Packaging" })}
-              className="gallery-card group bg-white rounded-2xl border border-[#E4DED3] hover:border-[#A65D32] overflow-hidden shadow-2xs hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col justify-between"
-            >
-              <div>
-                <div className="relative w-full aspect-[4/3] bg-[#FAF7F2] overflow-hidden">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    className="object-cover group-hover:scale-106 transition-transform duration-500 ease-out"
-                  />
-                  <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-[#202A2E]/70 hover:bg-[#E97835] text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <ZoomIn className="w-4 h-4" />
+            <Card3DTilt key={idx} className="h-full rounded-2xl">
+              <div
+                onClick={() => onSelectImage({ ...item, category: "Custom Packaging" })}
+                className="gallery-card group h-full bg-white rounded-2xl border border-[#E4DED3] hover:border-[#A65D32] overflow-hidden shadow-2xs hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col justify-between"
+              >
+                <div>
+                  <div className="relative w-full aspect-[4/3] bg-[#FAF7F2] overflow-hidden">
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover group-hover:scale-106 transition-transform duration-500 ease-out"
+                    />
+                    <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-[#202A2E]/70 hover:bg-[#E97835] text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ZoomIn className="w-4 h-4" />
+                    </div>
+                    <div className="absolute top-3 left-3">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#202A2E] bg-white/90 px-2 py-0.5 rounded border border-[#E4DED3]">
+                        {item.tag}
+                      </span>
+                    </div>
                   </div>
-                  <div className="absolute top-3 left-3">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#202A2E] bg-white/90 px-2 py-0.5 rounded border border-[#E4DED3]">
-                      {item.tag}
-                    </span>
-                  </div>
-                </div>
 
-                <div className="p-5">
-                  <h3 className="font-heading font-bold text-base text-[#202A2E] mb-2 group-hover:text-[#A65D32] transition-colors leading-snug">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-[#62574D] leading-relaxed">
-                    {item.description}
-                  </p>
+                  <div className="p-5">
+                    <h3 className="font-heading font-bold text-base text-[#202A2E] mb-2 group-hover:text-[#A65D32] transition-colors leading-snug">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[#62574D] leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Card3DTilt>
           ))}
         </div>
       </div>

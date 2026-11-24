@@ -4,6 +4,9 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, Check, Award, Users, Package, MapPin } from "lucide-react";
+import Card3DTilt from "@/components/ui/Card3DTilt";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export interface StatisticItem {
   id: string;
@@ -56,59 +59,57 @@ const STATISTICS_DATA: StatisticItem[] = [
 ];
 
 export default function AboutUs() {
-  const [hasAnimated, setHasAnimated] = useState(false);
   const [counts, setCounts] = useState<{ [key: string]: number }>({});
   const statsSectionRef = useRef<HTMLDivElement | null>(null);
 
-  // Animated Counter implementation with IntersectionObserver
+  // Animated Counter implementation with GSAP & ScrollTrigger
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting && !hasAnimated) {
-          setHasAnimated(true);
+    if (typeof window === "undefined" || !statsSectionRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
 
-          STATISTICS_DATA.forEach((stat) => {
-            if (typeof stat.value === "number") {
-              const target = stat.value;
-              const duration = 1800; // 1.8s
-              const frameRate = 30;
-              const totalFrames = Math.round((duration / 1000) * frameRate);
-              let frame = 0;
+    const ctx = gsap.context(() => {
+      const cards = statsSectionRef.current?.children;
+      if (cards) {
+        gsap.fromTo(
+          cards,
+          { opacity: 0, y: 35, scale: 0.95 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: statsSectionRef.current,
+              start: "top 85%",
+              once: true,
+              onEnter: () => {
+                STATISTICS_DATA.forEach((stat) => {
+                  if (typeof stat.value === "number") {
+                    const counter = { val: 0 };
+                    gsap.to(counter, {
+                      val: stat.value,
+                      duration: 2.2,
+                      ease: "power2.out",
+                      onUpdate: () => {
+                        setCounts((prev) => ({
+                          ...prev,
+                          [stat.id]: Math.round(counter.val),
+                        }));
+                      },
+                    });
+                  }
+                });
+              },
+            },
+          }
+        );
+      }
+    });
 
-              const counterInterval = setInterval(() => {
-                frame++;
-                const progress = frame / totalFrames;
-                // Ease-out quad
-                const currentCount = Math.round(target * (1 - Math.pow(1 - progress, 2)));
-
-                setCounts((prev) => ({
-                  ...prev,
-                  [stat.id]: currentCount,
-                }));
-
-                if (frame >= totalFrames) {
-                  clearInterval(counterInterval);
-                  setCounts((prev) => ({
-                    ...prev,
-                    [stat.id]: target,
-                  }));
-                }
-              }, 1000 / frameRate);
-            }
-          });
-        }
-      },
-      { threshold: 0.25 }
-    );
-
-    const el = statsSectionRef.current;
-    if (el) observer.observe(el);
-
-    return () => {
-      if (el) observer.unobserve(el);
-    };
-  }, [hasAnimated]);
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section
@@ -208,32 +209,31 @@ export default function AboutUs() {
             const Icon = stat.icon;
 
             return (
-              <div
-                key={stat.id}
-                className="bg-[#F5F2EB]/60 hover:bg-[#F5F2EB] rounded-2xl border border-[#E4DED3] hover:border-[#D1B48C] p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-md group relative overflow-hidden"
-              >
-                {/* Subtle top accent bar */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-[#E4DED3] group-hover:bg-[#E97835] transition-colors" />
+              <Card3DTilt key={stat.id} className="h-full rounded-2xl">
+                <div className="h-full bg-[#F5F2EB]/60 hover:bg-[#F5F2EB] rounded-2xl border border-[#E4DED3] hover:border-[#D1B48C] p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-md group relative overflow-hidden">
+                  {/* Subtle top accent bar */}
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-[#E4DED3] group-hover:bg-[#E97835] transition-colors" />
 
-                <div>
-                  {/* Large Numerical Counter in Barlow Semi Condensed */}
-                  <div className="font-heading font-bold text-4xl sm:text-5xl text-[#E97835] tracking-tight leading-none mb-3">
-                    {displayValue}
+                  <div>
+                    {/* Large Numerical Counter in Barlow Semi Condensed */}
+                    <div className="font-heading font-bold text-4xl sm:text-5xl text-[#E97835] tracking-tight leading-none mb-3">
+                      {displayValue}
+                    </div>
+
+                    {/* Primary Label in Charcoal */}
+                    <div className="font-heading font-semibold text-lg sm:text-xl text-[#202A2E] leading-snug">
+                      {stat.label}
+                    </div>
                   </div>
 
-                  {/* Primary Label in Charcoal */}
-                  <div className="font-heading font-semibold text-lg sm:text-xl text-[#202A2E] leading-snug">
-                    {stat.label}
-                  </div>
+                  {/* Subtext */}
+                  {stat.subtext && (
+                    <div className="text-xs text-[#687378] mt-5 pt-3.5 border-t border-[#E4DED3]/70 font-normal">
+                      {stat.subtext}
+                    </div>
+                  )}
                 </div>
-
-                {/* Subtext */}
-                {stat.subtext && (
-                  <div className="text-xs text-[#687378] mt-5 pt-3.5 border-t border-[#E4DED3]/70 font-normal">
-                    {stat.subtext}
-                  </div>
-                )}
-              </div>
+              </Card3DTilt>
             );
           })}
         </div>

@@ -77,7 +77,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   };
 }
 
-export default async function ProductDetailPage({ params }: ProductPageProps) {
+async function ProductDetailContent({ params }: ProductPageProps) {
   const { slug } = await params;
   const product = ALL_PRODUCTS.find((p) => p.slug === slug);
 
@@ -389,5 +389,19 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
 
       <Footer />
     </div>
+  );
+}
+
+export default function ProductDetailPage(props: ProductPageProps) {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-white flex items-center justify-center">
+          <div className="w-8 h-8 border-3 border-[#E97835] border-t-transparent rounded-full animate-spin" />
+        </div>
+      }
+    >
+      <ProductDetailContent {...props} />
+    </Suspense>
   );
 }
