@@ -28,6 +28,7 @@ import {
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductDetailSections from "@/components/products/ProductDetailSections";
+import BannerEmployeeMascot from "@/components/common/BannerEmployeeMascot";
 
 interface ProductPageProps {
   params: Promise<{
@@ -148,48 +149,65 @@ async function ProductDetailContent({ params }: ProductPageProps) {
         {/* Consistent Showcase Banner across all products      */}
         {/* ---------------------------------------------------- */}
         <section className="relative w-full bg-[#202A2E] text-white overflow-hidden">
-          <div className="relative w-full h-[320px] sm:h-[360px] lg:h-[400px]">
+          <div className="relative w-full h-[340px] sm:h-[380px] lg:h-[420px]">
             <Image
               src="/Product/Kraft Packaging Showcase Banner.png"
               alt="AAVRIT PACKAGING Solutions"
               fill
               priority
               sizes="100vw"
-              className="object-cover object-center opacity-85"
+              className="object-cover object-center pointer-events-none opacity-85"
             />
             {/* Linear dark gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/30" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#202A2E]/95 via-[#202A2E]/65 to-transparent w-full sm:w-1/2 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 pointer-events-none" />
 
-            {/* Banner Text Content */}
-            <div className="relative z-10 max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
-              <span className="text-xs sm:text-sm font-bold uppercase tracking-widest text-[#E97835] mb-2">
-                {product.categoryName}
-              </span>
-              <h1 className="font-heading font-extrabold text-2xl sm:text-3xl md:text-4xl text-white tracking-tight drop-shadow-md mb-3">
-                {product.name}
-              </h1>
+            {/* Banner Content Layout: Upper Title + Lower Speaking Mascot */}
+            <div className="absolute inset-0 flex flex-col justify-between py-6 sm:py-8 pointer-events-none">
+              {/* Upper Area: Category & Title & Breadcrumbs */}
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pointer-events-auto">
+                <div className="max-w-xl">
+                  <span className="text-xs sm:text-sm font-bold uppercase tracking-widest text-[#E97835] mb-1 inline-block">
+                    {product.categoryName}
+                  </span>
+                  <h1 className="font-heading font-extrabold text-2xl sm:text-3xl md:text-4xl text-white tracking-tight drop-shadow-md mb-1.5">
+                    {product.name}
+                  </h1>
 
-              {/* Breadcrumb Navigation: Home / Products / Category / Product Name */}
-              <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs sm:text-sm text-[#E4DED3]">
-                <Link href="/" className="hover:text-white transition-colors">
-                  Home
-                </Link>
-                <ChevronRight className="w-3.5 h-3.5 text-[#E97835]" />
-                <Link href="/products" className="hover:text-white transition-colors">
-                  Products
-                </Link>
-                <ChevronRight className="w-3.5 h-3.5 text-[#E97835]" />
-                <Link
-                  href={`/products?category=${product.categoryId}`}
-                  className="hover:text-white transition-colors"
-                >
-                  {product.categoryName}
-                </Link>
-                <ChevronRight className="w-3.5 h-3.5 text-[#E97835]" />
-                <span className="text-white font-semibold truncate max-w-[180px] sm:max-w-none">
-                  {product.name}
-                </span>
-              </nav>
+                  {/* Breadcrumb Navigation: Home / Products / Category / Product Name */}
+                  <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs sm:text-sm text-[#E4DED3] flex-wrap">
+                    <Link href="/" className="hover:text-white transition-colors">
+                      Home
+                    </Link>
+                    <ChevronRight className="w-3.5 h-3.5 text-[#E97835]" />
+                    <Link href="/products" className="hover:text-white transition-colors">
+                      Products
+                    </Link>
+                    <ChevronRight className="w-3.5 h-3.5 text-[#E97835]" />
+                    <Link
+                      href={`/products?category=${product.categoryId}`}
+                      className="hover:text-white transition-colors"
+                    >
+                      {product.categoryName}
+                    </Link>
+                    <ChevronRight className="w-3.5 h-3.5 text-[#E97835]" />
+                    <span className="text-[#D1B48C] font-semibold truncate max-w-[180px] sm:max-w-none">
+                      {product.name}
+                    </span>
+                  </nav>
+                </div>
+              </div>
+
+              {/* Lower Area: QC Inspector Mascot */}
+              <BannerEmployeeMascot
+                characterImage="/Product/character_qc_inspector.png"
+                characterAlt="Quality Control Specialist - AAVRIT PACKAGING"
+                dialogueIcon="📦"
+                dialogueTitle="Tested for Strength!"
+                dialogueSubtext="Rigorous edge crush & burst testing certified"
+                characterWidthClass="w-[110px] sm:w-[130px] lg:w-[150px]"
+                shadowWidthClass="w-20 sm:w-24 lg:w-28"
+              />
             </div>
           </div>
         </section>

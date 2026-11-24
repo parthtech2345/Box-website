@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { MAIN_CATEGORIES, ALL_PRODUCTS } from "@/data/productsData";
 import Card3DTilt from "@/components/ui/Card3DTilt";
+import BannerEmployeeMascot from "@/components/common/BannerEmployeeMascot";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -208,26 +209,26 @@ function ProductCatalogContent() {
           - Clean heading: "Our Products" + Breadcrumb (Home > Products)
       ========================================================================= */}
       <section className="relative w-full bg-[#202A2E] text-white overflow-hidden">
-        <div className="relative w-full h-[320px] sm:h-[360px] lg:h-[400px]">
+        <div className="relative w-full h-[340px] sm:h-[380px] lg:h-[420px]">
           <Image
             src="/Product/Kraft Packaging Showcase Banner.png"
             alt="AAVRIT PACKAGING - Products Banner"
             fill
             priority
             sizes="100vw"
-            className="object-cover object-center"
+            className="object-cover object-center pointer-events-none"
           />
 
           {/* Subtle Side Vignette Gradient for Text Contrast (Leaves boxes on the right untouched) */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#202A2E]/85 via-[#202A2E]/50 to-transparent w-full sm:w-1/2" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#202A2E]/95 via-[#202A2E]/65 to-transparent w-full sm:w-1/2 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 pointer-events-none" />
 
-          {/* Banner Hero Content: Headline & Breadcrumbs */}
-          <div className="absolute inset-0 flex items-center">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          {/* Banner Hero Content: Headline & Breadcrumbs + Speaking Mascot */}
+          <div className="absolute inset-0 flex flex-col justify-between py-6 sm:py-8 pointer-events-none">
+            {/* Upper Area: Title & Breadcrumbs */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pointer-events-auto">
               <div className="max-w-md">
-                {/* Main Heading */}
-                <h1 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-tight mb-2 drop-shadow-md">
+                <h1 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-tight mb-1.5 drop-shadow-md">
                   Our Products
                 </h1>
 
@@ -243,6 +244,17 @@ function ProductCatalogContent() {
                 </nav>
               </div>
             </div>
+
+            {/* Lower Area: QC Inspector Speaking Mascot */}
+            <BannerEmployeeMascot
+              characterImage="/Product/character_qc_inspector.png"
+              characterAlt="Quality Control Specialist - AAVRIT PACKAGING"
+              dialogueIcon="📦"
+              dialogueTitle="Quality Tested Packaging!"
+              dialogueSubtext="High-burst strength & precision corrugated cartons"
+              characterWidthClass="w-[110px] sm:w-[130px] lg:w-[150px]"
+              shadowWidthClass="w-20 sm:w-24 lg:w-28"
+            />
           </div>
         </div>
       </section>

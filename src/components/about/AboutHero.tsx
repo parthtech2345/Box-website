@@ -171,12 +171,12 @@ export default function AboutHero() {
             {/* SPEECH BUBBLE DIRECTLY CONNECTED TO EMPLOYEE'S MOUTH/HEAD */}
             <div
               ref={speechBubbleRef}
-              className="relative mb-16 sm:mb-20 lg:mb-24 max-w-[240px] sm:max-w-[280px] lg:max-w-[320px] select-none"
+              className="relative mb-24 sm:mb-30 lg:mb-36 max-w-[240px] sm:max-w-[280px] lg:max-w-[320px] select-none"
             >
               {/* Dialogue Balloon Container */}
               <div className="relative px-4 py-3 rounded-2xl bg-[#202A2E]/85 backdrop-blur-md border border-white/20 shadow-2xl text-white">
-                {/* Speech Bubble Pointer Tail (Points directly to employee's face!) */}
-                <div className="absolute -left-2 bottom-3 w-3.5 h-3.5 bg-[#202A2E]/85 border-l border-b border-white/20 -rotate-45" />
+                {/* Speech Bubble Pointer Tail (Points directly to employee's face/mouth!) */}
+                <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-[#202A2E]/85 border-l border-b border-white/20 -rotate-45" />
 
                 {/* Spoken Dialogue Text */}
                 <div className="flex items-center gap-1.5 mb-0.5">
