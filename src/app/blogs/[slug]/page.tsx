@@ -146,7 +146,7 @@ async function BlogDetailContent({ params }: PageProps) {
         <BlogDetailHero />
 
         {/* 2. Main Editorial Content Area */}
-        <div className="w-full bg-[#FAF7F2] py-12 sm:py-16">
+        <div className="w-full bg-[#FAF7F2] py-12 sm:py-14">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Article Heading & Metadata */}
             <div className="mb-8 max-w-4xl">
@@ -255,11 +255,10 @@ async function BlogDetailContent({ params }: PageProps) {
                                 {row.map((cell, cIdx) => (
                                   <td
                                     key={cIdx}
-                                    className={`p-3 sm:p-3.5 text-[#62574D] ${
-                                      cIdx === 0
+                                    className={`p-3 sm:p-3.5 text-[#62574D] ${cIdx === 0
                                         ? "font-semibold text-[#202A2E]"
                                         : ""
-                                    }`}
+                                      }`}
                                   >
                                     {cell}
                                   </td>

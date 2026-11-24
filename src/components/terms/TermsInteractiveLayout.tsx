@@ -87,7 +87,7 @@ export default function TermsInteractiveLayout() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
       {/* Mobile Collapsible Navigation Accordion */}
       <div className="lg:hidden mb-8 print:hidden">
         <button
@@ -106,9 +106,8 @@ export default function TermsInteractiveLayout() {
             </span>
           </div>
           <ChevronDown
-            className={`w-4 h-4 text-[#7D7166] transition-transform duration-200 ${
-              mobileMenuOpen ? "rotate-180" : ""
-            }`}
+            className={`w-4 h-4 text-[#7D7166] transition-transform duration-200 ${mobileMenuOpen ? "rotate-180" : ""
+              }`}
           />
         </button>
 
@@ -122,11 +121,10 @@ export default function TermsInteractiveLayout() {
                 key={sec.id}
                 type="button"
                 onClick={() => scrollToSection(sec.id)}
-                className={`w-full text-left px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center gap-2 ${
-                  activeSection === sec.id
+                className={`w-full text-left px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center gap-2 ${activeSection === sec.id
                     ? "bg-[#FAF7F2] text-[#E97835] font-bold border-l-3 border-[#E97835]"
                     : "text-[#62574D] hover:bg-[#FAF7F2] hover:text-[#202A2E]"
-                }`}
+                  }`}
               >
                 <span className="text-[11px] text-[#A65D32] font-bold w-5">
                   {sec.number}.
@@ -162,16 +160,14 @@ export default function TermsInteractiveLayout() {
                   key={sec.id}
                   type="button"
                   onClick={() => scrollToSection(sec.id)}
-                  className={`w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center gap-2 cursor-pointer ${
-                    activeSection === sec.id
+                  className={`w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center gap-2 cursor-pointer ${activeSection === sec.id
                       ? "bg-[#FAF7F2] text-[#E97835] font-bold shadow-2xs translate-x-1"
                       : "text-[#62574D] hover:bg-[#FAF7F2]/60 hover:text-[#202A2E]"
-                  }`}
+                    }`}
                 >
                   <span
-                    className={`text-[11px] font-bold w-5 shrink-0 ${
-                      activeSection === sec.id ? "text-[#E97835]" : "text-[#A65D32]"
-                    }`}
+                    className={`text-[11px] font-bold w-5 shrink-0 ${activeSection === sec.id ? "text-[#E97835]" : "text-[#A65D32]"
+                      }`}
                   >
                     {sec.number}.
                   </span>
