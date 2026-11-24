@@ -33,9 +33,9 @@ export default function SustainabilityHero() {
   return (
     <section className="relative w-full bg-[#202A2E] text-white overflow-hidden">
       {/* Full Width Banner matching exact site banner standard */}
-      <div className="relative w-full aspect-[21/9] sm:aspect-[24/9] md:aspect-[2048/768] min-h-[240px] max-h-[390px]">
+      <div className="relative w-full h-[320px] sm:h-[360px] lg:h-[400px]">
         <Image
-          src="/Sustanablity/Eco-Friendly Packaging and Renewable Earth.png"
+          src="/Sustanablity/sustainability_banner_pano.png"
           alt="Sustainable Corrugated Packaging - AAVRIT PACKAGING"
           fill
           priority

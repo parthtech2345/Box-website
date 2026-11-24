@@ -148,7 +148,7 @@ async function ProductDetailContent({ params }: ProductPageProps) {
         {/* Consistent Showcase Banner across all products      */}
         {/* ---------------------------------------------------- */}
         <section className="relative w-full bg-[#202A2E] text-white overflow-hidden">
-          <div className="relative w-full h-[180px] sm:h-[220px] md:h-[260px]">
+          <div className="relative w-full h-[320px] sm:h-[360px] lg:h-[400px]">
             <Image
               src="/Product/Kraft Packaging Showcase Banner.png"
               alt="AAVRIT PACKAGING Solutions"

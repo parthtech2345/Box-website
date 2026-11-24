@@ -37,9 +37,9 @@ export default function MachineryDetailBanner({
   return (
     <section className="relative w-full bg-[#202A2E] text-white overflow-hidden">
       {/* Full Width Banner matching exact site banner standard */}
-      <div className="relative w-full aspect-[21/9] sm:aspect-[24/9] md:aspect-[2048/768] min-h-[220px] max-h-[380px]">
+      <div className="relative w-full h-[320px] sm:h-[360px] lg:h-[400px]">
         <Image
-          src="/Machinery/machinerybanner.png"
+          src="/Machinery/machinery_banner_pano.png"
           alt={`${name} Banner - AAVRIT PACKAGING`}
           fill
           priority

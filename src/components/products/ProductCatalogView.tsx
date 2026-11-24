@@ -208,14 +208,14 @@ function ProductCatalogContent() {
           - Clean heading: "Our Products" + Breadcrumb (Home > Products)
       ========================================================================= */}
       <section className="relative w-full bg-[#202A2E] text-white overflow-hidden">
-        <div className="relative w-full aspect-[21/9] sm:aspect-[24/9] md:aspect-[2048/768] min-h-[220px] max-h-[380px]">
+        <div className="relative w-full h-[320px] sm:h-[360px] lg:h-[400px]">
           <Image
             src="/Product/Kraft Packaging Showcase Banner.png"
             alt="AAVRIT PACKAGING - Products Banner"
             fill
             priority
             sizes="100vw"
-            className="object-cover object-bottom"
+            className="object-cover object-center"
           />
 
           {/* Subtle Side Vignette Gradient for Text Contrast (Leaves boxes on the right untouched) */}
@@ -258,7 +258,7 @@ function ProductCatalogContent() {
         className="w-full bg-[#FAF7F2] py-10 sm:py-14 border-b border-[#E4DED3]"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
+
           {/* Top Search & Filter Bar (Positioned comfortably below the banner) */}
           <div
             ref={searchBarRef}
@@ -317,11 +317,10 @@ function ProductCatalogContent() {
               <button
                 type="button"
                 onClick={() => setSelectedCategory("all")}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
-                  selectedCategory === "all"
-                    ? "bg-[#A65D32] text-white"
-                    : "bg-[#FAF7F2] text-[#62574D] border border-[#E4DED3]"
-                }`}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${selectedCategory === "all"
+                  ? "bg-[#A65D32] text-white"
+                  : "bg-[#FAF7F2] text-[#62574D] border border-[#E4DED3]"
+                  }`}
               >
                 All Products ({ALL_PRODUCTS.length})
               </button>
@@ -330,11 +329,10 @@ function ProductCatalogContent() {
                   key={c.id}
                   type="button"
                   onClick={() => setSelectedCategory(c.id)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
-                    selectedCategory === c.id
-                      ? "bg-[#A65D32] text-white"
-                      : "bg-[#FAF7F2] text-[#62574D] border border-[#E4DED3]"
-                  }`}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${selectedCategory === c.id
+                    ? "bg-[#A65D32] text-white"
+                    : "bg-[#FAF7F2] text-[#62574D] border border-[#E4DED3]"
+                    }`}
                 >
                   {c.title}
                 </button>
@@ -344,7 +342,7 @@ function ProductCatalogContent() {
 
           {/* Catalog Layout: Left Side Filter + Right Product Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            
+
             {/* Left Column: Side Filter Bar (3 cols on desktop) */}
             <aside
               ref={sidebarRef}
@@ -371,19 +369,17 @@ function ProductCatalogContent() {
                 <button
                   type="button"
                   onClick={() => setSelectedCategory("all")}
-                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-150 cursor-pointer text-left ${
-                    selectedCategory === "all"
-                      ? "bg-[#A65D32] text-white shadow-xs"
-                      : "text-[#62574D] hover:bg-[#FAF7F2] hover:text-[#202A2E]"
-                  }`}
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-150 cursor-pointer text-left ${selectedCategory === "all"
+                    ? "bg-[#A65D32] text-white shadow-xs"
+                    : "text-[#62574D] hover:bg-[#FAF7F2] hover:text-[#202A2E]"
+                    }`}
                 >
                   <span>All Products</span>
                   <span
-                    className={`text-xs px-2 py-0.5 rounded-full ${
-                      selectedCategory === "all"
-                        ? "bg-white/20 text-white"
-                        : "bg-[#FAF7F2] text-[#8C7E72]"
-                    }`}
+                    className={`text-xs px-2 py-0.5 rounded-full ${selectedCategory === "all"
+                      ? "bg-white/20 text-white"
+                      : "bg-[#FAF7F2] text-[#8C7E72]"
+                      }`}
                   >
                     {ALL_PRODUCTS.length}
                   </span>
@@ -398,19 +394,17 @@ function ProductCatalogContent() {
                       key={cat.id}
                       type="button"
                       onClick={() => setSelectedCategory(cat.id)}
-                      className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-150 cursor-pointer text-left ${
-                        isSelected
-                          ? "bg-[#A65D32] text-white shadow-xs"
-                          : "text-[#62574D] hover:bg-[#FAF7F2] hover:text-[#202A2E]"
-                      }`}
+                      className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-150 cursor-pointer text-left ${isSelected
+                        ? "bg-[#A65D32] text-white shadow-xs"
+                        : "text-[#62574D] hover:bg-[#FAF7F2] hover:text-[#202A2E]"
+                        }`}
                     >
                       <span className="truncate pr-2">{cat.title}</span>
                       <span
-                        className={`text-xs px-2 py-0.5 rounded-full shrink-0 ${
-                          isSelected
-                            ? "bg-white/20 text-white"
-                            : "bg-[#FAF7F2] text-[#8C7E72]"
-                        }`}
+                        className={`text-xs px-2 py-0.5 rounded-full shrink-0 ${isSelected
+                          ? "bg-white/20 text-white"
+                          : "bg-[#FAF7F2] text-[#8C7E72]"
+                          }`}
                       >
                         {count}
                       </span>
