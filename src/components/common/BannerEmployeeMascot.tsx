@@ -39,7 +39,7 @@ export default function BannerEmployeeMascot({
     if (!workerRef.current || !shadowRef.current || !speechBubbleRef.current) return;
 
     // Reset initial states
-    gsap.set(workerRef.current, { y: 8, opacity: 0, rotation: 0 });
+    gsap.set(workerRef.current, { y: 8, opacity: 0, rotation: 0, transformOrigin: "bottom center" });
     gsap.set(shadowRef.current, { opacity: 0, scale: 0.8 });
     gsap.set(speechBubbleRef.current, { scale: 0, opacity: 0, transformOrigin: "bottom left" });
 
@@ -57,37 +57,24 @@ export default function BannerEmployeeMascot({
       0
     );
 
-    // Step 2: Employee waves naturally ("Hii!")
-    const sign = waveDirection === "left" ? -1 : 1;
+    // Step 2: Calm, subtle presence - gentle micro-movement without shaking
     tl.to(
       workerRef.current,
       {
-        rotation: sign * 3,
-        duration: 0.22,
+        y: -3,
+        duration: 0.35,
+        ease: "sine.out",
+      },
+      0.5
+    ).to(
+      workerRef.current,
+      {
+        y: 0,
+        duration: 0.35,
         ease: "sine.inOut",
       },
-      0.45
-    )
-      .to(
-        workerRef.current,
-        {
-          rotation: -sign * 3,
-          duration: 0.2,
-          yoyo: true,
-          repeat: 3,
-          ease: "sine.inOut",
-        },
-        0.67
-      )
-      .to(
-        workerRef.current,
-        {
-          rotation: 0,
-          duration: 0.28,
-          ease: "power2.out",
-        },
-        1.3
-      );
+      0.85
+    );
 
     // Step 3: Speech bubble pops out directly from employee's mouth as dialogue!
     tl.to(
