@@ -8,10 +8,13 @@ export default function GrowthJourney() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0); // 0.0 to 1.0
+  const targetProgressRef = useRef(0);
+  const currentProgressRef = useRef(0);
+  const animFrameRef = useRef<number | null>(null);
 
   const totalCards = JOURNEY_MILESTONES.length;
 
-  // Window scroll tracker for the pinned horizontal sequence
+  // Window scroll tracker with smooth momentum-damping lerp for ultra-smooth slow scroll
   useEffect(() => {
     const handleScroll = () => {
       const container = containerRef.current;
@@ -24,13 +27,29 @@ export default function GrowthJourney() {
 
       const currentScroll = -rect.top;
       const progress = Math.min(Math.max(currentScroll / totalScrollable, 0), 1);
-      setScrollProgress(progress);
+      targetProgressRef.current = progress;
+    };
+
+    const smoothLoop = () => {
+      const diff = targetProgressRef.current - currentProgressRef.current;
+      if (Math.abs(diff) > 0.0004) {
+        currentProgressRef.current += diff * 0.07;
+        setScrollProgress(currentProgressRef.current);
+      } else if (currentProgressRef.current !== targetProgressRef.current) {
+        currentProgressRef.current = targetProgressRef.current;
+        setScrollProgress(targetProgressRef.current);
+      }
+      animFrameRef.current = requestAnimationFrame(smoothLoop);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
+    animFrameRef.current = requestAnimationFrame(smoothLoop);
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+    };
   }, []);
 
   // Distance between milestone cards in viewport units
@@ -42,7 +61,7 @@ export default function GrowthJourney() {
       id="growth-journey"
       ref={containerRef}
       className="relative w-full bg-[#FFFFFF] border-b border-[#E4DED3]"
-      style={{ height: "230vh" }}
+      style={{ height: "620vh" }}
       aria-label="Our Journey: From Inception to Today"
     >
       {/* 
@@ -94,15 +113,15 @@ export default function GrowthJourney() {
           {/* Continuous Center Horizontal Line */}
           <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1.5px] bg-[#E4DED3] pointer-events-none z-10">
             <div
-              className="h-full bg-[#A65D32] origin-left transition-all duration-75"
-              style={{ width: `${Math.round(scrollProgress * 100)}%` }}
+              className="h-full bg-[#A65D32] origin-left"
+              style={{ width: `${(scrollProgress * 100).toFixed(2)}%` }}
             />
           </div>
 
           {/* Cards Track: translates horizontally as user scrolls */}
           <div
             ref={trackRef}
-            className="relative flex items-center will-change-transform transition-transform duration-75 ease-out h-[70vh] max-h-[680px]"
+            className="relative flex items-center will-change-transform h-[70vh] max-h-[680px]"
             style={{
               transform: `translateX(calc(22vw - ${currentTranslateVW}vw))`,
               gap: "8vw",

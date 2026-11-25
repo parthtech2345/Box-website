@@ -223,17 +223,6 @@ export default function CaseStudies() {
 
         </div>
 
-        {/* SECTION LEVEL CTA */}
-        <div className="flex items-center justify-center pt-2">
-          <Link
-            href="/#industries"
-            className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-xl bg-[#493629] text-white text-sm font-semibold tracking-wide shadow-sm hover:bg-[#A65D32] transition-all duration-200 group"
-          >
-            <span>Explore All Industries</span>
-            <ArrowRight className="w-4 h-4 text-[#D1B48C] group-hover:translate-x-1 transition-transform duration-200" />
-          </Link>
-        </div>
-
       </div>
     </section>
   );
