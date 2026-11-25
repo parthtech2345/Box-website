@@ -7,8 +7,6 @@ import {
   ShieldCheck,
   Building2,
   Users,
-  Briefcase,
-  Sparkles,
 } from "lucide-react";
 import {
   OWNER_PROFILE,
@@ -203,14 +201,6 @@ export default function LeadershipTeam() {
                         </div>
                       </div>
                     )}
-
-                    {/* Bottom Floating Badge */}
-                    <div className="absolute bottom-4 inset-x-4 bg-white/95 backdrop-blur-md border border-[#E8D5B8] rounded-xl p-3 shadow-md flex items-center justify-center gap-2">
-                      <Sparkles className="w-4 h-4 text-[#A65D32]" />
-                      <span className="text-xs font-bold text-[#493629] tracking-wider uppercase">
-                        {OWNER_PROFILE.companyName} Leadership
-                      </span>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -256,24 +246,13 @@ export default function LeadershipTeam() {
                 </div>
 
                 {/* Member Info Panel */}
-                <div className="p-5 flex-1 flex flex-col justify-between bg-white">
-                  <div>
-                    <h3 className="text-lg font-bold text-[#493629] group-hover:text-[#A65D32] transition-colors duration-300">
-                      {member.name}
-                    </h3>
-                    <p className="text-xs sm:text-sm font-semibold text-[#62574D] mt-0.5">
-                      {member.designation}
-                    </p>
-                  </div>
-
-                  {/* Subtle Terracotta Underline Transition */}
-                  <div className="pt-3.5 mt-3.5 border-t border-[#E8D5B8]/70 flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 text-[11px] text-[#A65D32] font-semibold uppercase tracking-wider">
-                      <Briefcase className="w-3.5 h-3.5" />
-                      <span>Packaging Operations</span>
-                    </div>
-                    <div className="w-2 h-2 rounded-full bg-[#A65D32] scale-75 group-hover:scale-125 transition-transform duration-300" />
-                  </div>
+                <div className="p-5 bg-white">
+                  <h3 className="text-lg font-bold text-[#493629] group-hover:text-[#A65D32] transition-colors duration-300">
+                    {member.name}
+                  </h3>
+                  <p className="text-xs sm:text-sm font-semibold text-[#62574D] mt-0.5">
+                    {member.designation}
+                  </p>
                 </div>
               </div>
             ))}

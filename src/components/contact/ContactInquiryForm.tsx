@@ -537,18 +537,6 @@ export default function ContactInquiryForm() {
                   Tailored flute calibers and custom-dimensioned master cartons designed to match your product weight, drop tests, and transit demands.
                 </p>
               </div>
-
-              <div className="pt-4 mt-4 border-t border-[#E4DED3]/70 flex flex-wrap gap-2 text-[11px] font-semibold text-[#A65D32]">
-                <span className="px-2.5 py-1 rounded-lg bg-[#FAF7F2] border border-[#E4DED3]">
-                  • 3 / 5 / 7-Ply Caliber
-                </span>
-                <span className="px-2.5 py-1 rounded-lg bg-[#FAF7F2] border border-[#E4DED3]">
-                  • CAD Prototyping
-                </span>
-                <span className="px-2.5 py-1 rounded-lg bg-[#FAF7F2] border border-[#E4DED3]">
-                  • Custom Flexo Print
-                </span>
-              </div>
             </div>
 
             {/* 2. Bottom Image Card: Manufacturing Facility */}
@@ -575,18 +563,6 @@ export default function ContactInquiryForm() {
                 <p className="text-xs sm:text-sm text-[#62574D] mt-1.5 leading-relaxed">
                   Phase II GIDC Industrial Estate, Gujarat. Operating advanced multi-station corrugators and flexo slotters for reliable B2B dispatches.
                 </p>
-              </div>
-
-              <div className="pt-4 mt-4 border-t border-[#E4DED3]/70 flex flex-wrap gap-2 text-[11px] font-semibold text-[#78846A]">
-                <span className="px-2.5 py-1 rounded-lg bg-[#FAF7F2] border border-[#E4DED3]">
-                  • Direct Plant Pricing
-                </span>
-                <span className="px-2.5 py-1 rounded-lg bg-[#FAF7F2] border border-[#E4DED3]">
-                  • High-Volume Capacity
-                </span>
-                <span className="px-2.5 py-1 rounded-lg bg-[#FAF7F2] border border-[#E4DED3]">
-                  • Rigorous QA Lab
-                </span>
               </div>
             </div>
           </div>
