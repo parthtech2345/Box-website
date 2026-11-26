@@ -4,9 +4,14 @@ import React from "react";
 import Image from "next/image";
 import { CLIENT_PARTNERS } from "@/data/clients";
 
-export default function OurClients() {
+export default function OurClients({ data }: { data?: any } = {}) {
+  const clientList = data?.clients && data.clients.length > 0 ? data.clients : CLIENT_PARTNERS;
+  const badgeText = data?.badge || "OUR CLIENTS";
+  const titleText = data?.title || "Trusted by Businesses";
+  const subtitleText = data?.subtitle || data?.description || "Building reliable packaging partnerships across industries.";
+
   // Duplicate array to achieve an infinite seamless continuous loop
-  const marqueeLogos = [...CLIENT_PARTNERS, ...CLIENT_PARTNERS, ...CLIENT_PARTNERS];
+  const marqueeLogos = [...clientList, ...clientList, ...clientList];
 
   return (
     <section
@@ -22,19 +27,19 @@ export default function OurClients() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/20 mb-3">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                OUR CLIENTS
+                {badgeText}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-2xl sm:text-3xl lg:text-4xl text-[#202A2E] leading-tight">
-              Trusted by <span className="text-[#A65D32]">Businesses</span>
+              {titleText}
             </h2>
           </div>
 
           {/* Right Column: Context Description */}
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              Building reliable packaging partnerships across industries.
+              {subtitleText}
             </p>
           </div>
         </div>
@@ -53,25 +58,31 @@ export default function OurClients() {
           className="carousel-track flex items-center gap-12 sm:gap-20 w-max"
           style={{ willChange: "transform" }}
         >
-          {marqueeLogos.map((client, index) => (
-            <div
-              key={`${client.id}-${index}`}
-              className="logo-item flex-shrink-0 flex items-center justify-center cursor-pointer"
-            >
+          {marqueeLogos.map((client: any, index: number) => {
+            const logoSrc = client?.logo && typeof client.logo === "string" && client.logo.trim() !== "" ? client.logo : null;
+            if (!logoSrc) return null;
+            const altText = client?.alt || client?.name || "Client partner logo";
+
+            return (
               <div
-                className="relative h-12 sm:h-14 w-48 sm:w-56 flex items-center justify-center transition-transform duration-300 hover:scale-105"
-                title={`${client.name} • ${client.industry} (${client.location})`}
+                key={`${client.id || index}-${index}`}
+                className="logo-item flex-shrink-0 flex items-center justify-center cursor-pointer"
               >
-                <Image
-                  src={client.logo}
-                  alt={client.alt}
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 640px) 190px, 224px"
-                />
+                <div
+                  className="relative h-12 sm:h-14 w-48 sm:w-56 flex items-center justify-center transition-transform duration-300 hover:scale-105"
+                  title={`${client.name || 'Client'} • ${client.industry || 'Industrial Packaging'}`}
+                >
+                  <Image
+                    src={logoSrc}
+                    alt={altText}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 640px) 190px, 224px"
+                  />
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

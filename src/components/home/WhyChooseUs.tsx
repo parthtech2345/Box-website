@@ -75,10 +75,15 @@ const FEATURES: Feature[] = [
   },
 ];
 
-export default function WhyChooseUs() {
+export default function WhyChooseUs({ data }: { data?: any } = {}) {
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+
+  const featuresList = data?.features && data.features.length > 0 ? data.features : FEATURES;
+  const badgeText = data?.badge || "WHY CHOOSE US";
+  const titleText = data?.title || "Packaging Excellence Built on Trust";
+  const subtitleText = data?.subtitle || data?.description || "We combine thoughtful design, quality materials and manufacturing precision to deliver dependable corrugated packaging solutions for diverse business requirements.";
 
   useEffect(() => {
     if (typeof window === "undefined" || !sectionRef.current) return;
@@ -147,20 +152,19 @@ export default function WhyChooseUs() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/20 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                WHY CHOOSE US
+                {badgeText}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
-              Packaging Excellence <br className="hidden sm:inline" />
-              <span className="text-[#A65D32]">Built on Trust</span>
+              {titleText}
             </h2>
           </div>
 
           {/* Right Column: Context Description with Accent Border */}
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              We combine thoughtful design, quality materials and manufacturing precision to deliver dependable corrugated packaging solutions for diverse business requirements.
+              {subtitleText}
             </p>
           </div>
         </div>
@@ -170,8 +174,8 @@ export default function WhyChooseUs() {
           ref={cardsRef}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7"
         >
-          {FEATURES.map((item) => {
-            const Icon = item.icon;
+          {featuresList.map((item: any, idx: number) => {
+            const Icon = item.icon || ShieldCheck;
 
             return (
               <Card3DTilt key={item.number} className="h-full rounded-2xl">

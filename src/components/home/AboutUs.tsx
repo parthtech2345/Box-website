@@ -58,9 +58,20 @@ const STATISTICS_DATA: StatisticItem[] = [
   },
 ];
 
-export default function AboutUs() {
+export default function AboutUs({ data }: { data?: any } = {}) {
   const [counts, setCounts] = useState<{ [key: string]: number }>({});
   const statsSectionRef = useRef<HTMLDivElement | null>(null);
+
+  const statsList = data?.stats && data.stats.length > 0 ? data.stats : STATISTICS_DATA;
+  const imageSrc =
+    data?.mediaUrl && typeof data.mediaUrl === "string" && data.mediaUrl.trim() !== "" && !data.mediaUrl.includes("packaging-facility.png")
+      ? data.mediaUrl
+      : data?.image && typeof data.image === "string" && data.image.trim() !== "" && !data.image.includes("packaging-facility.png")
+      ? data.image
+      : "/home/company img.png";
+  const badgeText = data?.badge || "ABOUT AAVRIT PACKAGING";
+  const titleText = data?.title || "Protection Begins With Better Packaging.";
+  const descriptionText = data?.description || "At AAVRIT Packaging, we believe packaging is more than just a box. It is an essential part of protecting products, maintaining quality and helping businesses deliver with confidence.";
 
   // Animated Counter implementation with GSAP & ScrollTrigger
   useEffect(() => {
@@ -85,7 +96,7 @@ export default function AboutUs() {
               start: "top 85%",
               once: true,
               onEnter: () => {
-                STATISTICS_DATA.forEach((stat) => {
+                statsList.forEach((stat: any) => {
                   if (typeof stat.value === "number") {
                     const counter = { val: 0 };
                     gsap.to(counter, {
@@ -109,7 +120,7 @@ export default function AboutUs() {
     });
 
     return () => ctx.revert();
-  }, []);
+  }, [statsList]);
 
   return (
     <section
@@ -127,7 +138,7 @@ export default function AboutUs() {
           <div className="lg:col-span-6 relative w-full flex items-center justify-center">
             <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden border border-[#D1B48C]/60 shadow-xl group bg-[#202A2E]/5">
               <Image
-                src="/home/company img.png"
+                src={imageSrc}
                 alt="AAVRIT PACKAGING modern corrugated cardboard packaging manufacturing facility in India"
                 fill
                 priority={false}
@@ -143,17 +154,17 @@ export default function AboutUs() {
             {/* Small uppercase category label */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#493629]/10 text-[#493629] text-xs font-bold uppercase tracking-widest mb-3 self-start">
               <span className="w-1.5 h-1.5 rounded-full bg-[#E97835]" />
-              <span>ABOUT AAVRIT PACKAGING</span>
+              <span>{badgeText}</span>
             </div>
 
             {/* Main Heading in Barlow Semi Condensed */}
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-[42px] text-[#202A2E] leading-[1.12] tracking-tight mb-4">
-              Protection Begins With Better Packaging.
+              {titleText}
             </h2>
 
             {/* First Paragraph */}
             <p className="text-base text-[#62574D] font-normal leading-relaxed mb-3">
-              At AAVRIT Packaging, we believe packaging is more than just a box. It is an essential part of protecting products, maintaining quality and helping businesses deliver with confidence.
+              {descriptionText}
             </p>
 
             {/* Second Paragraph */}

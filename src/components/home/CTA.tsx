@@ -5,9 +5,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Phone, MessageSquare, ShieldCheck, Sparkles, PhoneCall } from "lucide-react";
 
-export default function CTA() {
+export default function CTA({ data }: { data?: any } = {}) {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+
+  const badgeText = data?.badge || "READY TO GET STARTED?";
+  const titleText = data?.title || "Let's Build the Right Box For Your Business";
+  const subtitleText = data?.subtitle || data?.description || "Get in touch with our team for standard boxes, custom dimensions, printed packaging, or ongoing commercial supply.";
+  const primaryButtonText = data?.primaryButtonText || "Request a Quote";
+  const primaryButtonLink = data?.primaryButtonLink || "/contact";
+  const secondaryButtonText = data?.secondaryButtonText || "+91 98765 43210";
+  const ctaMedia = data?.mediaUrl && typeof data.mediaUrl === "string" && data.mediaUrl.trim() !== ""
+    ? data.mediaUrl
+    : "/home/cta/animated-welcoming-businessman.gif";
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -71,44 +81,38 @@ export default function CTA() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/20 mb-4 w-fit">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                READY TO GET STARTED?
+                {badgeText}
               </span>
             </div>
 
             {/* Main Heading */}
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.15] tracking-tight mb-5">
-              Let&apos;s Build the Right Box <br className="hidden sm:inline" />
-              <span className="text-[#A65D32] relative inline-block">
-                for Your Business.
-                {/* Restrained decorative underline */}
-                <span className="absolute left-0 bottom-[-4px] w-full h-[2.5px] bg-[#A65D32] rounded-full" />
-              </span>
+              {titleText}
             </h2>
 
             {/* Supporting Description */}
             <p className="text-base sm:text-lg text-[#62574D] font-normal leading-relaxed mb-8 max-w-2xl">
-              From everyday packaging to specialized industrial solutions, we create corrugated
-              boxes designed around your product, protection and business needs.
+              {subtitleText}
             </p>
 
             {/* Dual CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-8">
               {/* Primary CTA: Request a Quote */}
               <Link
-                href="/contact"
+                href={primaryButtonLink}
                 className="inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-lg bg-[#A65D32] text-white text-base font-semibold hover:bg-[#8e4f2b] transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 group active:scale-[0.98]"
               >
-                <span>Request a Quote</span>
+                <span>{primaryButtonText}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
 
-              {/* Secondary CTA: Explore Our Products */}
-              <Link
-                href="#products"
+              {/* Secondary CTA: Call */}
+              <a
+                href={`tel:${secondaryButtonText}`}
                 className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-lg bg-[#FAF7F2] text-[#493629] text-base font-semibold border border-[#D1B48C]/60 hover:bg-[#F2ECE1] hover:border-[#A65D32] hover:text-[#202A2E] transition-all duration-200 active:scale-[0.98]"
               >
-                <span>Explore Our Products</span>
-              </Link>
+                <span>{secondaryButtonText}</span>
+              </a>
             </div>
 
             {/* Compact Supporting Value Line */}
@@ -136,7 +140,7 @@ export default function CTA() {
               {/* Full-Bleed Animated GIF with Proportional Ratio */}
               <div className="relative w-full aspect-[560/360] overflow-hidden">
                 <Image
-                  src="/home/cta/animated-welcoming-businessman.gif"
+                  src={ctaMedia}
                   alt="Aavrit Packaging customer specialist welcoming inquiries"
                   fill
                   unoptimized

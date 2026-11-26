@@ -5,10 +5,15 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight, Quote, Building2, MapPin } from "lucide-react";
 import { TESTIMONIALS } from "@/data/testimonials";
 
-export default function Testimonial() {
+export default function Testimonial({ data }: { data?: any } = {}) {
+  const testimonialsList = data?.testimonials && data.testimonials.length > 0 ? data.testimonials : TESTIMONIALS;
+  const badgeText = data?.badge || "CLIENT EXPERIENCES";
+  const titleText = data?.title || "What Our Partners Say";
+  const subtitleText = data?.subtitle || data?.description || "Strong packaging builds stronger business relationships.";
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const total = TESTIMONIALS.length;
+  const total = testimonialsList.length;
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleNext = useCallback(() => {
@@ -61,19 +66,19 @@ export default function Testimonial() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/20 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                CLIENT EXPERIENCES
+                {badgeText}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
-              What Our Partners <span className="text-[#A65D32]">Say</span>
+              {titleText}
             </h2>
           </div>
 
           {/* Right Column: Context Description with Accent Border */}
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              Strong packaging builds stronger business relationships.
+              {subtitleText}
             </p>
           </div>
         </div>
@@ -86,7 +91,7 @@ export default function Testimonial() {
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          {TESTIMONIALS.map((item, index) => {
+          {testimonialsList.map((item: any, index: number) => {
             const position = getCardPosition(index);
 
             // Positioning styles for 3D card swapping effect
@@ -155,26 +160,33 @@ export default function Testimonial() {
                 <div className="pt-6 border-t border-[#E4DED3] flex items-center justify-between gap-4">
                   <div>
                     <h4 className="font-heading font-bold text-base sm:text-lg text-[#202A2E]">
-                      {item.contactPerson}
+                      {item.contactPerson || item.author || "Client Partner"}
                     </h4>
                     <p className="text-xs sm:text-sm text-[#62574D]">
-                      {item.designation} • <span className="font-semibold text-[#493629]">{item.companyName}</span>
+                      {item.designation || item.role || "Operations"}
+                      {(item.companyName || item.company) && (
+                        <> • <span className="font-semibold text-[#493629]">{item.companyName || item.company}</span></>
+                      )}
                     </p>
-                    <p className="text-[11px] text-[#A65D32] flex items-center gap-1 mt-0.5">
-                      <MapPin className="w-3 h-3" />
-                      {item.location}
-                    </p>
+                    {(item.location || item.city) && (
+                      <p className="text-[11px] text-[#A65D32] flex items-center gap-1 mt-0.5">
+                        <MapPin className="w-3 h-3" />
+                        {item.location || item.city}
+                      </p>
+                    )}
                   </div>
 
-                  {/* Logo Display on Card */}
-                  <div className="relative w-28 sm:w-36 h-10 shrink-0">
-                    <Image
-                      src={item.logo}
-                      alt={`${item.companyName} logo`}
-                      fill
-                      className="object-contain object-right"
-                    />
-                  </div>
+                  {/* Logo Display on Card (only if logo is non-empty) */}
+                  {item.logo && typeof item.logo === "string" && item.logo.trim() !== "" ? (
+                    <div className="relative w-28 sm:w-36 h-10 shrink-0">
+                      <Image
+                        src={item.logo}
+                        alt={`${item.companyName || item.company || "Client"} logo`}
+                        fill
+                        className="object-contain object-right"
+                      />
+                    </div>
+                  ) : null}
                 </div>
               </div>
             );
@@ -185,7 +197,7 @@ export default function Testimonial() {
             3. PAGINATION INDICATORS (Centered without Side Arrows)
         ========================================================================= */}
         <div className="flex items-center justify-center gap-2.5 mt-8 sm:mt-10">
-          {TESTIMONIALS.map((item, idx) => {
+          {testimonialsList.map((item: any, idx: number) => {
             const isActive = idx === currentIndex;
             return (
               <button

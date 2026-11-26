@@ -2,9 +2,29 @@
 
 import React, { useState, useEffect, useRef } from "react";
 
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+
 const TOTAL_FRAMES = 80;
 
-export default function Hero() {
+export interface HeroProps {
+  data?: {
+    mediaType?: "video" | "image";
+    videoMode?: "frames" | "video-url";
+    videoUrl?: string;
+    imageUrl?: string;
+    title?: string;
+    subtitle?: string;
+    primaryButtonText?: string;
+    primaryButtonLink?: string;
+    secondaryButtonText?: string;
+    secondaryButtonLink?: string;
+  };
+}
+
+export default function Hero({ data }: HeroProps = {}) {
+  const isImageMode = data?.mediaType === "image";
+  const isCustomVideo = data?.mediaType === "video" && data?.videoMode === "video-url" && !!data?.videoUrl;
   const heroRef = useRef<HTMLElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
@@ -167,13 +187,74 @@ export default function Hero() {
       className="relative w-full h-screen min-h-[600px] bg-[#1A1816] overflow-hidden select-none border-b border-[#E4DED3]"
       aria-label="Aavrit Packaging Hero Manufacturing"
     >
-      {/* 100% Clean Full-Width 100vh Video Canvas (Zero text overlays, Zero black gap) */}
-      <div className="absolute inset-0 w-full h-full">
-        <canvas
-          ref={canvasRef}
-          className="w-full h-full object-cover object-center block"
-        />
-      </div>
+      {/* 1. Image Mode */}
+      {isImageMode ? (
+        <div className="absolute inset-0 w-full h-full">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={data?.imageUrl && data.imageUrl.trim() !== "" ? data.imageUrl : "/home/company img.png"}
+            alt={data?.title || "Aavrit Corrugated Packaging"}
+            className="w-full h-full object-cover object-center block"
+          />
+          {/* Optional Ambient Gradient and Hero Text if configured */}
+          {data?.title && (
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40 flex items-center justify-center p-6 sm:p-12 text-center">
+              <div className="max-w-4xl space-y-4">
+                <span className="inline-block px-3.5 py-1 rounded-full bg-[#D1B48C]/20 border border-[#D1B48C]/40 text-[#D1B48C] text-xs font-bold uppercase tracking-widest">
+                  Industrial Packaging Excellence
+                </span>
+                <h1 className="font-heading font-extrabold text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-tight">
+                  {data.title}
+                </h1>
+                {data.subtitle && (
+                  <p className="text-sm sm:text-lg text-white/85 max-w-2xl mx-auto font-normal leading-relaxed">
+                    {data.subtitle}
+                  </p>
+                )}
+                <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+                  {data.primaryButtonText && (
+                    <Link
+                      href={data.primaryButtonLink || "/products"}
+                      className="px-6 py-3 rounded-xl bg-[#E97835] hover:bg-[#d46726] text-white text-xs sm:text-sm font-bold transition-all shadow-lg flex items-center gap-2"
+                    >
+                      <span>{data.primaryButtonText}</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  )}
+                  {data.secondaryButtonText && (
+                    <Link
+                      href={data.secondaryButtonLink || "/contact"}
+                      className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 text-xs sm:text-sm font-bold transition-all"
+                    >
+                      <span>{data.secondaryButtonText}</span>
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      ) : isCustomVideo && data?.videoUrl && data.videoUrl.trim() !== "" ? (
+        /* 2. Custom Uploaded Video File (MP4/WebM) */
+        <div className="absolute inset-0 w-full h-full">
+          <video
+            src={data.videoUrl}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover object-center block"
+          />
+        </div>
+      ) : (
+        /* 3. Default Interactive 80-Frame Scroll Scrubbing Video */
+        <div className="absolute inset-0 w-full h-full">
+          <canvas
+            ref={canvasRef}
+            className="w-full h-full object-cover object-center block"
+          />
+        </div>
+      )}
     </section>
   );
 }

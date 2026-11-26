@@ -50,7 +50,12 @@ const FAQS: FAQItem[] = [
   },
 ];
 
-export default function FAQ() {
+export default function FAQ({ data }: { data?: any } = {}) {
+  const faqsList: FAQItem[] = data?.faqs && data.faqs.length > 0 ? data.faqs : FAQS;
+  const badgeText = data?.badge || "PACKAGING KNOWLEDGE & ASSISTANCE";
+  const titleText = data?.title || "Frequently Asked Questions";
+  const subtitleText = data?.subtitle || data?.description || "Clear, practical answers about board specifications, ply constructions, customized sizing, and box engineering.";
+
   const [openIdx, setOpenIdx] = useState<number | null>(0);
 
   const toggleFAQ = (idx: number) => {
@@ -73,19 +78,19 @@ export default function FAQ() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/20 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                PACKAGING KNOWLEDGE & ASSISTANCE
+                {badgeText}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
-              Frequently Asked <span className="text-[#A65D32]">Questions</span>
+              {titleText}
             </h2>
           </div>
 
           {/* Right Column: Context Description with Accent Border */}
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              Clear, practical answers about board specifications, ply constructions, customized sizing, and box engineering.
+              {subtitleText}
             </p>
           </div>
         </div>
@@ -94,7 +99,7 @@ export default function FAQ() {
             2. INTERACTIVE ANIMATED ACCORDION LIST (5 Technical Questions)
         ========================================================================= */}
         <div className="max-w-4xl mx-auto space-y-4 mb-14">
-          {FAQS.map((faq, idx) => {
+          {faqsList.map((faq, idx) => {
             const isOpen = openIdx === idx;
 
             return (

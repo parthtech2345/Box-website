@@ -54,10 +54,15 @@ const CATEGORIES: ProductCategory[] = [
   },
 ];
 
-export default function ProductCategories() {
+export default function ProductCategories({ data }: { data?: any } = {}) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const headerRef = useRef<HTMLDivElement | null>(null);
   const cardsRef = useRef<HTMLDivElement | null>(null);
+
+  const categories: ProductCategory[] = data?.categories && data.categories.length > 0 ? data.categories : CATEGORIES;
+  const badgeText = data?.badge || "OUR PACKAGING SOLUTIONS";
+  const titleText = data?.title || "Explore Our Product Categories";
+  const subtitleText = data?.subtitle || data?.description || "Discover our comprehensive range of corrugated packaging solutions, engineered with precision to meet diverse industrial, commercial, and shipping requirements.";
 
   useEffect(() => {
     if (typeof window === "undefined" || !sectionRef.current) return;
@@ -127,21 +132,19 @@ export default function ProductCategories() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/20 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                OUR PACKAGING SOLUTIONS
+                {badgeText}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
-              Explore Our <br className="hidden sm:inline" />
-              <span className="text-[#A65D32]">Product Categories</span>
+              {titleText}
             </h2>
           </div>
 
           {/* Right Column: Context Description with Accent Border */}
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              Discover our comprehensive range of corrugated packaging solutions,
-              engineered with precision to meet diverse industrial, commercial, and shipping requirements.
+              {subtitleText}
             </p>
           </div>
         </div>
@@ -151,22 +154,26 @@ export default function ProductCategories() {
           ref={cardsRef}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"
         >
-          {CATEGORIES.map((cat) => (
-            <Card3DTilt key={cat.id} className="h-full rounded-xl">
-              <Link
-                href={cat.href}
-                className="group flex flex-col h-full bg-[#FFFFFF] rounded-xl border border-[#E4DED3] overflow-hidden shadow-xs hover:border-[#D1B48C] hover:shadow-lg transition-all duration-300 cursor-pointer block"
-              >
-                {/* Image Container with compact aspect ratio (4/3) and NO text overlay */}
-                <div className="relative w-full aspect-[4/3] bg-[#FAF7F2] overflow-hidden">
-                  <Image
-                    src={cat.image}
-                    alt={`${cat.title} - Natural kraft corrugated cardboard packaging`}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
-                  />
-                </div>
+          {categories.map((cat) => {
+            const catImage = cat.image && typeof cat.image === "string" && cat.image.trim() !== "" ? cat.image : "/home/product-categories/corrugated-boxes.png";
+            const catAlt = cat.title ? `${cat.title} - Natural kraft corrugated cardboard packaging` : "Corrugated packaging category";
+
+            return (
+              <Card3DTilt key={cat.id || cat.title} className="h-full rounded-xl">
+                <Link
+                  href={cat.href || "/products"}
+                  className="group flex flex-col h-full bg-[#FFFFFF] rounded-xl border border-[#E4DED3] overflow-hidden shadow-xs hover:border-[#D1B48C] hover:shadow-lg transition-all duration-300 cursor-pointer block"
+                >
+                  {/* Image Container with compact aspect ratio (4/3) and NO text overlay */}
+                  <div className="relative w-full aspect-[4/3] bg-[#FAF7F2] overflow-hidden">
+                    <Image
+                      src={catImage}
+                      alt={catAlt}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
+                    />
+                  </div>
 
                 {/* Card Footer: Category Name, Explore Label & Arrow Action Button */}
                 <div className="p-4 sm:p-5 flex flex-col justify-between flex-1 gap-4 bg-[#FFFFFF] border-t border-[#E4DED3]/60">
@@ -186,7 +193,8 @@ export default function ProductCategories() {
                 </div>
               </Link>
             </Card3DTilt>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
