@@ -15,11 +15,22 @@ import {
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function LeadershipTeam() {
+export default function LeadershipTeam({ data }: { data?: any }) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const founderCardRef = useRef<HTMLDivElement | null>(null);
   const teamHeaderRef = useRef<HTMLDivElement | null>(null);
   const teamGridRef = useRef<HTMLDivElement | null>(null);
+
+  const badge = data?.badge || "LEADERSHIP & MANAGEMENT";
+  const title = data?.title || "Guided by Experience. Driven by Purpose.";
+  const subtitle =
+    data?.subtitle ||
+    "Behind every successful business is a clear vision and a commitment to doing things better. Meet the founders and operations leaders guiding Aavrit Packaging.";
+  const ownerProfile = data?.ownerProfile || OWNER_PROFILE;
+  const managementTeam =
+    data?.managementTeam && data.managementTeam.length > 0
+      ? data.managementTeam
+      : MANAGEMENT_TEAM;
 
   useEffect(() => {
     if (typeof window === "undefined" || !sectionRef.current) return;
@@ -114,20 +125,28 @@ export default function LeadershipTeam() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                LEADERSHIP &amp; MANAGEMENT
+                {badge}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.15] tracking-tight">
-              Guided by Experience.{" "}
-              <span className="text-[#A65D32]">Driven by Purpose.</span>
+              {title.includes(".") ? (
+                <>
+                  {title.split(".")[0]}.{" "}
+                  <span className="text-[#A65D32]">
+                    {title.split(".").slice(1).join(".").trim()}
+                  </span>
+                </>
+              ) : (
+                title
+              )}
             </h2>
           </div>
 
           {/* Right Column: Context Description with Accent Border */}
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              Behind every successful business is a clear vision and a commitment to doing things better. Meet the founders and operations leaders guiding Aavrit Packaging.
+              {subtitle}
             </p>
           </div>
         </div>
@@ -161,7 +180,7 @@ export default function LeadershipTeam() {
 
                 {/* Bio Paragraphs */}
                 <div className="space-y-4 text-base sm:text-lg text-[#62574D] leading-relaxed font-normal">
-                  {OWNER_PROFILE.bioParagraphs.map((para, i) => (
+                  {(ownerProfile?.bioParagraphs || OWNER_PROFILE.bioParagraphs).map((para: string, i: number) => (
                     <p key={i}>{para}</p>
                   ))}
                 </div>
@@ -170,7 +189,7 @@ export default function LeadershipTeam() {
                 <div className="relative pl-6 border-l-2 border-[#A65D32] py-2 bg-[#FAF7F2] rounded-r-xl pr-4">
                   <Quote className="w-6 h-6 text-[#A65D32]/40 absolute -top-3 left-4" />
                   <p className="italic text-[#493629] text-sm sm:text-base font-medium leading-relaxed">
-                    &ldquo;{OWNER_PROFILE.quote}&rdquo;
+                    &ldquo;{ownerProfile?.quote || OWNER_PROFILE.quote}&rdquo;
                   </p>
                 </div>
 
@@ -178,14 +197,14 @@ export default function LeadershipTeam() {
                 <div className="pt-4 border-t border-[#E8D5B8] flex flex-wrap items-center justify-between gap-4">
                   <div>
                     <h3 className="text-xl font-bold text-[#493629]">
-                      {OWNER_PROFILE.name}
+                      {ownerProfile?.name || OWNER_PROFILE.name}
                     </h3>
                     <p className="text-xs sm:text-sm font-semibold text-[#A65D32] uppercase tracking-wider">
-                      {OWNER_PROFILE.designation} &bull; {OWNER_PROFILE.companyName}
+                      {ownerProfile?.designation || OWNER_PROFILE.designation} &bull; {ownerProfile?.companyName || OWNER_PROFILE.companyName}
                     </p>
                   </div>
 
-                  {OWNER_PROFILE.isPlaceholder && (
+                  {ownerProfile?.isPlaceholder && (
                     <span className="px-3 py-1 rounded-full bg-[#E8D5B8]/60 text-[10px] font-bold text-[#493629] uppercase tracking-wider border border-[#493629]/15">
                       Verified Owner Profile Ready
                     </span>
@@ -201,10 +220,10 @@ export default function LeadershipTeam() {
 
                   {/* Main Portrait Container */}
                   <div className="relative rounded-2xl overflow-hidden aspect-[4/5] bg-gradient-to-b from-[#FAF7F2] to-[#E8D5B8]/50 border-2 border-[#E8D5B8] shadow-2xl flex flex-col items-center justify-center p-6 text-center">
-                    {OWNER_PROFILE.photoUrl ? (
+                    {ownerProfile?.photoUrl ? (
                       <Image
-                        src={OWNER_PROFILE.photoUrl}
-                        alt={`${OWNER_PROFILE.name} - ${OWNER_PROFILE.designation}`}
+                        src={ownerProfile.photoUrl}
+                        alt={`${ownerProfile.name} - ${ownerProfile.designation}`}
                         fill
                         className="object-cover object-center"
                       />
@@ -256,7 +275,7 @@ export default function LeadershipTeam() {
 
           {/* Four-Column Management Grid */}
           <div ref={teamGridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-            {MANAGEMENT_TEAM.map((member) => (
+            {managementTeam.map((member: any) => (
               <div
                 key={member.id}
                 className="group relative rounded-2xl bg-white border border-[#E8D5B8] overflow-hidden shadow-lg hover:shadow-2xl hover:border-[#A65D32]/50 transition-all duration-500 flex flex-col"

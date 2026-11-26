@@ -4,8 +4,15 @@ import React, { useState } from "react";
 import { Plus, Minus } from "lucide-react";
 import { ABOUT_FAQS } from "./aboutFaqData";
 
-export default function AboutFAQ() {
+export default function AboutFAQ({ data }: { data?: any }) {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
+
+  const badge = data?.badge || "HAVE QUESTIONS?";
+  const title = data?.title || "Frequently Asked Questions";
+  const subtitle =
+    data?.subtitle ||
+    "Find answers to common questions about our company, packaging solutions and manufacturing approach.";
+  const faqs = data?.faqs && data.faqs.length > 0 ? data.faqs : ABOUT_FAQS;
 
   const toggleFAQ = (idx: number) => {
     setOpenIdx(openIdx === idx ? null : idx);
@@ -27,19 +34,28 @@ export default function AboutFAQ() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/20 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                HAVE QUESTIONS?
+                {badge}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
-              Frequently Asked <span className="text-[#A65D32]">Questions</span>
+              {title.includes(" ") ? (
+                <>
+                  {title.split(" ").slice(0, -1).join(" ")}{" "}
+                  <span className="text-[#A65D32]">
+                    {title.split(" ").slice(-1)[0]}
+                  </span>
+                </>
+              ) : (
+                title
+              )}
             </h2>
           </div>
 
           {/* Right Column: Context Description with Accent Border */}
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              Find answers to common questions about our company, packaging solutions and manufacturing approach.
+              {subtitle}
             </p>
           </div>
         </div>
@@ -48,7 +64,7 @@ export default function AboutFAQ() {
             2. INTERACTIVE ANIMATED ACCORDION LIST (Exact Homepage Behavior)
         ========================================================================= */}
         <div className="max-w-4xl mx-auto space-y-4">
-          {ABOUT_FAQS.map((faq, idx) => {
+          {faqs.map((faq: any, idx: number) => {
             const isOpen = openIdx === idx;
 
             return (

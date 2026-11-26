@@ -16,13 +16,23 @@ import {
   ShowcaseProject,
 } from "./showcaseData";
 
-export default function ManufacturingExperience() {
+export default function ManufacturingExperience({ data }: { data?: any }) {
   const [selectedProject, setSelectedProject] = useState<ShowcaseProject | null>(
     null
   );
 
+  const badge = data?.badge || "OUR MANUFACTURING EXPERIENCE";
+  const title = data?.title || "Packaging Solutions, Made with Purpose.";
+  const subtitle =
+    data?.subtitle ||
+    "Explore illustrative packaging applications demonstrating how different products and industries are served with precision-engineered corrugated packaging solutions.";
+  const projects =
+    data?.projects && data.projects.length > 0
+      ? data.projects
+      : SHOWCASE_PROJECTS;
+
   // Duplicate items array for seamless 100% infinite continuous loop
-  const duplicatedProjects = [...SHOWCASE_PROJECTS, ...SHOWCASE_PROJECTS];
+  const duplicatedProjects = [...projects, ...projects];
 
   return (
     <section
@@ -46,22 +56,28 @@ export default function ManufacturingExperience() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                OUR MANUFACTURING EXPERIENCE
+                {badge}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.15] tracking-tight">
-              Packaging Solutions,{" "}
-              <span className="text-[#A65D32]">Made with Purpose.</span>
+              {title.includes(",") ? (
+                <>
+                  {title.split(",")[0]},{" "}
+                  <span className="text-[#A65D32]">
+                    {title.split(",")[1]?.trim()}
+                  </span>
+                </>
+              ) : (
+                title
+              )}
             </h2>
           </div>
 
           {/* Right Column: Context Description with Accent Border */}
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              Explore illustrative packaging applications demonstrating how
-              different products and industries are served with precision-engineered
-              corrugated packaging solutions.
+              {subtitle}
             </p>
           </div>
         </div>

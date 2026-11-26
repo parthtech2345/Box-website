@@ -6,8 +6,18 @@ import { Layers } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function CoreValues() {
-  const [activeValue, setActiveValue] = useState<string>("value-1");
+export default function CoreValues({ data }: { data?: any }) {
+  const badge = data?.badge || "OUR CORE VALUES";
+  const title = data?.title || "What We Stand For Shapes Everything We Do.";
+  const subtitle =
+    data?.subtitle ||
+    "Our values guide the way we work, the solutions we create and the relationships we build. Much like corrugated cardboard derives its integrity from synchronized paper layers, our company culture is reinforced by each core principle.";
+  const values =
+    data?.values && data.values.length > 0 ? data.values : CORE_VALUES_DATA;
+
+  const [activeValue, setActiveValue] = useState<string>(
+    values[0]?.id || "value-1"
+  );
   const sectionRef = useRef<HTMLElement | null>(null);
   const headerRef = useRef<HTMLDivElement | null>(null);
   const cardsRef = useRef<HTMLDivElement | null>(null);
@@ -107,23 +117,19 @@ export default function CoreValues() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                OUR CORE VALUES
+                {badge}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
-              What We Stand For Shapes{" "}
-              <span className="text-[#A65D32]">Everything We Do.</span>
+              {title}
             </h2>
           </div>
 
           {/* Right Column: Context Description with Accent Border */}
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              Our values guide the way we work, the solutions we create and the
-              relationships we build. Much like corrugated cardboard derives its
-              integrity from synchronized paper layers, our company culture is
-              reinforced by each core principle.
+              {subtitle}
             </p>
           </div>
         </div>
@@ -138,7 +144,7 @@ export default function CoreValues() {
               LEFT SIDE (6 cols): Exactly 5 Value Description Cards
           ======================================================================= */}
           <div ref={cardsRef} className="lg:col-span-6 flex flex-col justify-between space-y-3">
-            {CORE_VALUES_DATA.map((val) => {
+            {values.map((val: any) => {
               const isActive = activeValue === val.id;
 
               return (
@@ -206,7 +212,7 @@ export default function CoreValues() {
 
               {/* Stacked 5 Corrugated Board Layers */}
               <div className="space-y-3 py-4 flex-1 flex flex-col justify-around">
-                {CORE_VALUES_DATA.map((val) => {
+                {values.map((val: any) => {
                   const isActive = activeValue === val.id;
 
                   return (

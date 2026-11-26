@@ -6,9 +6,14 @@ import { Compass, Sparkles, Check } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function VisionMission() {
-  const { eyebrow, mainHeading, supportingText, vision, mission } =
-    VISION_MISSION_DATA;
+export default function VisionMission({ data }: { data?: any }) {
+  const eyebrow = data?.eyebrow || data?.badge || VISION_MISSION_DATA.eyebrow;
+  const mainHeading =
+    data?.mainHeading || data?.title || VISION_MISSION_DATA.mainHeading;
+  const supportingText =
+    data?.supportingText || data?.subtitle || VISION_MISSION_DATA.supportingText;
+  const vision = data?.vision || VISION_MISSION_DATA.vision;
+  const mission = data?.mission || VISION_MISSION_DATA.mission;
 
   const sectionRef = useRef<HTMLElement | null>(null);
   const headerRef = useRef<HTMLDivElement | null>(null);
@@ -181,7 +186,7 @@ export default function VisionMission() {
 
               {/* Checkpoints Checklist */}
               <div className="space-y-1.5">
-                {vision.checkpoints.map((point, idx) => {
+                {(vision?.checkpoints || []).map((point: string, idx: number) => {
                   const isChecked = activeVisionChecks.includes(idx);
                   return (
                     <div
@@ -255,7 +260,7 @@ export default function VisionMission() {
 
               {/* Checkpoints Checklist */}
               <div className="space-y-1.5">
-                {mission.checkpoints.map((point, idx) => {
+                {(mission?.checkpoints || []).map((point: string, idx: number) => {
                   const isChecked = activeMissionChecks.includes(idx);
                   return (
                     <div

@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { JOURNEY_MILESTONES } from "./journeyData";
 
-export default function GrowthJourney() {
+export default function GrowthJourney({ data }: { data?: any }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0); // 0.0 to 1.0
@@ -12,7 +12,17 @@ export default function GrowthJourney() {
   const currentProgressRef = useRef(0);
   const animFrameRef = useRef<number | null>(null);
 
-  const totalCards = JOURNEY_MILESTONES.length;
+  const badge = data?.badge || "OUR JOURNEY";
+  const title = data?.title || "Our Journey & Manufacturing Milestones.";
+  const subtitle =
+    data?.subtitle ||
+    "From our foundational corrugation lines in 2008 to modern high-speed automated facilities, explore every stage that shaped our quality packaging journey.";
+  const milestones =
+    data?.milestones && data.milestones.length > 0
+      ? data.milestones
+      : JOURNEY_MILESTONES;
+
+  const totalCards = milestones.length;
 
   // Window scroll tracker with smooth momentum-damping lerp for ultra-smooth slow scroll
   useEffect(() => {
@@ -80,20 +90,26 @@ export default function GrowthJourney() {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-2.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
                 <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                  OUR JOURNEY
+                  {badge}
                 </span>
               </div>
 
               <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
-                Our Journey &amp;{" "}
-                <span className="text-[#A65D32]">Manufacturing Milestones.</span>
+                {title.includes("&") ? (
+                  <>
+                    {title.split("&")[0]}&amp;{" "}
+                    <span className="text-[#A65D32]">{title.split("&")[1]?.trim()}</span>
+                  </>
+                ) : (
+                  title
+                )}
               </h2>
             </div>
 
             {/* Right Column: Context Description with Accent Border */}
             <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
               <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-                From our foundational corrugation lines in 2008 to modern high-speed automated facilities, explore every stage that shaped our quality packaging journey.
+                {subtitle}
               </p>
             </div>
           </div>
@@ -128,7 +144,7 @@ export default function GrowthJourney() {
               width: "max-content",
             }}
           >
-            {JOURNEY_MILESTONES.map((m, idx) => {
+            {milestones.map((m: any, idx: number) => {
               // Alternating placement: even cards (0, 2) sit ABOVE the line; odd cards (1, 3) sit BELOW the line
               const isAbove = idx % 2 === 0;
               const cardProgress = idx / (totalCards - 1);

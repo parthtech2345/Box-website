@@ -6,11 +6,20 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import gsap from "gsap";
 
-export default function AboutHero() {
+export default function AboutHero({ data }: { data?: any }) {
   const titleRef = useRef<HTMLDivElement | null>(null);
   const workerRef = useRef<HTMLDivElement | null>(null);
   const shadowRef = useRef<HTMLDivElement | null>(null);
   const speechBubbleRef = useRef<HTMLDivElement | null>(null);
+
+  const title = data?.title || "About Us";
+  const breadcrumbRoot = data?.breadcrumbRoot || "Home";
+  const breadcrumbCurrent = data?.breadcrumbCurrent || "About Us";
+  const backgroundImage = data?.backgroundImage || "/about/Professional Corrugated Packaging Display.png";
+  const mascotImage = data?.mascotImage || "/about/worker-mascot-clean.png";
+  const mascotAlt = data?.mascotAlt || "AAVRIT PACKAGING Employee Welcoming Visitors";
+  const speechBubbleTitle = data?.speechBubbleTitle || "Let's Get to Know Us!";
+  const speechBubbleSubtitle = data?.speechBubbleSubtitle || "Discover the passion & precision behind every box";
 
   const playGreeting = () => {
     if (!workerRef.current || !shadowRef.current || !speechBubbleRef.current) return;
@@ -88,8 +97,8 @@ export default function AboutHero() {
       <div className="relative w-full h-[340px] sm:h-[380px] lg:h-[420px]">
         {/* Background Real Packaging Display */}
         <Image
-          src="/about/Professional Corrugated Packaging Display.png"
-          alt="About Us Banner - AAVRIT PACKAGING"
+          src={backgroundImage}
+          alt={`${title} Banner - AAVRIT PACKAGING`}
           fill
           priority
           sizes="100vw"
@@ -106,7 +115,7 @@ export default function AboutHero() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div ref={titleRef} className="max-w-md">
               <h1 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-tight mb-1.5 drop-shadow-md">
-                About Us
+                {title}
               </h1>
 
               {/* Breadcrumbs: Home > About Us */}
@@ -118,11 +127,11 @@ export default function AboutHero() {
                   href="/"
                   className="hover:text-[#E97835] transition-colors drop-shadow-xs"
                 >
-                  Home
+                  {breadcrumbRoot}
                 </Link>
                 <ChevronRight className="w-3.5 h-3.5 text-[#D1B48C]" />
                 <span className="text-[#D1B48C] font-semibold drop-shadow-xs">
-                  About Us
+                  {breadcrumbCurrent}
                 </span>
               </nav>
             </div>
@@ -141,8 +150,8 @@ export default function AboutHero() {
                 className="relative w-[110px] sm:w-[135px] lg:w-[155px] h-[165px] sm:h-[205px] lg:h-[240px] z-20 pointer-events-none"
               >
                 <Image
-                  src="/about/worker-mascot-clean.png"
-                  alt="AAVRIT PACKAGING Employee Welcoming Visitors"
+                  src={mascotImage}
+                  alt={mascotAlt}
                   fill
                   priority
                   sizes="(max-width: 640px) 110px, (max-width: 1024px) 135px, 155px"
@@ -171,12 +180,12 @@ export default function AboutHero() {
                 <div className="flex items-center gap-1.5 mb-0.5">
                   <span className="text-base sm:text-lg animate-bounce">👋</span>
                   <h4 className="font-heading font-extrabold text-base sm:text-lg lg:text-xl text-white tracking-wide leading-tight drop-shadow-sm">
-                    Let&apos;s Get to Know Us!
+                    {speechBubbleTitle}
                   </h4>
                 </div>
 
                 <p className="text-xs sm:text-[13px] font-medium text-[#D1B48C] leading-snug drop-shadow-xs">
-                  Discover the passion & precision behind every box
+                  {speechBubbleSubtitle}
                 </p>
               </div>
             </div>

@@ -10,7 +10,17 @@ import {
 } from "lucide-react";
 import { WORKING_PRINCIPLES } from "./principlesData";
 
-export default function WorkingPrinciples() {
+export default function WorkingPrinciples({ data }: { data?: any }) {
+  const badge = data?.badge || "HOW WE WORK";
+  const title = data?.title || "The Principles Behind Every Box We Create.";
+  const subtitle =
+    data?.subtitle ||
+    "Our approach brings together thoughtful manufacturing, customer-focused solutions and a consistent commitment to quality.";
+  const pillars =
+    data?.pillars && data.pillars.length > 0
+      ? data.pillars
+      : WORKING_PRINCIPLES;
+
   const getIcon = (idx: number) => {
     switch (idx) {
       case 0:
@@ -45,21 +55,28 @@ export default function WorkingPrinciples() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                HOW WE WORK
+                {badge}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.15] tracking-tight">
-              The Principles Behind{" "}
-              <span className="text-[#A65D32]">Every Box We Create.</span>
+              {title.includes("Every") ? (
+                <>
+                  {title.split("Every")[0]}{" "}
+                  <span className="text-[#A65D32]">
+                    Every{title.split("Every").slice(1).join("Every")}
+                  </span>
+                </>
+              ) : (
+                title
+              )}
             </h2>
           </div>
 
           {/* Right Column: Context Description with Accent Border */}
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              Our approach brings together thoughtful manufacturing,
-              customer-focused solutions and a consistent commitment to quality.
+              {subtitle}
             </p>
           </div>
         </div>
@@ -72,7 +89,7 @@ export default function WorkingPrinciples() {
           <div className="hidden lg:block absolute left-1/2 top-12 bottom-12 -translate-x-1/2 w-0.5 bg-gradient-to-b from-[#A65D32] via-[#E8D5B8] to-[#493629] opacity-35" />
 
           <div className="space-y-16 lg:space-y-24">
-            {WORKING_PRINCIPLES.map((stage, idx) => {
+            {pillars.map((stage: any, idx: number) => {
               const isImageLeft = idx === 1;
 
               return (
@@ -118,7 +135,7 @@ export default function WorkingPrinciples() {
 
                         {/* Bullet Highlights */}
                         <ul className="space-y-2.5 pt-1">
-                          {stage.bulletPoints.map((point, pIdx) => (
+                          {(stage?.bulletPoints || []).map((point: string, pIdx: number) => (
                             <li
                               key={pIdx}
                               className="flex items-start gap-2.5 text-xs sm:text-sm text-[#493629] font-medium"
@@ -191,7 +208,7 @@ export default function WorkingPrinciples() {
 
                         {/* Bullet Highlights */}
                         <ul className="space-y-2.5 pt-1">
-                          {stage.bulletPoints.map((point, pIdx) => (
+                          {(stage?.bulletPoints || []).map((point: string, pIdx: number) => (
                             <li
                               key={pIdx}
                               className="flex items-start gap-2.5 text-xs sm:text-sm text-[#493629] font-medium"

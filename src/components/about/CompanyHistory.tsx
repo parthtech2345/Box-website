@@ -50,13 +50,50 @@ const STATISTICS_DATA: StatisticItem[] = [
   },
 ];
 
-export default function CompanyHistory() {
+export default function CompanyHistory({ data }: { data?: any }) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const imageRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
   const qualitiesRef = useRef<HTMLDivElement | null>(null);
   const statsRef = useRef<HTMLDivElement | null>(null);
   const counterRefs = useRef<(HTMLSpanElement | null)[]>([]);
+
+  const badge = data?.badge || "ABOUT AAVRIT PACKAGING";
+  const title = data?.title || "Protection Begins With Better Packaging.";
+  const firstParagraph =
+    data?.firstParagraph ||
+    "At AAVRIT Packaging, we believe packaging is more than just a box. It is an essential part of protecting products, maintaining quality and helping businesses deliver with confidence.";
+  const secondParagraph =
+    data?.secondParagraph ||
+    "From customized corrugated boxes to dependable bulk packaging solutions, our focus is on understanding business requirements and creating packaging that combines strength, practicality and value.";
+  const facilityImage = data?.facilityImage || "/home/company img.png";
+  const facilityImageAlt =
+    data?.facilityImageAlt ||
+    "AAVRIT PACKAGING modern corrugated cardboard packaging manufacturing facility in India";
+  const qualities: string[] =
+    data?.qualities && data.qualities.length > 0
+      ? data.qualities
+      : [
+          "Built Around Your Requirements",
+          "Certified In-House Lab Testing",
+          "Strength in Every Layer",
+          "High-Speed Automated Capacity",
+          "Focused on Reliable Packaging",
+          "Eco-Friendly 100% Recyclable",
+        ];
+
+  const statIcons = [Award, Users, Package, MapPin];
+  const statsData: StatisticItem[] =
+    data?.statistics && data.statistics.length > 0
+      ? data.statistics.map((s: any, idx: number) => ({
+          id: s.id || `stat-${idx + 1}`,
+          value: Number(s.value) || 0,
+          suffix: s.suffix || "+",
+          label: s.label || "",
+          subtext: s.subtext || "",
+          icon: statIcons[idx % statIcons.length],
+        }))
+      : STATISTICS_DATA;
 
   useEffect(() => {
     if (typeof window === "undefined" || !sectionRef.current) return;
@@ -141,7 +178,7 @@ export default function CompanyHistory() {
           }
         );
 
-        STATISTICS_DATA.forEach((stat, idx) => {
+        statsData.forEach((stat, idx) => {
           const el = counterRefs.current[idx];
           if (!el) return;
 
@@ -164,7 +201,7 @@ export default function CompanyHistory() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [statsData]);
 
   return (
     <section
@@ -181,8 +218,8 @@ export default function CompanyHistory() {
           <div ref={imageRef} className="lg:col-span-6 relative w-full flex items-center justify-center">
             <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden border border-[#D1B48C]/60 shadow-xl group bg-[#202A2E]/5">
               <Image
-                src="/home/company img.png"
-                alt="AAVRIT PACKAGING modern corrugated cardboard packaging manufacturing facility in India"
+                src={facilityImage}
+                alt={facilityImageAlt}
                 fill
                 priority={false}
                 className="object-cover object-center group-hover:scale-[1.02] transition-transform duration-700 ease-out"
@@ -196,34 +233,27 @@ export default function CompanyHistory() {
             {/* Small uppercase category label */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#493629]/10 text-[#493629] text-xs font-bold uppercase tracking-widest mb-3 self-start">
               <span className="w-1.5 h-1.5 rounded-full bg-[#E97835]" />
-              <span>ABOUT AAVRIT PACKAGING</span>
+              <span>{badge}</span>
             </div>
 
             {/* Main Heading */}
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-[42px] text-[#202A2E] leading-[1.12] tracking-tight mb-4">
-              Protection Begins With Better Packaging.
+              {title}
             </h2>
 
             {/* First Paragraph */}
             <p className="text-base text-[#62574D] font-normal leading-relaxed mb-3">
-              At AAVRIT Packaging, we believe packaging is more than just a box. It is an essential part of protecting products, maintaining quality and helping businesses deliver with confidence.
+              {firstParagraph}
             </p>
 
             {/* Second Paragraph */}
             <p className="text-sm sm:text-[15px] text-[#687378] font-normal leading-relaxed mb-6">
-              From customized corrugated boxes to dependable bulk packaging solutions, our focus is on understanding business requirements and creating packaging that combines strength, practicality and value.
+              {secondParagraph}
             </p>
 
             {/* 6 Brand Qualities Grid with Staggered Entrance */}
             <div ref={qualitiesRef} className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5 w-full">
-              {[
-                "Built Around Your Requirements",
-                "Certified In-House Lab Testing",
-                "Strength in Every Layer",
-                "High-Speed Automated Capacity",
-                "Focused on Reliable Packaging",
-                "Eco-Friendly 100% Recyclable",
-              ].map((quality, idx) => (
+              {qualities.map((quality, idx) => (
                 <div
                   key={idx}
                   className="group/item flex items-center gap-3 cursor-pointer py-1.5 transition-all duration-200 select-none"
@@ -252,7 +282,7 @@ export default function CompanyHistory() {
           ref={statsRef}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
-          {STATISTICS_DATA.map((stat, idx) => {
+          {statsData.map((stat, idx) => {
             const Icon = stat.icon;
 
             return (
