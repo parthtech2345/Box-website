@@ -1,14 +1,36 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { ALL_PRODUCTS } from "@/data/productsData";
-
-const WHATSAPP_PHONE = "919876543210"; // +91 98765 43210
+import { DEFAULT_WHATSAPP_CONFIG, WhatsAppConfig } from "@/data/whatsappData";
 
 export default function FloatingWhatsApp() {
   const pathname = usePathname();
   const [isHovered, setIsHovered] = useState(false);
+  const [config, setConfig] = useState<WhatsAppConfig>(DEFAULT_WHATSAPP_CONFIG);
+
+  useEffect(() => {
+    let isMounted = true;
+    async function fetchConfig() {
+      try {
+        const res = await fetch("/api/management");
+        const json = await res.json();
+        if (isMounted && json.success && json.data?.whatsapp) {
+          setConfig((prev) => ({
+            ...prev,
+            ...json.data.whatsapp,
+          }));
+        }
+      } catch (e) {
+        // Fall back to default config seamlessly
+      }
+    }
+    fetchConfig();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Dynamic message based on current page
   const { message, isProductPage, productName } = useMemo(() => {
@@ -16,8 +38,11 @@ export default function FloatingWhatsApp() {
       const slug = pathname.replace("/products/", "").split("/")[0]?.trim();
       const product = ALL_PRODUCTS.find((p) => p.slug === slug);
       if (product) {
+        const template =
+          config.productMessageTemplate ||
+          "Hello, I am interested in your {productName}. Please share specifications and quotation.";
         return {
-          message: `Hello, I am interested in your ${product.name}. Please share specifications and quotation.`,
+          message: template.replace("{productName}", product.name),
           isProductPage: true,
           productName: product.name,
         };
@@ -26,20 +51,29 @@ export default function FloatingWhatsApp() {
 
     return {
       message:
+        config.defaultMessage ||
         "Hello, I am interested in corrugated boxes. I would like to discuss my packaging requirement.",
       isProductPage: false,
       productName: null,
     };
-  }, [pathname]);
+  }, [pathname, config]);
 
-  const whatsappUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(
-    message
-  )}`;
+  // If disabled via admin management, do not render
+  if (config.enabled === false) {
+    return null;
+  }
+
+  const phone = (config.phoneNumber || "919876543210").replace(/[^0-9]/g, "");
+  const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  const positionClass =
+    config.position === "bottom-left" ? "bottom-6 left-6" : "bottom-6 right-6";
 
   return (
     <aside
       aria-label="WhatsApp quick contact"
-      className="fixed bottom-6 right-6 z-50 flex items-center gap-2 pointer-events-none"
+      className={`fixed ${positionClass} z-50 flex items-center gap-2 pointer-events-none ${
+        config.position === "bottom-left" ? "flex-row-reverse" : "flex-row"
+      }`}
     >
       {/* Tooltip: ONLY visible when user actively hovers on the button */}
       <div
@@ -55,8 +89,8 @@ export default function FloatingWhatsApp() {
         </span>
         <span className="truncate">
           {isProductPage && productName
-            ? `Inquire about ${productName}`
-            : "Chat on WhatsApp"}
+            ? `${config.productPageTooltipPrefix || "Inquire about"} ${productName}`
+            : config.tooltipText || "Chat on WhatsApp"}
         </span>
       </div>
 
@@ -73,10 +107,12 @@ export default function FloatingWhatsApp() {
         className="relative flex items-center justify-center w-14 h-14 rounded-full bg-[#25D366] hover:bg-[#20BD5A] text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-110 active:scale-95 cursor-pointer ring-4 ring-[#25D366]/20 hover:ring-[#25D366]/40 pointer-events-auto"
       >
         {/* Subtle Online Dot */}
-        <span className="absolute top-0.5 right-0.5 flex h-3.5 w-3.5 pointer-events-none">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-400 border-2 border-white"></span>
-        </span>
+        {config.showOnlineDot !== false && (
+          <span className="absolute top-0.5 right-0.5 flex h-3.5 w-3.5 pointer-events-none">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-400 border-2 border-white"></span>
+          </span>
+        )}
 
         {/* Official WhatsApp SVG Icon */}
         <svg
