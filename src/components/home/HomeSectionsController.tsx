@@ -65,7 +65,7 @@ export default function HomeSectionsController() {
       <CaseStudies data={sections["case-studies"]} />
 
       {/* Section 8: Corrugated Box Construction (3/5/7 Ply) */}
-      <BoxConstruction />
+      <BoxConstruction data={sections["box-construction"]} />
 
       {/* Section 8.5: Sustainability – Packaging with Purpose */}
       <Sustainability />

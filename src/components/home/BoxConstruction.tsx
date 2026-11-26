@@ -260,9 +260,107 @@ const SPECIFICATION_FACTORS = [
   },
 ];
 
-export default function BoxConstruction() {
-  const [selectedReqId, setSelectedReqId] = useState<string>("req-medium-heavy");
-  const [activePlyTab, setActivePlyTab] = useState<string>("5ply");
+const SPECIFICATION_ICONS = [
+  Layers,
+  SlidersHorizontal,
+  FileText,
+  Ruler,
+  Printer,
+  Package,
+];
+
+export default function BoxConstruction({ data }: { data?: any }) {
+  const badgeText = data?.badge || "PACKAGING KNOWLEDGE";
+  const titleText = data?.title || "Choose the Right Strength for Your Packaging";
+  const subtitleText =
+    data?.subtitle ||
+    "Understanding box construction and material specifications helps you choose packaging that protects your products throughout storage and transportation.";
+
+  const cutawaySubtitle = data?.cutawaySubtitle || "Anatomy of Strength";
+  const cutawayTitle = data?.cutawayTitle || "The Science of 3-Layer Construction";
+  const cutawayDescription =
+    data?.cutawayDescription ||
+    "Corrugated board is an engineered composite paper material. Hover over each layer on the image or below to inspect its structural role.";
+  const cutawayImage =
+    data?.cutawayImage ||
+    data?.image ||
+    "/home/box-specifications/corrugated-board-cutaway.png";
+
+  const cutawayLayers =
+    Array.isArray(data?.cutawayLayers) && data.cutawayLayers.length > 0
+      ? data.cutawayLayers
+      : [
+          {
+            layerNumber: 1,
+            title: "Outer Liner",
+            description:
+              "The external flat paper layer providing puncture resistance and a smooth surface for commercial printing and labeling.",
+          },
+          {
+            layerNumber: 2,
+            title: "Fluted Medium",
+            description:
+              "The wave-shaped middle layer that creates protective air cushions and acts as continuous structural arches resisting top-to-bottom compression.",
+          },
+          {
+            layerNumber: 3,
+            title: "Inner Liner",
+            description:
+              "The internal flat paper layer that holds the fluted arches in permanent geometry and protects internal cargo from abrasion.",
+          },
+        ];
+
+  const plyOptions: PlyOption[] =
+    Array.isArray(data?.plyOptions) && data.plyOptions.length > 0
+      ? data.plyOptions.map((p: any, idx: number) => ({
+          id: p.id || `ply-${idx}`,
+          name: p.name || "",
+          category: p.category || "",
+          construction: p.construction || "",
+          layersSummary: p.layersSummary || "",
+          description: p.description || "",
+          bestFor: Array.isArray(p.bestFor) ? p.bestFor : [],
+          image: p.image || "/home/box-specifications/3ply-single-wall.png",
+        }))
+      : PLY_OPTIONS;
+
+  const selectionRequirements: SelectionRequirement[] =
+    Array.isArray(data?.selectionRequirements) && data.selectionRequirements.length > 0
+      ? data.selectionRequirements.map((r: any, idx: number) => ({
+          id: r.id || `req-${idx}`,
+          title: r.title || "",
+          examples: r.examples || "",
+          recommendedPly: r.recommendedPly || "",
+          recommendedCategory: r.recommendedCategory || "Recommended Starting Point",
+          explanation: r.explanation || "",
+          keyFactors: Array.isArray(r.keyFactors) ? r.keyFactors : [],
+        }))
+      : SELECTION_REQUIREMENTS;
+
+  const rawFactors =
+    Array.isArray(data?.specificationFactors) && data.specificationFactors.length > 0
+      ? data.specificationFactors
+      : SPECIFICATION_FACTORS;
+
+  const specificationFactors: { icon: any; title: string; detail: string }[] = rawFactors.map((f: any, idx: number) => ({
+    icon: SPECIFICATION_ICONS[idx % SPECIFICATION_ICONS.length] || Layers,
+    title: f.title || "",
+    detail: f.detail || "",
+  }));
+
+  const ctaTitle = data?.ctaTitle || "Let's Find the Right Packaging for Your Product";
+  const ctaSubtitle =
+    data?.ctaSubtitle ||
+    "Share your product specifications with our engineering desk. We'll help you develop the appropriate box construction.";
+  const ctaButtonText = data?.ctaButtonText || "Request a Packaging Consultation";
+  const ctaButtonLink = data?.ctaButtonLink || "/inquiry";
+
+  const [selectedReqId, setSelectedReqId] = useState<string>(
+    selectionRequirements[1]?.id || selectionRequirements[0]?.id || "req-medium-heavy"
+  );
+  const [activePlyTab, setActivePlyTab] = useState<string>(
+    plyOptions[1]?.id || plyOptions[0]?.id || "5ply"
+  );
   const [activeLayerHover, setActiveLayerHover] = useState<1 | 2 | 3 | null>(null);
 
   const sectionRef = useRef<HTMLElement>(null);
@@ -340,7 +438,9 @@ export default function BoxConstruction() {
   }, []);
 
   const activeRequirement =
-    SELECTION_REQUIREMENTS.find((r) => r.id === selectedReqId) || SELECTION_REQUIREMENTS[1];
+    selectionRequirements.find((r) => r.id === selectedReqId) ||
+    selectionRequirements[0] ||
+    SELECTION_REQUIREMENTS[0];
 
   return (
     <section
@@ -361,20 +461,27 @@ export default function BoxConstruction() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/20 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                PACKAGING KNOWLEDGE
+                {badgeText}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
-              Choose the Right Strength <br className="hidden sm:inline" />
-              <span className="text-[#A65D32]">for Your Packaging</span>
+              {titleText.includes("for Your Packaging") ? (
+                <>
+                  {titleText.replace("for Your Packaging", "").trim()}{" "}
+                  <br className="hidden sm:inline" />
+                  <span className="text-[#A65D32]">for Your Packaging</span>
+                </>
+              ) : (
+                titleText
+              )}
             </h2>
           </div>
 
           {/* Right Column: Context Description with Accent Border */}
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              Understanding box construction and material specifications helps you choose packaging that protects your products throughout storage and transportation.
+              {subtitleText}
             </p>
           </div>
         </div>
@@ -389,7 +496,7 @@ export default function BoxConstruction() {
               <div className="relative rounded-xl overflow-hidden bg-white border border-[#E4DED3] p-3 sm:p-4">
                 <div className="relative w-full h-[280px] sm:h-[360px] lg:h-[420px] rounded-lg overflow-hidden select-none bg-[#FAF7F2]">
                   <Image
-                    src="/home/box-specifications/corrugated-board-cutaway.png"
+                    src={cutawayImage}
                     alt="Corrugated cardboard 3-layer cross-section illustration"
                     fill
                     sizes="(max-width: 1024px) 100vw, 55vw"
@@ -463,18 +570,22 @@ export default function BoxConstruction() {
                     onMouseEnter={() => setActiveLayerHover(1)}
                     onMouseLeave={() => setActiveLayerHover(null)}
                     style={{ top: "24%", left: "4%" }}
-                    className={`absolute z-30 cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${activeLayerHover === 1
-                      ? "bg-[#A65D32] text-white scale-105 shadow-xl ring-2 ring-white"
-                      : "bg-white/95 text-[#202A2E] shadow-md border border-[#E4DED3] hover:border-[#A65D32]"
-                      }`}
+                    className={`absolute z-30 cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${
+                      activeLayerHover === 1
+                        ? "bg-[#A65D32] text-white scale-105 shadow-xl ring-2 ring-white"
+                        : "bg-white/95 text-[#202A2E] shadow-md border border-[#E4DED3] hover:border-[#A65D32]"
+                    }`}
                   >
                     <span
-                      className={`w-5 h-5 rounded-full flex items-center justify-center font-bold text-xs ${activeLayerHover === 1 ? "bg-white text-[#A65D32]" : "bg-[#A65D32] text-white"
-                        }`}
+                      className={`w-5 h-5 rounded-full flex items-center justify-center font-bold text-xs ${
+                        activeLayerHover === 1 ? "bg-white text-[#A65D32]" : "bg-[#A65D32] text-white"
+                      }`}
                     >
                       1
                     </span>
-                    <span className="text-xs font-semibold whitespace-nowrap">Outer Liner</span>
+                    <span className="text-xs font-semibold whitespace-nowrap">
+                      {cutawayLayers[0]?.title || "Outer Liner"}
+                    </span>
                   </div>
 
                   {/* Pointer Pin 2: Fluted Medium (Precisely at wavy flute core) */}
@@ -482,18 +593,22 @@ export default function BoxConstruction() {
                     onMouseEnter={() => setActiveLayerHover(2)}
                     onMouseLeave={() => setActiveLayerHover(null)}
                     style={{ top: "47%", left: "4%" }}
-                    className={`absolute z-30 cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${activeLayerHover === 2
-                      ? "bg-[#A65D32] text-white scale-105 shadow-xl ring-2 ring-white"
-                      : "bg-white/95 text-[#202A2E] shadow-md border border-[#E4DED3] hover:border-[#A65D32]"
-                      }`}
+                    className={`absolute z-30 cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${
+                      activeLayerHover === 2
+                        ? "bg-[#A65D32] text-white scale-105 shadow-xl ring-2 ring-white"
+                        : "bg-white/95 text-[#202A2E] shadow-md border border-[#E4DED3] hover:border-[#A65D32]"
+                    }`}
                   >
                     <span
-                      className={`w-5 h-5 rounded-full flex items-center justify-center font-bold text-xs ${activeLayerHover === 2 ? "bg-white text-[#A65D32]" : "bg-[#A65D32] text-white"
-                        }`}
+                      className={`w-5 h-5 rounded-full flex items-center justify-center font-bold text-xs ${
+                        activeLayerHover === 2 ? "bg-white text-[#A65D32]" : "bg-[#A65D32] text-white"
+                      }`}
                     >
                       2
                     </span>
-                    <span className="text-xs font-semibold whitespace-nowrap">Fluted Medium</span>
+                    <span className="text-xs font-semibold whitespace-nowrap">
+                      {cutawayLayers[1]?.title || "Fluted Medium"}
+                    </span>
                   </div>
 
                   {/* Pointer Pin 3: Inner Liner (Precisely at bottom liner edge) */}
@@ -501,18 +616,22 @@ export default function BoxConstruction() {
                     onMouseEnter={() => setActiveLayerHover(3)}
                     onMouseLeave={() => setActiveLayerHover(null)}
                     style={{ top: "69%", left: "4%" }}
-                    className={`absolute z-30 cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${activeLayerHover === 3
-                      ? "bg-[#A65D32] text-white scale-105 shadow-xl ring-2 ring-white"
-                      : "bg-white/95 text-[#202A2E] shadow-md border border-[#E4DED3] hover:border-[#A65D32]"
-                      }`}
+                    className={`absolute z-30 cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${
+                      activeLayerHover === 3
+                        ? "bg-[#A65D32] text-white scale-105 shadow-xl ring-2 ring-white"
+                        : "bg-white/95 text-[#202A2E] shadow-md border border-[#E4DED3] hover:border-[#A65D32]"
+                    }`}
                   >
                     <span
-                      className={`w-5 h-5 rounded-full flex items-center justify-center font-bold text-xs ${activeLayerHover === 3 ? "bg-white text-[#A65D32]" : "bg-[#A65D32] text-white"
-                        }`}
+                      className={`w-5 h-5 rounded-full flex items-center justify-center font-bold text-xs ${
+                        activeLayerHover === 3 ? "bg-white text-[#A65D32]" : "bg-[#A65D32] text-white"
+                      }`}
                     >
                       3
                     </span>
-                    <span className="text-xs font-semibold whitespace-nowrap">Inner Liner</span>
+                    <span className="text-xs font-semibold whitespace-nowrap">
+                      {cutawayLayers[2]?.title || "Inner Liner"}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -521,95 +640,50 @@ export default function BoxConstruction() {
             {/* Right: Layer Callouts & Explanation */}
             <div className="lg:col-span-5 flex flex-col justify-center">
               <div className="text-xs uppercase tracking-wider font-semibold text-[#A65D32] mb-2">
-                Anatomy of Strength
+                {cutawaySubtitle}
               </div>
               <h3 className="font-heading font-bold text-2xl sm:text-3xl text-[#202A2E] mb-4">
-                The Science of 3-Layer Construction
+                {cutawayTitle}
               </h3>
               <p className="text-[#62574D] text-sm sm:text-base leading-relaxed mb-6">
-                Corrugated board is an engineered composite paper material. Hover over each layer on
-                the image or below to inspect its structural role.
+                {cutawayDescription}
               </p>
 
               {/* Callout Cards with Synced Hover Interaction */}
               <div className="space-y-4">
-                {/* 1. Outer Liner */}
-                <div
-                  onMouseEnter={() => setActiveLayerHover(1)}
-                  onMouseLeave={() => setActiveLayerHover(null)}
-                  className={`relative pl-5 border-l-4 transition-all duration-300 p-4 rounded-r-xl border cursor-pointer ${activeLayerHover === 1
-                    ? "bg-white border-[#A65D32] border-l-[#A65D32] shadow-md -translate-x-1"
-                    : "bg-white/80 border-[#E4DED3] border-l-[#E4DED3] hover:border-[#A65D32]/60 hover:border-l-[#A65D32]"
-                    }`}
-                >
-                  <div className="flex items-center gap-2 font-bold text-sm text-[#202A2E] mb-1">
-                    <span
-                      className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${activeLayerHover === 1 ? "bg-[#A65D32] text-white" : "bg-[#A65D32]/15 text-[#A65D32]"
-                        }`}
+                {cutawayLayers.map((layer: any, idx: number) => {
+                  const num = (idx + 1) as 1 | 2 | 3;
+                  return (
+                    <div
+                      key={idx}
+                      onMouseEnter={() => setActiveLayerHover(num)}
+                      onMouseLeave={() => setActiveLayerHover(null)}
+                      className={`relative pl-5 border-l-4 transition-all duration-300 p-4 rounded-r-xl border cursor-pointer ${
+                        activeLayerHover === num
+                          ? "bg-white border-[#A65D32] border-l-[#A65D32] shadow-md -translate-x-1"
+                          : "bg-white/80 border-[#E4DED3] border-l-[#E4DED3] hover:border-[#A65D32]/60 hover:border-l-[#A65D32]"
+                      }`}
                     >
-                      1
-                    </span>
-                    <span className={activeLayerHover === 1 ? "text-[#A65D32]" : "text-[#202A2E]"}>
-                      Outer Liner
-                    </span>
-                  </div>
-                  <p className="text-xs sm:text-sm text-[#62574D] leading-relaxed">
-                    The external flat paper layer providing puncture resistance and a smooth surface
-                    for commercial printing and labeling.
-                  </p>
-                </div>
-
-                {/* 2. Fluted Medium */}
-                <div
-                  onMouseEnter={() => setActiveLayerHover(2)}
-                  onMouseLeave={() => setActiveLayerHover(null)}
-                  className={`relative pl-5 border-l-4 transition-all duration-300 p-4 rounded-r-xl border cursor-pointer ${activeLayerHover === 2
-                    ? "bg-white border-[#A65D32] border-l-[#A65D32] shadow-md -translate-x-1"
-                    : "bg-white/80 border-[#E4DED3] border-l-[#E4DED3] hover:border-[#A65D32]/60 hover:border-l-[#A65D32]"
-                    }`}
-                >
-                  <div className="flex items-center gap-2 font-bold text-sm text-[#202A2E] mb-1">
-                    <span
-                      className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${activeLayerHover === 2 ? "bg-[#A65D32] text-white" : "bg-[#A65D32]/15 text-[#A65D32]"
-                        }`}
-                    >
-                      2
-                    </span>
-                    <span className={activeLayerHover === 2 ? "text-[#A65D32]" : "text-[#202A2E]"}>
-                      Fluted Medium
-                    </span>
-                  </div>
-                  <p className="text-xs sm:text-sm text-[#62574D] leading-relaxed">
-                    The wave-shaped middle layer that creates protective air cushions and acts as
-                    continuous structural arches resisting top-to-bottom compression.
-                  </p>
-                </div>
-
-                {/* 3. Inner Liner */}
-                <div
-                  onMouseEnter={() => setActiveLayerHover(3)}
-                  onMouseLeave={() => setActiveLayerHover(null)}
-                  className={`relative pl-5 border-l-4 transition-all duration-300 p-4 rounded-r-xl border cursor-pointer ${activeLayerHover === 3
-                    ? "bg-white border-[#A65D32] border-l-[#A65D32] shadow-md -translate-x-1"
-                    : "bg-white/80 border-[#E4DED3] border-l-[#E4DED3] hover:border-[#A65D32]/60 hover:border-l-[#A65D32]"
-                    }`}
-                >
-                  <div className="flex items-center gap-2 font-bold text-sm text-[#202A2E] mb-1">
-                    <span
-                      className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${activeLayerHover === 3 ? "bg-[#A65D32] text-white" : "bg-[#A65D32]/15 text-[#A65D32]"
-                        }`}
-                    >
-                      3
-                    </span>
-                    <span className={activeLayerHover === 3 ? "text-[#A65D32]" : "text-[#202A2E]"}>
-                      Inner Liner
-                    </span>
-                  </div>
-                  <p className="text-xs sm:text-sm text-[#62574D] leading-relaxed">
-                    The internal flat paper layer that holds the fluted arches in permanent geometry
-                    and protects internal cargo from abrasion.
-                  </p>
-                </div>
+                      <div className="flex items-center gap-2 font-bold text-sm text-[#202A2E] mb-1">
+                        <span
+                          className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
+                            activeLayerHover === num
+                              ? "bg-[#A65D32] text-white"
+                              : "bg-[#A65D32]/15 text-[#A65D32]"
+                          }`}
+                        >
+                          {layer.layerNumber || num}
+                        </span>
+                        <span className={activeLayerHover === num ? "text-[#A65D32]" : "text-[#202A2E]"}>
+                          {layer.title}
+                        </span>
+                      </div>
+                      <p className="text-xs sm:text-sm text-[#62574D] leading-relaxed">
+                        {layer.description}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -627,16 +701,17 @@ export default function BoxConstruction() {
 
           {/* Ply Cards - Horizontal Comparison on Desktop, Stack on Mobile */}
           <div ref={plyCardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-            {PLY_OPTIONS.map((ply) => (
+            {plyOptions.map((ply) => (
               <Card3DTilt key={ply.id} className="h-full rounded-xl">
                 <div
                   onMouseEnter={() => setActivePlyTab(ply.id)}
-                  className={`h-full bg-[#FAF7F2] rounded-xl border transition-all duration-300 flex flex-col overflow-hidden ${activePlyTab === ply.id
-                    ? "border-[#A65D32] shadow-md"
-                    : "border-[#E4DED3] hover:border-[#A65D32]/50 hover:shadow-sm"
-                    }`}
+                  className={`h-full bg-[#FAF7F2] rounded-xl border transition-all duration-300 flex flex-col overflow-hidden ${
+                    activePlyTab === ply.id
+                      ? "border-[#A65D32] shadow-md"
+                      : "border-[#E4DED3] hover:border-[#A65D32]/50 hover:shadow-sm"
+                  }`}
                 >
-                  {/* Visual Image Header (Clean cross-section without overlapping badge text) */}
+                  {/* Visual Image Header */}
                   <div className="relative w-full h-48 sm:h-52 bg-white p-3 border-b border-[#E4DED3]">
                     <div className="relative w-full h-full rounded-lg overflow-hidden">
                       <Image
@@ -654,13 +729,29 @@ export default function BoxConstruction() {
                     <h4 className="font-heading font-bold text-xl text-[#202A2E] mb-1">
                       {ply.name}
                     </h4>
-                    <div className="inline-block text-xs font-semibold text-[#A65D32] mb-3 bg-white px-2.5 py-0.5 rounded border border-[#E4DED3] self-start">
-                      Construction: {ply.construction}
-                    </div>
+                    {ply.construction && (
+                      <div className="inline-block text-xs font-semibold text-[#A65D32] mb-3 bg-white px-2.5 py-0.5 rounded border border-[#E4DED3] self-start">
+                        Construction: {ply.construction}
+                      </div>
+                    )}
 
                     <p className="text-sm text-[#62574D] leading-relaxed">
                       {ply.description}
                     </p>
+
+                    {ply.bestFor && ply.bestFor.length > 0 && (
+                      <div className="mt-4 pt-4 border-t border-[#E4DED3]/60 space-y-1.5">
+                        <div className="text-[11px] font-bold uppercase tracking-wider text-[#202A2E]">
+                          Best Suited For:
+                        </div>
+                        {ply.bestFor.map((item, bIdx) => (
+                          <div key={bIdx} className="text-xs text-[#62574D] flex items-start gap-1.5">
+                            <span className="text-[#A65D32] font-bold mt-0.5">•</span>
+                            <span>{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </Card3DTilt>
@@ -679,31 +770,35 @@ export default function BoxConstruction() {
 
         <div className="bg-[#FAF7F2] rounded-2xl p-6 sm:p-8 lg:p-12 border border-[#E4DED3] mb-16 sm:mb-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Left 3 Selectable Requirement Options */}
+            {/* Left Selectable Requirement Options */}
             <div className="lg:col-span-5 space-y-3">
-              {SELECTION_REQUIREMENTS.map((req) => {
+              {selectionRequirements.map((req) => {
                 const isSelected = req.id === selectedReqId;
                 return (
                   <button
                     key={req.id}
                     onClick={() => setSelectedReqId(req.id)}
-                    className={`w-full text-left p-5 rounded-xl border transition-all duration-200 cursor-pointer ${isSelected
-                      ? "bg-white border-[#A65D32] shadow-sm ring-1 ring-[#A65D32]"
-                      : "bg-white/80 border-[#E4DED3] hover:bg-white hover:border-[#A65D32]/50"
-                      }`}
+                    className={`w-full text-left p-5 rounded-xl border transition-all duration-200 cursor-pointer ${
+                      isSelected
+                        ? "bg-white border-[#A65D32] shadow-sm ring-1 ring-[#A65D32]"
+                        : "bg-white/80 border-[#E4DED3] hover:bg-white hover:border-[#A65D32]/50"
+                    }`}
                   >
                     <div className="flex items-center justify-between mb-1.5">
                       <span className="font-heading font-bold text-base text-[#202A2E]">
                         {req.title}
                       </span>
-                      <span
-                        className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${isSelected
-                          ? "bg-[#A65D32] text-white"
-                          : "bg-[#E4DED3]/60 text-[#62574D]"
+                      {req.recommendedPly && (
+                        <span
+                          className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${
+                            isSelected
+                              ? "bg-[#A65D32] text-white"
+                              : "bg-[#E4DED3]/60 text-[#62574D]"
                           }`}
-                      >
-                        {req.recommendedPly.split("–")[0].trim()}
-                      </span>
+                        >
+                          {req.recommendedPly.split("–")[0].trim()}
+                        </span>
+                      )}
                     </div>
                     <p className="text-xs text-[#62574D] leading-relaxed line-clamp-2">
                       {req.examples}
@@ -714,41 +809,45 @@ export default function BoxConstruction() {
             </div>
 
             {/* Right: Recommendation Card with CTA */}
-            <div className="lg:col-span-7 bg-white rounded-xl p-6 sm:p-8 border border-[#E4DED3] shadow-sm flex flex-col justify-between">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-4">
-                  <span className="w-2 h-2 rounded-full bg-[#A65D32] animate-pulse" />
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#A65D32]">
-                    Suggested Box Construction
-                  </span>
-                </div>
-
-                <h4 className="font-heading font-bold text-2xl sm:text-3xl text-[#202A2E] mb-3">
-                  {activeRequirement.recommendedPly}
-                </h4>
-
-                <p className="text-sm sm:text-base text-[#62574D] leading-relaxed mb-6">
-                  {activeRequirement.explanation}
-                </p>
-
-                <div className="border-t border-[#E4DED3] pt-5">
-                  <div className="text-xs font-bold uppercase tracking-wider text-[#202A2E] mb-3.5">
-                    Key Performance Factors:
+            {activeRequirement && (
+              <div className="lg:col-span-7 bg-white rounded-xl p-6 sm:p-8 border border-[#E4DED3] shadow-sm flex flex-col justify-between">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-4">
+                    <span className="w-2 h-2 rounded-full bg-[#A65D32] animate-pulse" />
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#A65D32]">
+                      Suggested Box Construction
+                    </span>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    {activeRequirement.keyFactors.map((factor, idx) => (
-                      <div
-                        key={idx}
-                        className="p-3 bg-[#FAF7F2] rounded-lg border border-[#E4DED3] text-xs font-medium text-[#202A2E] flex items-center gap-2.5 transition-all duration-200 hover:border-[#A65D32] hover:bg-white hover:shadow-sm hover:-translate-y-0.5 cursor-default group"
-                      >
-                        <CheckCircle2 className="w-4 h-4 text-[#A65D32] shrink-0 transition-transform duration-200 group-hover:scale-110" />
-                        <span className="group-hover:text-[#A65D32] transition-colors">{factor}</span>
+
+                  <h4 className="font-heading font-bold text-2xl sm:text-3xl text-[#202A2E] mb-3">
+                    {activeRequirement.recommendedPly}
+                  </h4>
+
+                  <p className="text-sm sm:text-base text-[#62574D] leading-relaxed mb-6">
+                    {activeRequirement.explanation}
+                  </p>
+
+                  {activeRequirement.keyFactors && activeRequirement.keyFactors.length > 0 && (
+                    <div className="border-t border-[#E4DED3] pt-5">
+                      <div className="text-xs font-bold uppercase tracking-wider text-[#202A2E] mb-3.5">
+                        Key Performance Factors:
                       </div>
-                    ))}
-                  </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        {activeRequirement.keyFactors.map((factor, idx) => (
+                          <div
+                            key={idx}
+                            className="p-3 bg-[#FAF7F2] rounded-lg border border-[#E4DED3] text-xs font-medium text-[#202A2E] flex items-center gap-2.5 transition-all duration-200 hover:border-[#A65D32] hover:bg-white hover:shadow-sm hover:-translate-y-0.5 cursor-default group"
+                          >
+                            <CheckCircle2 className="w-4 h-4 text-[#A65D32] shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                            <span className="group-hover:text-[#A65D32] transition-colors">{factor}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
 
@@ -762,7 +861,7 @@ export default function BoxConstruction() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-16 sm:mb-20">
-          {SPECIFICATION_FACTORS.map((item, idx) => {
+          {specificationFactors.map((item, idx) => {
             const IconComp = item.icon;
             return (
               <div
@@ -789,19 +888,26 @@ export default function BoxConstruction() {
         <div className="bg-[#FAF7F2] rounded-2xl p-6 sm:p-8 lg:p-10 border border-[#E4DED3] flex flex-col lg:flex-row lg:items-center justify-between gap-6 shadow-sm">
           <div className="max-w-xl">
             <h3 className="font-heading font-bold text-2xl sm:text-3xl text-[#202A2E] leading-tight mb-2">
-              Let&apos;s Find the Right Packaging <span className="text-[#A65D32]">for Your Product</span>
+              {ctaTitle.includes("for Your Product") ? (
+                <>
+                  {ctaTitle.replace("for Your Product", "").trim()}{" "}
+                  <span className="text-[#A65D32]">for Your Product</span>
+                </>
+              ) : (
+                ctaTitle
+              )}
             </h3>
             <p className="text-sm text-[#62574D] leading-relaxed">
-              Share your product specifications with our engineering desk. We&apos;ll help you develop the appropriate box construction.
+              {ctaSubtitle}
             </p>
           </div>
 
           <div className="shrink-0">
             <Link
-              href="/inquiry"
+              href={ctaButtonLink}
               className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-lg bg-[#A65D32] text-white text-sm font-semibold hover:bg-[#8e4f2b] transition-all duration-200 shadow-sm hover:shadow hover:-translate-y-0.5 group"
             >
-              <span>Request a Packaging Consultation</span>
+              <span>{ctaButtonText}</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
