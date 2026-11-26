@@ -106,6 +106,33 @@ export default function LeadershipTeam() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* =========================================================================
+            1. SECTION HEADER (Exact 2-Column Split Theme matching other sections)
+        ========================================================================= */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 sm:pb-8 mb-10 sm:mb-14 border-b border-[#E4DED3]">
+          {/* Left Column: Eyebrow + Main Big Headline */}
+          <div className="max-w-xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-3.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
+              <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
+                LEADERSHIP &amp; MANAGEMENT
+              </span>
+            </div>
+
+            <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.15] tracking-tight">
+              Guided by Experience.{" "}
+              <span className="text-[#A65D32]">Driven by Purpose.</span>
+            </h2>
+          </div>
+
+          {/* Right Column: Context Description with Accent Border */}
+          <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
+            <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
+              Behind every successful business is a clear vision and a commitment to doing things better. Meet the founders and operations leaders guiding Aavrit Packaging.
+            </p>
+          </div>
+        </div>
+
+        {/* =========================================================================
             PART ONE: OWNER / FOUNDER SPOTLIGHT
         ========================================================================= */}
         <div className="mb-24 lg:mb-32">
