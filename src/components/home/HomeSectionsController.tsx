@@ -68,7 +68,7 @@ export default function HomeSectionsController() {
       <BoxConstruction data={sections["box-construction"]} />
 
       {/* Section 8.5: Sustainability – Packaging with Purpose */}
-      <Sustainability />
+      <Sustainability data={sections["sustainability"]} />
 
       {/* Section 8.6: Trusted by Businesses - Client Logo Marquee */}
       <OurClients data={sections["our-clients"]} />
