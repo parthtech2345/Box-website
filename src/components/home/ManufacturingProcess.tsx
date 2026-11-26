@@ -36,7 +36,7 @@ const STAGES: Stage[] = [
     title: "Raw Material Selection",
     description:
       "Selection of suitable kraft paper and raw materials for corrugated board production.",
-    visualLabel: "Industrial Kraft Paper Jumbo Rolls",
+    visualLabel: "Continuous Corrugation Line",
     icon: Layers,
     image: "/home/manufacturing-process/raw-material-selection.png",
     technicalSpecs: [
@@ -122,12 +122,50 @@ const STAGES: Stage[] = [
   },
 ];
 
-export default function ManufacturingProcess() {
+const ICON_MAP: Record<string, React.ElementType> = {
+  Layers,
+  Factory,
+  Printer,
+  Scissors,
+  Package,
+  ShieldCheck,
+};
+
+export default function ManufacturingProcess({ data }: { data?: any }) {
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
   const showcaseRef = useRef<HTMLDivElement>(null);
   const [activeStage, setActiveStage] = useState<number>(0);
+
+  const badgeText = data?.badge || "OUR MANUFACTURING PROCESS";
+  const titleText = data?.title || "From Raw Material to Ready-to-Ship Packaging.";
+  const subtitleText =
+    data?.subtitle ||
+    "Every corrugated box goes through a carefully coordinated manufacturing process. From selecting quality raw materials to final inspection, each stage focuses on strength, precision and consistency.";
+
+  const stages: Stage[] =
+    data?.stages && data.stages.length > 0
+      ? data.stages.map((stg: any, idx: number) => {
+          const fallback = STAGES[idx % STAGES.length];
+          return {
+            id: stg.id || fallback.id,
+            number: stg.number || fallback.number,
+            title: stg.title || fallback.title,
+            description: stg.description || fallback.description,
+            visualLabel: stg.visualLabel || fallback.visualLabel,
+            icon:
+              typeof stg.icon === "string" && ICON_MAP[stg.icon]
+                ? ICON_MAP[stg.icon]
+                : fallback.icon,
+            image: stg.image || fallback.image,
+            technicalSpecs:
+              Array.isArray(stg.technicalSpecs) && stg.technicalSpecs.length > 0
+                ? stg.technicalSpecs
+                : fallback.technicalSpecs,
+          };
+        })
+      : STAGES;
 
   useEffect(() => {
     if (typeof window === "undefined" || !sectionRef.current) return;
@@ -197,7 +235,7 @@ export default function ManufacturingProcess() {
     return () => ctx.revert();
   }, []);
 
-  const currentStage = STAGES[activeStage];
+  const currentStage = stages[activeStage] || stages[0];
   const CurrentIcon = currentStage.icon;
 
   return (
@@ -218,20 +256,26 @@ export default function ManufacturingProcess() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/20 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                OUR MANUFACTURING PROCESS
+                {badgeText}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
-              From Raw Material to <br className="hidden sm:inline" />
-              <span className="text-[#A65D32]">Ready-to-Ship Packaging.</span>
+              {titleText.includes("Ready-to-Ship Packaging") ? (
+                <>
+                  From Raw Material to <br className="hidden sm:inline" />
+                  <span className="text-[#A65D32]">Ready-to-Ship Packaging.</span>
+                </>
+              ) : (
+                titleText
+              )}
             </h2>
           </div>
 
           {/* Right Column: Context Description with Accent Border */}
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              Every corrugated box goes through a carefully coordinated manufacturing process. From selecting quality raw materials to final inspection, each stage focuses on strength, precision and consistency.
+              {subtitleText}
             </p>
           </div>
         </div>
@@ -247,20 +291,20 @@ export default function ManufacturingProcess() {
             <div
               className="hidden lg:block absolute top-7 left-8 h-0.5 bg-[#A65D32] transition-all duration-500 ease-out"
               style={{
-                width: `${(activeStage / (STAGES.length - 1)) * 90}%`,
+                width: `${(activeStage / Math.max(1, stages.length - 1)) * 90}%`,
               }}
             />
 
-            {/* 6 Stage Interactive Trigger Nodes */}
+            {/* Stage Interactive Trigger Nodes */}
             <div ref={timelineRef} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 relative z-10">
-              {STAGES.map((stg, idx) => {
+              {stages.map((stg, idx) => {
                 const IconComponent = stg.icon;
                 const isActive = activeStage === idx;
                 const isPast = activeStage > idx;
 
                 return (
                   <button
-                    key={stg.id}
+                    key={stg.id || idx}
                     type="button"
                     onClick={() => setActiveStage(idx)}
                     className={`group text-left p-3.5 sm:p-4 rounded-xl border transition-all duration-300 flex flex-col justify-between ${isActive
@@ -318,10 +362,10 @@ export default function ManufacturingProcess() {
                 {/* Stage Badge & Step Indicator */}
                 <div className="flex items-center gap-3 mb-4">
                   <div className="px-3 py-1 rounded-full bg-[#493629] text-white font-heading font-bold text-xs uppercase tracking-wider">
-                    STAGE {currentStage.number} of 06
+                    STAGE {currentStage.number} of {String(stages.length).padStart(2, "0")}
                   </div>
                   <span className="text-xs font-semibold uppercase tracking-wider text-[#A65D32]">
-                    Continuous Corrugation Line
+                    {currentStage.visualLabel || "Continuous Corrugation Line"}
                   </span>
                 </div>
 
@@ -361,7 +405,7 @@ export default function ManufacturingProcess() {
                 </button>
 
                 <div className="flex gap-1.5">
-                  {STAGES.map((_, dotIdx) => (
+                  {stages.map((_, dotIdx) => (
                     <button
                       key={dotIdx}
                       type="button"
@@ -377,8 +421,8 @@ export default function ManufacturingProcess() {
 
                 <button
                   type="button"
-                  disabled={activeStage === STAGES.length - 1}
-                  onClick={() => setActiveStage((prev) => Math.min(STAGES.length - 1, prev + 1))}
+                  disabled={activeStage === stages.length - 1}
+                  onClick={() => setActiveStage((prev) => Math.min(stages.length - 1, prev + 1))}
                   className="px-4 py-2 rounded-lg border border-[#E4DED3] bg-white text-xs font-semibold text-[#493629] hover:bg-[#F5EFE5] disabled:opacity-40 disabled:pointer-events-none transition-colors"
                 >
                   Next Stage →

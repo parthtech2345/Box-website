@@ -15,30 +15,31 @@ import {
   PackageCheck,
 } from "lucide-react";
 
-export default function CustomPackaging() {
+export default function CustomPackaging({ data }: { data?: any } = {}) {
   const sectionRef = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [assemblyStep, setAssemblyStep] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<number>(0);
 
-  // Intersection Observer for scroll reveal
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.15 }
-    );
+  const badgeText = data?.badge || "CUSTOM PACKAGING SOLUTIONS";
+  const titleText = data?.title || "Packaging Designed Around Your Needs.";
+  const subtitleText =
+    data?.subtitle ||
+    data?.description ||
+    "Every product has different packaging requirements. Tell us what you need, and we'll help create customized corrugated packaging solutions that fit your product, dimensions and business requirements.";
+  const conceptTitleText = data?.conceptTitle || "Precision Kraft Engineering from Concept to Prototype";
+  const conceptDescText =
+    data?.conceptDesc ||
+    "Whether shipping fragile automotive electronics, high-volume retail goods, or export produce, our engineering team designs structural dielines and fluting profiles matched to your exact payload weight and handling demands.";
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  const ICON_MAP: Record<string, React.ElementType> = {
+    Ruler,
+    Box: BoxIcon,
+    BoxIcon,
+    Layers,
+    Printer,
+  };
 
   // Assembly animation timer sequence
   useEffect(() => {
@@ -51,7 +52,7 @@ export default function CustomPackaging() {
     return () => clearInterval(interval);
   }, [isPlaying]);
 
-  const customizationFeatures = [
+  const defaultFeatures = [
     {
       title: "Custom Dimensions",
       desc: "Box sizes designed around your product measurements.",
@@ -78,7 +79,7 @@ export default function CustomPackaging() {
     },
   ];
 
-  const processSteps = [
+  const defaultProcessSteps = [
     {
       num: "01",
       title: "Share Your Requirements",
@@ -95,6 +96,27 @@ export default function CustomPackaging() {
       desc: "Our team reviews your requirements and works towards a suitable packaging solution.",
     },
   ];
+
+  const processSteps =
+    data?.processSteps && data.processSteps.length > 0 ? data.processSteps : defaultProcessSteps;
+
+  const customizationFeatures =
+    data?.capabilities && data.capabilities.length > 0
+      ? data.capabilities.map((c: any, i: number) => ({
+          title: c.title,
+          desc: c.desc || c.description,
+          icon: ICON_MAP[c.icon] || defaultFeatures[i % defaultFeatures.length].icon,
+          detail: c.detail || defaultFeatures[i % defaultFeatures.length].detail,
+        }))
+      : defaultFeatures;
+
+  const ctaBadgeText = data?.ctaBadge || "FAST 24-HOUR DESIGN TURNAROUND";
+  const ctaTitleText = data?.ctaTitle || "Have a Packaging Requirement?";
+  const ctaDescText =
+    data?.ctaDesc ||
+    "Share your idea with us. Let's discuss the right corrugated packaging solution for your business.";
+  const ctaButtonText = data?.ctaButtonText || "Request Custom Packaging";
+  const ctaButtonLink = data?.ctaButtonLink || "#quote";
 
   const stepLabels = [
     "1. Flat Corrugated Dieline",
@@ -114,28 +136,33 @@ export default function CustomPackaging() {
 
         {/* Section Header: Matching ProductCategories & WhyChooseUs 2-Column Split */}
         <div
-          className={`flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 sm:pb-10 mb-12 sm:mb-16 border-b border-[#E4DED3] transition-all duration-700 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-            }`}
+          className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 sm:pb-10 mb-12 sm:mb-16 border-b border-[#E4DED3]"
         >
           {/* Left Column: Eyebrow + Main Big Headline */}
           <div className="max-w-xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/20 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                CUSTOM PACKAGING SOLUTIONS
+                {badgeText}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
-              Packaging Designed <br className="hidden sm:inline" />
-              <span className="text-[#A65D32]">Around Your Needs.</span>
+              {titleText.includes("Around Your Needs") ? (
+                <>
+                  Packaging Designed <br className="hidden sm:inline" />
+                  <span className="text-[#A65D32]">Around Your Needs.</span>
+                </>
+              ) : (
+                titleText
+              )}
             </h2>
           </div>
 
           {/* Right Column: Context Description with Accent Border */}
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              Every product has different packaging requirements. Tell us what you need, and we'll help create customized corrugated packaging solutions that fit your product, dimensions and business requirements.
+              {subtitleText}
             </p>
           </div>
         </div>
@@ -145,15 +172,14 @@ export default function CustomPackaging() {
 
           {/* LEFT SIDE: Customization Concept, Process & CTAs (6 cols) */}
           <div
-            className={`lg:col-span-6 flex flex-col justify-between transition-all duration-700 delay-150 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
+            className="lg:col-span-6 flex flex-col justify-between"
           >
             <div className="mb-8">
               <h3 className="font-heading font-bold text-2xl sm:text-3xl text-[#202A2E] mb-3">
-                Precision Kraft Engineering from Concept to Prototype
+                {conceptTitleText}
               </h3>
               <p className="text-sm sm:text-base text-[#62574D] leading-relaxed">
-                Whether shipping fragile automotive electronics, high-volume retail goods, or export produce, our engineering team designs structural dielines and fluting profiles matched to your exact payload weight and handling demands.
+                {conceptDescText}
               </p>
             </div>
 
@@ -169,8 +195,8 @@ export default function CustomPackaging() {
                 <div className="hidden sm:block absolute top-4 bottom-4 left-4 w-px bg-linear-to-b from-[#A65D32] via-[#D1B48C] to-[#E4DED3]" />
 
                 <div className="space-y-6">
-                  {processSteps.map((step, idx) => (
-                    <div key={step.num} className="flex items-start gap-4 sm:gap-5 relative group">
+                  {processSteps.map((step: any, idx: number) => (
+                    <div key={step.num || idx} className="flex items-start gap-4 sm:gap-5 relative group">
                       {/* Step Number Dot */}
                       <div className="w-8 h-8 rounded-full bg-[#493629] text-white flex items-center justify-center font-heading font-bold text-xs shrink-0 shadow-xs ring-4 ring-[#FAF7F2] group-hover:bg-[#A65D32] transition-colors">
                         {step.num}
@@ -192,8 +218,7 @@ export default function CustomPackaging() {
 
           {/* RIGHT SIDE: Interactive 3D Cardboard Box Assembly Animation (6 cols) */}
           <div
-            className={`lg:col-span-6 transition-all duration-700 delay-300 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
+            className="lg:col-span-6"
           >
             <div className="relative rounded-2xl bg-[#FAF7F2] border border-[#E4DED3] p-6 sm:p-8 overflow-hidden shadow-xs">
 
@@ -407,7 +432,7 @@ export default function CustomPackaging() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {customizationFeatures.map((item, idx) => {
+            {customizationFeatures.map((item: any, idx: number) => {
               const Icon = item.icon;
               return (
                 <div
@@ -439,23 +464,23 @@ export default function CustomPackaging() {
             </div>
             <div>
               <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#A65D32]/10 text-[#A65D32] text-[11px] font-bold uppercase tracking-wider mb-1.5">
-                <span>Fast 24-Hour Design Turnaround</span>
+                <span>{ctaBadgeText}</span>
               </div>
               <h3 className="font-heading font-bold text-xl sm:text-2xl text-[#202A2E] leading-tight">
-                Have a Packaging Requirement?
+                {ctaTitleText}
               </h3>
               <p className="text-xs sm:text-sm text-[#62574D] mt-1 leading-relaxed">
-                Share your idea with us. Let's discuss the right corrugated packaging solution for your business.
+                {ctaDescText}
               </p>
             </div>
           </div>
 
           <div className="shrink-0 w-full sm:w-auto">
             <Link
-              href="#quote"
+              href={ctaButtonLink}
               className="inline-flex items-center justify-center gap-2.5 w-full sm:w-auto px-6 py-3.5 rounded-xl bg-[#493629] text-white font-heading font-semibold text-sm tracking-wide hover:bg-[#A65D32] transition-all duration-200 shadow-sm active:scale-95 group/btn"
             >
-              <span>Request Custom Packaging</span>
+              <span>{ctaButtonText}</span>
               <ArrowRight className="w-4 h-4 text-[#D1B48C] group-hover/btn:translate-x-1 transition-transform duration-200" />
             </Link>
           </div>

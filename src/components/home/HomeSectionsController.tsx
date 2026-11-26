@@ -53,10 +53,10 @@ export default function HomeSectionsController() {
       <WhyChooseUs data={sections["why-choose-us"]} />
 
       {/* Section 4: Custom Packaging Solutions */}
-      <CustomPackaging />
+      <CustomPackaging data={sections["custom-packaging"]} />
 
       {/* Section 5: Manufacturing Process */}
-      <ManufacturingProcess />
+      <ManufacturingProcess data={sections["manufacturing-process"]} />
 
       {/* Section 6: Industries We Serve */}
       <IndustriesWeServe />
