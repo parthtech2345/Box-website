@@ -62,7 +62,7 @@ export default function HomeSectionsController() {
       <IndustriesWeServe data={sections["industries-we-serve"]} />
 
       {/* Section 7: Case Studies / Packaging Applications */}
-      <CaseStudies />
+      <CaseStudies data={sections["case-studies"]} />
 
       {/* Section 8: Corrugated Box Construction (3/5/7 Ply) */}
       <BoxConstruction />
