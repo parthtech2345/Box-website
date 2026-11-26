@@ -72,6 +72,23 @@ export default function AboutUs({ data }: { data?: any } = {}) {
   const badgeText = data?.badge || "ABOUT AAVRIT PACKAGING";
   const titleText = data?.title || "Protection Begins With Better Packaging.";
   const descriptionText = data?.description || "At AAVRIT Packaging, we believe packaging is more than just a box. It is an essential part of protecting products, maintaining quality and helping businesses deliver with confidence.";
+  const secondParagraphText =
+    data?.secondParagraph ||
+    data?.paragraph2 ||
+    "From customized corrugated boxes to dependable bulk packaging solutions, our focus is on understanding business requirements and creating packaging that combines strength, practicality and value.";
+  const qualitiesList =
+    data?.qualities && data.qualities.length > 0
+      ? data.qualities
+      : data?.bulletPoints && data.bulletPoints.length > 0
+      ? data.bulletPoints
+      : [
+          "Built Around Your Requirements",
+          "Certified In-House Lab Testing",
+          "Strength in Every Layer",
+          "High-Speed Automated Capacity",
+          "Focused on Reliable Packaging",
+          "Eco-Friendly 100% Recyclable",
+        ];
 
   // Animated Counter implementation with GSAP & ScrollTrigger
   useEffect(() => {
@@ -96,17 +113,19 @@ export default function AboutUs({ data }: { data?: any } = {}) {
               start: "top 85%",
               once: true,
               onEnter: () => {
-                statsList.forEach((stat: any) => {
-                  if (typeof stat.value === "number") {
+                statsList.forEach((stat: any, idx: number) => {
+                  const statId = stat.id || `stat-${idx + 1}`;
+                  const numVal = typeof stat.value === "string" ? parseFloat(stat.value) : stat.value;
+                  if (!isNaN(numVal) && typeof numVal === "number") {
                     const counter = { val: 0 };
                     gsap.to(counter, {
-                      val: stat.value,
+                      val: numVal,
                       duration: 2.2,
                       ease: "power2.out",
                       onUpdate: () => {
                         setCounts((prev) => ({
                           ...prev,
-                          [stat.id]: Math.round(counter.val),
+                          [statId]: Math.round(counter.val),
                         }));
                       },
                     });
@@ -169,19 +188,12 @@ export default function AboutUs({ data }: { data?: any } = {}) {
 
             {/* Second Paragraph */}
             <p className="text-sm sm:text-[15px] text-[#687378] font-normal leading-relaxed mb-6">
-              From customized corrugated boxes to dependable bulk packaging solutions, our focus is on understanding business requirements and creating packaging that combines strength, practicality and value.
+              {secondParagraphText}
             </p>
 
             {/* 6 Brand Qualities Grid: 3 left, 3 right with Interactive Checkbox Draw & Pop Hover Animation */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5 w-full">
-              {[
-                "Built Around Your Requirements",
-                "Certified In-House Lab Testing",
-                "Strength in Every Layer",
-                "High-Speed Automated Capacity",
-                "Focused on Reliable Packaging",
-                "Eco-Friendly 100% Recyclable",
-              ].map((quality, idx) => (
+              {qualitiesList.map((quality: string, idx: number) => (
                 <div
                   key={idx}
                   className="group/item flex items-center gap-3 cursor-pointer py-1.5 transition-all duration-200 select-none"
@@ -212,15 +224,17 @@ export default function AboutUs({ data }: { data?: any } = {}) {
           ref={statsSectionRef}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
-          {STATISTICS_DATA.map((stat) => {
+          {statsList.map((stat: any, idx: number) => {
+            const statId = stat.id || `stat-${idx + 1}`;
+            const numVal = typeof stat.value === "string" ? parseFloat(stat.value) : stat.value;
             const displayValue =
-              typeof stat.value === "number"
-                ? (counts[stat.id] ?? 0) + stat.suffix
-                : `${stat.value}${stat.suffix}`;
-            const Icon = stat.icon;
+              !isNaN(numVal) && typeof numVal === "number"
+                ? (counts[statId] ?? numVal) + (stat.suffix || "")
+                : `${stat.value || ""}${stat.suffix || ""}`;
+            const Icon = stat.icon || Award;
 
             return (
-              <Card3DTilt key={stat.id} className="h-full rounded-2xl">
+              <Card3DTilt key={statId} className="h-full rounded-2xl">
                 <div className="h-full bg-[#F5F2EB]/60 hover:bg-[#F5F2EB] rounded-2xl border border-[#E4DED3] hover:border-[#D1B48C] p-8 flex flex-col justify-between transition-all duration-300 hover:shadow-md group relative overflow-hidden">
                   {/* Subtle top accent bar */}
                   <div className="absolute top-0 left-0 right-0 h-1 bg-[#E4DED3] group-hover:bg-[#E97835] transition-colors" />
