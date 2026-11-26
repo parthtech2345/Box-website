@@ -126,9 +126,33 @@ const INDUSTRIES: IndustryCard[] = [
   },
 ];
 
-export default function IndustriesWeServe() {
+export default function IndustriesWeServe({ data }: { data?: any }) {
   const sectionRef = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+
+  const badgeText = data?.badge || "INDUSTRIES WE SERVE";
+  const titleText = data?.title || "Packaging Solutions Across Every Industry";
+  const subtitleText =
+    data?.subtitle ||
+    "From automotive components to everyday consumer products, our corrugated packaging solutions support diverse industries with reliable protection, practical design and dependable quality.";
+
+  const industries: IndustryCard[] =
+    data?.industries && data.industries.length > 0
+      ? data.industries.map((ind: any, idx: number) => {
+          const fallback = INDUSTRIES[idx % INDUSTRIES.length];
+          return {
+            id: ind.id || fallback.id,
+            name: ind.name || ind.title || fallback.name,
+            slug: ind.slug || fallback.slug,
+            description: ind.description || fallback.description,
+            image: ind.image || fallback.image,
+            applications:
+              Array.isArray(ind.applications) && ind.applications.length > 0
+                ? ind.applications
+                : fallback.applications,
+          };
+        })
+      : INDUSTRIES;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -165,27 +189,33 @@ export default function IndustriesWeServe() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/20 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                INDUSTRIES WE SERVE
+                {badgeText}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
-              Packaging Solutions <br className="hidden sm:inline" />
-              <span className="text-[#A65D32]">Across Every Industry</span>
+              {titleText.includes("Across Every Industry") ? (
+                <>
+                  Packaging Solutions <br className="hidden sm:inline" />
+                  <span className="text-[#A65D32]">Across Every Industry</span>
+                </>
+              ) : (
+                titleText
+              )}
             </h2>
           </div>
 
           {/* Right Column: Context Description with Accent Border */}
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              From automotive components to everyday consumer products, our corrugated packaging solutions support diverse industries with reliable protection, practical design and dependable quality.
+              {subtitleText}
             </p>
           </div>
         </div>
 
         {/* 8 INDUSTRY CARDS GRID: 4 Columns on Desktop, 2 on Tablet, 1 on Mobile */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7">
-          {INDUSTRIES.map((ind, idx) => {
+          {industries.map((ind, idx) => {
             const delayClass =
               idx === 0
                 ? "transition-delay-[50ms]"
@@ -205,7 +235,7 @@ export default function IndustriesWeServe() {
 
             return (
               <Link
-                key={ind.id}
+                key={ind.id || idx}
                 href={`/industries/${ind.slug}`}
                 className={`group flex flex-col h-full bg-[#FAF7F2] rounded-2xl border border-[#E4DED3] overflow-hidden shadow-xs hover:border-[#A65D32] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                   } ${delayClass}`}

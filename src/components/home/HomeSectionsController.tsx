@@ -59,7 +59,7 @@ export default function HomeSectionsController() {
       <ManufacturingProcess data={sections["manufacturing-process"]} />
 
       {/* Section 6: Industries We Serve */}
-      <IndustriesWeServe />
+      <IndustriesWeServe data={sections["industries-we-serve"]} />
 
       {/* Section 7: Case Studies / Packaging Applications */}
       <CaseStudies />
