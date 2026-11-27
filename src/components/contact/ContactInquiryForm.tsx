@@ -18,8 +18,109 @@ import {
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function ContactInquiryForm() {
+export interface ContactFormFieldsData {
+  section1Title?: string;
+  nameLabel?: string;
+  namePlaceholder?: string;
+  companyLabel?: string;
+  companyPlaceholder?: string;
+  emailLabel?: string;
+  emailPlaceholder?: string;
+  phoneLabel?: string;
+  phonePlaceholder?: string;
+  section2Title?: string;
+  inquiryTypeLabel?: string;
+  inquiryTypeOptions?: string[];
+  categoryLabel?: string;
+  categoryOptions?: string[];
+  boxTypeLabel?: string;
+  boxTypeOptions?: string[];
+  quantityLabel?: string;
+  quantityOptions?: string[];
+  messageLabel?: string;
+  messagePlaceholder?: string;
+  fileUploadLabel?: string;
+  fileUploadHint?: string;
+  submitButtonText?: string;
+  privacyNote?: string;
+  successTitle?: string;
+  successMessage?: string;
+}
+
+export interface ContactInquiryFormData {
+  badge?: string;
+  title?: string;
+  description?: string;
+  form?: ContactFormFieldsData;
+  showcaseCards?: Array<{
+    tag: string;
+    title: string;
+    description: string;
+    image: string;
+    imageAlt?: string;
+  }>;
+}
+
+interface ContactInquiryFormProps {
+  data?: ContactInquiryFormData;
+}
+
+const DEFAULT_INQUIRY_TYPES = [
+  "Product Inquiry",
+  "Custom Packaging",
+  "Bulk Order",
+  "General Inquiry",
+  "Other",
+];
+
+const DEFAULT_CATEGORIES = [
+  "Corrugated Boxes",
+  "Printed Corrugated Boxes",
+  "Die-Cut Boxes",
+  "Industrial Packaging",
+  "Food Packaging",
+  "E-Commerce Packaging",
+];
+
+const DEFAULT_BOX_TYPES = [
+  "3-Ply Single Wall",
+  "5-Ply Double Wall",
+  "7-Ply Triple Wall",
+  "Die-Cut Custom",
+  "Not Sure / Need Advice",
+];
+
+const DEFAULT_QUANTITIES = [
+  "500 - 1,000 units",
+  "1,000 - 5,000 units",
+  "5,000 - 10,000 units",
+  "10,000+ units",
+  "Sample / Prototyping",
+];
+
+export default function ContactInquiryForm({ data }: ContactInquiryFormProps = {}) {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const formConfig = data?.form;
+
+  const inquiryTypes =
+    formConfig?.inquiryTypeOptions && formConfig.inquiryTypeOptions.length > 0
+      ? formConfig.inquiryTypeOptions
+      : DEFAULT_INQUIRY_TYPES;
+
+  const categories =
+    formConfig?.categoryOptions && formConfig.categoryOptions.length > 0
+      ? formConfig.categoryOptions
+      : DEFAULT_CATEGORIES;
+
+  const boxTypes =
+    formConfig?.boxTypeOptions && formConfig.boxTypeOptions.length > 0
+      ? formConfig.boxTypeOptions
+      : DEFAULT_BOX_TYPES;
+
+  const quantities =
+    formConfig?.quantityOptions && formConfig.quantityOptions.length > 0
+      ? formConfig.quantityOptions
+      : DEFAULT_QUANTITIES;
 
   // Form State
   const [formData, setFormData] = useState({
@@ -27,10 +128,10 @@ export default function ContactInquiryForm() {
     company: "",
     email: "",
     phone: "",
-    inquiryType: "Product Inquiry",
-    category: "Corrugated Boxes",
-    boxType: "5-Ply Double Wall",
-    quantity: "1,000 - 5,000 units",
+    inquiryType: inquiryTypes[0] || "Product Inquiry",
+    category: categories[0] || "Corrugated Boxes",
+    boxType: boxTypes[1] || "5-Ply Double Wall",
+    quantity: quantities[1] || "1,000 - 5,000 units",
     message: "",
   });
 
@@ -195,10 +296,10 @@ export default function ContactInquiryForm() {
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
                 <h3 className="font-heading font-bold text-2xl text-[#202A2E]">
-                  Inquiry Received Successfully!
+                  {formConfig?.successTitle || "Inquiry Received Successfully!"}
                 </h3>
                 <p className="text-sm text-[#62574D] max-w-md mx-auto leading-relaxed">
-                  {successMessage}
+                  {successMessage || formConfig?.successMessage || "Our technical team will review your specifications and contact you within 24 hours."}
                 </p>
                 {inquiryId && (
                   <div className="inline-block p-2.5 px-4 rounded-lg bg-[#FAF7F2] border border-[#E4DED3] font-mono text-xs text-[#A65D32]">
@@ -221,13 +322,13 @@ export default function ContactInquiryForm() {
                 {/* Form Header */}
                 <div className="border-b border-[#E4DED3] pb-5">
                   <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32] block mb-1">
-                    DIRECT INQUIRY DESK
+                    {data?.badge || "DIRECT INQUIRY DESK"}
                   </span>
                   <h2 className="font-heading font-bold text-2xl sm:text-3xl text-[#202A2E] tracking-tight">
-                    Send Us Your Inquiry
+                    {data?.title || "Send Us Your Inquiry"}
                   </h2>
                   <p className="text-xs sm:text-sm text-[#62574D] mt-1">
-                    Tell us a little about your packaging requirements. Our team will review your inquiry and get back to you.
+                    {data?.description || "Tell us a little about your packaging requirements. Our team will review your inquiry and get back to you."}
                   </p>
                 </div>
 
@@ -241,21 +342,21 @@ export default function ContactInquiryForm() {
                 {/* --- Section A: Personal & Company Details --- */}
                 <div className="space-y-4">
                   <h3 className="text-xs font-bold uppercase tracking-wider text-[#202A2E] border-l-2 border-[#A65D32] pl-2">
-                    1. Contact Details
+                    {formConfig?.section1Title || "1. Contact Details"}
                   </h3>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Full Name */}
                     <div>
                       <label className="block text-xs font-semibold text-[#202A2E] mb-1.5">
-                        Full Name <span className="text-red-500">*</span>
+                        {formConfig?.nameLabel || "Full Name"} <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
-                        placeholder="e.g. Rajesh Patel"
+                        placeholder={formConfig?.namePlaceholder || "e.g. Rajesh Patel"}
                         className={`w-full px-3.5 py-2.5 bg-[#FAF7F2] border rounded-xl text-xs sm:text-sm text-[#202A2E] focus:outline-hidden transition-colors ${errors.name
                           ? "border-red-400 focus:border-red-500 bg-red-50/30"
                           : "border-[#E4DED3] focus:border-[#A65D32] focus:bg-white"
@@ -269,14 +370,14 @@ export default function ContactInquiryForm() {
                     {/* Company Name */}
                     <div>
                       <label className="block text-xs font-semibold text-[#202A2E] mb-1.5">
-                        Company Name
+                        {formConfig?.companyLabel || "Company Name"}
                       </label>
                       <input
                         type="text"
                         name="company"
                         value={formData.company}
                         onChange={handleChange}
-                        placeholder="e.g. Acme Logistics Pvt Ltd"
+                        placeholder={formConfig?.companyPlaceholder || "e.g. Acme Logistics Pvt Ltd"}
                         className="w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E4DED3] focus:border-[#A65D32] focus:bg-white rounded-xl text-xs sm:text-sm text-[#202A2E] focus:outline-hidden transition-colors"
                       />
                     </div>
@@ -284,14 +385,14 @@ export default function ContactInquiryForm() {
                     {/* Email Address */}
                     <div>
                       <label className="block text-xs font-semibold text-[#202A2E] mb-1.5">
-                        Email Address <span className="text-red-500">*</span>
+                        {formConfig?.emailLabel || "Email Address"} <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="email"
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
-                        placeholder="name@company.com"
+                        placeholder={formConfig?.emailPlaceholder || "name@company.com"}
                         className={`w-full px-3.5 py-2.5 bg-[#FAF7F2] border rounded-xl text-xs sm:text-sm text-[#202A2E] focus:outline-hidden transition-colors ${errors.email
                           ? "border-red-400 focus:border-red-500 bg-red-50/30"
                           : "border-[#E4DED3] focus:border-[#A65D32] focus:bg-white"
@@ -305,14 +406,14 @@ export default function ContactInquiryForm() {
                     {/* Phone / WhatsApp */}
                     <div>
                       <label className="block text-xs font-semibold text-[#202A2E] mb-1.5">
-                        Phone / WhatsApp Number <span className="text-red-500">*</span>
+                        {formConfig?.phoneLabel || "Phone / WhatsApp Number"} <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="tel"
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
-                        placeholder="+91 98765 00000"
+                        placeholder={formConfig?.phonePlaceholder || "+91 98765 00000"}
                         className={`w-full px-3.5 py-2.5 bg-[#FAF7F2] border rounded-xl text-xs sm:text-sm text-[#202A2E] focus:outline-hidden transition-colors ${errors.phone
                           ? "border-red-400 focus:border-red-500 bg-red-50/30"
                           : "border-[#E4DED3] focus:border-[#A65D32] focus:bg-white"
@@ -328,14 +429,14 @@ export default function ContactInquiryForm() {
                 {/* --- Section B: Packaging & Inquiry Details --- */}
                 <div className="space-y-4 pt-2">
                   <h3 className="text-xs font-bold uppercase tracking-wider text-[#202A2E] border-l-2 border-[#A65D32] pl-2">
-                    2. Packaging Specifications
+                    {formConfig?.section2Title || "2. Packaging Specifications"}
                   </h3>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Inquiry Type */}
                     <div>
                       <label className="block text-xs font-semibold text-[#202A2E] mb-1.5">
-                        Inquiry Type <span className="text-red-500">*</span>
+                        {formConfig?.inquiryTypeLabel || "Inquiry Type"} <span className="text-red-500">*</span>
                       </label>
                       <select
                         name="inquiryType"
@@ -343,18 +444,18 @@ export default function ContactInquiryForm() {
                         onChange={handleChange}
                         className="w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E4DED3] focus:border-[#A65D32] focus:bg-white rounded-xl text-xs sm:text-sm text-[#202A2E] focus:outline-hidden transition-colors cursor-pointer"
                       >
-                        <option value="Product Inquiry">Product Inquiry</option>
-                        <option value="Custom Packaging">Custom Packaging CAD</option>
-                        <option value="Bulk Order">Bulk Production Order</option>
-                        <option value="General Inquiry">General Business Inquiry</option>
-                        <option value="Other">Other Requirement</option>
+                        {inquiryTypes.map((opt, i) => (
+                          <option key={i} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
                       </select>
                     </div>
 
                     {/* Packaging Category */}
                     <div>
                       <label className="block text-xs font-semibold text-[#202A2E] mb-1.5">
-                        Product Category
+                        {formConfig?.categoryLabel || "Product Category"}
                       </label>
                       <select
                         name="category"
@@ -362,19 +463,18 @@ export default function ContactInquiryForm() {
                         onChange={handleChange}
                         className="w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E4DED3] focus:border-[#A65D32] focus:bg-white rounded-xl text-xs sm:text-sm text-[#202A2E] focus:outline-hidden transition-colors cursor-pointer"
                       >
-                        <option value="Corrugated Boxes">Corrugated Boxes (3/5/7-Ply)</option>
-                        <option value="Printed Corrugated Boxes">Printed Branded Boxes</option>
-                        <option value="Die-Cut Boxes">Die-Cut Self-Locking Mailers</option>
-                        <option value="Industrial Packaging">Industrial & Partitions</option>
-                        <option value="Food Packaging">Food & Beverage Packaging</option>
-                        <option value="E-Commerce Packaging">E-Commerce Packaging</option>
+                        {categories.map((opt, i) => (
+                          <option key={i} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
                       </select>
                     </div>
 
                     {/* Box Type */}
                     <div>
                       <label className="block text-xs font-semibold text-[#202A2E] mb-1.5">
-                        Box Construction / Ply
+                        {formConfig?.boxTypeLabel || "Box Construction / Ply"}
                       </label>
                       <select
                         name="boxType"
@@ -382,18 +482,18 @@ export default function ContactInquiryForm() {
                         onChange={handleChange}
                         className="w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E4DED3] focus:border-[#A65D32] focus:bg-white rounded-xl text-xs sm:text-sm text-[#202A2E] focus:outline-hidden transition-colors cursor-pointer"
                       >
-                        <option value="3-Ply Single Wall">3-Ply Single Wall</option>
-                        <option value="5-Ply Double Wall">5-Ply Double Wall (Standard)</option>
-                        <option value="7-Ply Triple Wall">7-Ply Triple Wall (Export)</option>
-                        <option value="Die-Cut Custom">Die-Cut / Auto-Lock</option>
-                        <option value="Not Sure / Need Advice">Not Sure / Need Advice</option>
+                        {boxTypes.map((opt, i) => (
+                          <option key={i} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
                       </select>
                     </div>
 
                     {/* Required Quantity */}
                     <div>
                       <label className="block text-xs font-semibold text-[#202A2E] mb-1.5">
-                        Target Quantity
+                        {formConfig?.quantityLabel || "Target Quantity"}
                       </label>
                       <select
                         name="quantity"
@@ -401,11 +501,11 @@ export default function ContactInquiryForm() {
                         onChange={handleChange}
                         className="w-full px-3.5 py-2.5 bg-[#FAF7F2] border border-[#E4DED3] focus:border-[#A65D32] focus:bg-white rounded-xl text-xs sm:text-sm text-[#202A2E] focus:outline-hidden transition-colors cursor-pointer"
                       >
-                        <option value="500 - 1,000 units">500 – 1,000 units</option>
-                        <option value="1,000 - 5,000 units">1,000 – 5,000 units</option>
-                        <option value="5,000 - 10,000 units">5,000 – 10,000 units</option>
-                        <option value="10,000+ units">10,000+ units (Bulk)</option>
-                        <option value="Sample / Prototyping">Sample / CAD Prototyping</option>
+                        {quantities.map((opt, i) => (
+                          <option key={i} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   </div>
@@ -413,14 +513,14 @@ export default function ContactInquiryForm() {
                   {/* Message */}
                   <div>
                     <label className="block text-xs font-semibold text-[#202A2E] mb-1.5">
-                      Message / Additional Requirements <span className="text-red-500">*</span>
+                      {formConfig?.messageLabel || "Message / Additional Requirements"} <span className="text-red-500">*</span>
                     </label>
                     <textarea
                       name="message"
                       rows={4}
                       value={formData.message}
                       onChange={handleChange}
-                      placeholder="Please specify box dimensions (L x W x H in mm/inches), payload weight, printing requirements, or destination..."
+                      placeholder={formConfig?.messagePlaceholder || "Please specify box dimensions (L x W x H in mm/inches), payload weight, printing requirements, or destination..."}
                       className={`w-full px-3.5 py-2.5 bg-[#FAF7F2] border rounded-xl text-xs sm:text-sm text-[#202A2E] focus:outline-hidden transition-colors resize-y ${errors.message
                         ? "border-red-400 focus:border-red-500 bg-red-50/30"
                         : "border-[#E4DED3] focus:border-[#A65D32] focus:bg-white"
@@ -434,7 +534,8 @@ export default function ContactInquiryForm() {
                   {/* Optional File Upload */}
                   <div>
                     <label className="block text-xs font-semibold text-[#202A2E] mb-1.5">
-                      Upload Reference Drawing / Artwork <span className="text-[#8C989E] font-normal">(Optional, PDF/JPG/PNG up to 10MB)</span>
+                      {formConfig?.fileUploadLabel || "Upload Reference Drawing / Artwork"}{" "}
+                      <span className="text-[#8C989E] font-normal">{formConfig?.fileUploadHint || "(Optional, PDF/JPG/PNG up to 10MB)"}</span>
                     </label>
 
                     {selectedFile ? (
@@ -495,13 +596,13 @@ export default function ContactInquiryForm() {
                       </>
                     ) : (
                       <>
-                        <span>Submit Inquiry</span>
+                        <span>{formConfig?.submitButtonText || "Submit Inquiry"}</span>
                         <Send className="w-4 h-4" />
                       </>
                     )}
                   </button>
                   <p className="text-[11px] text-[#8C989E] mt-2.5">
-                    Your information will only be used to respond to your inquiry.
+                    {formConfig?.privacyNote || "Your information will only be used to respond to your inquiry."}
                   </p>
                 </div>
               </form>
@@ -512,59 +613,94 @@ export default function ContactInquiryForm() {
               RIGHT COLUMN: 2 Balanced Visual Showcase Cards (Image Up & Image Down)
           ========================================================================= */}
           <div className="lg:col-span-5 flex flex-col gap-6">
-            {/* 1. Top Image Card: Packaging Solutions */}
-            <div className="flex-1 bg-white rounded-3xl p-5 border border-[#E4DED3] shadow-xs hover:border-[#D1B48C] transition-all group flex flex-col justify-between">
-              <div>
-                <div className="relative w-full aspect-[16/11] rounded-2xl overflow-hidden bg-[#FAF7F2] mb-4">
-                  <Image
-                    src="/custom pack/custom-corrugated-solutions.png"
-                    alt="AAVRIT PACKAGING Custom Kraft Packaging Solutions"
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 450px"
-                    className="object-cover group-hover:scale-103 transition-transform duration-500 ease-out"
-                  />
+            {data?.showcaseCards && data.showcaseCards.length > 0 ? (
+              data.showcaseCards.map((sc: any, idx: number) => (
+                <div
+                  key={idx}
+                  className="flex-1 bg-white rounded-3xl p-5 border border-[#E4DED3] shadow-xs hover:border-[#D1B48C] transition-all group flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="relative w-full aspect-[16/11] rounded-2xl overflow-hidden bg-[#FAF7F2] mb-4">
+                      <Image
+                        src={sc.image}
+                        alt={sc.imageAlt || sc.title}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 450px"
+                        className="object-cover group-hover:scale-103 transition-transform duration-500 ease-out"
+                      />
+                    </div>
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-[#A65D32]">
+                        {sc.tag}
+                      </span>
+                    </div>
+                    <h4 className="font-heading font-bold text-lg text-[#202A2E] leading-snug">
+                      {sc.title}
+                    </h4>
+                    <p className="text-xs sm:text-sm text-[#62574D] mt-1.5 leading-relaxed">
+                      {sc.description}
+                    </p>
+                  </div>
                 </div>
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#A65D32]">
-                    CUSTOM PACKAGING
-                  </span>
+              ))
+            ) : (
+              <>
+                {/* 1. Top Image Card: Packaging Solutions */}
+                <div className="flex-1 bg-white rounded-3xl p-5 border border-[#E4DED3] shadow-xs hover:border-[#D1B48C] transition-all group flex flex-col justify-between">
+                  <div>
+                    <div className="relative w-full aspect-[16/11] rounded-2xl overflow-hidden bg-[#FAF7F2] mb-4">
+                      <Image
+                        src="/custom pack/custom-corrugated-solutions.png"
+                        alt="AAVRIT PACKAGING Custom Kraft Packaging Solutions"
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 450px"
+                        className="object-cover group-hover:scale-103 transition-transform duration-500 ease-out"
+                      />
+                    </div>
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-[#A65D32]">
+                        CUSTOM PACKAGING
+                      </span>
+                    </div>
+                    <h4 className="font-heading font-bold text-lg text-[#202A2E] leading-snug">
+                      Precision-Cut Corrugated Solutions
+                    </h4>
+                    <p className="text-xs sm:text-sm text-[#62574D] mt-1.5 leading-relaxed">
+                      Tailored flute calibers and custom-dimensioned master cartons designed to match your product weight, drop tests, and transit demands.
+                    </p>
+                  </div>
                 </div>
-                <h4 className="font-heading font-bold text-lg text-[#202A2E] leading-snug">
-                  Precision-Cut Corrugated Solutions
-                </h4>
-                <p className="text-xs sm:text-sm text-[#62574D] mt-1.5 leading-relaxed">
-                  Tailored flute calibers and custom-dimensioned master cartons designed to match your product weight, drop tests, and transit demands.
-                </p>
-              </div>
-            </div>
 
-            {/* 2. Bottom Image Card: Manufacturing Facility */}
-            <div className="flex-1 bg-white rounded-3xl p-5 border border-[#E4DED3] shadow-xs hover:border-[#D1B48C] transition-all group flex flex-col justify-between">
-              <div>
-                <div className="relative w-full aspect-[16/11] rounded-2xl overflow-hidden bg-[#FAF7F2] mb-4">
-                  <Image
-                    src="/machinery/gallery-plant-overview.png"
-                    alt="AAVRIT PACKAGING High-Speed Corrugation Facility"
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 450px"
-                    className="object-cover group-hover:scale-103 transition-transform duration-500 ease-out"
-                  />
+                {/* 2. Bottom Image Card: Manufacturing Facility */}
+                <div className="flex-1 bg-white rounded-3xl p-5 border border-[#E4DED3] shadow-xs hover:border-[#D1B48C] transition-all group flex flex-col justify-between">
+                  <div>
+                    <div className="relative w-full aspect-[16/11] rounded-2xl overflow-hidden bg-[#FAF7F2] mb-4">
+                      <Image
+                        src="/machinery/gallery-plant-overview.png"
+                        alt="AAVRIT PACKAGING High-Speed Corrugation Facility"
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 450px"
+                        className="object-cover group-hover:scale-103 transition-transform duration-500 ease-out"
+                      />
+                    </div>
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#78846A]/15 border border-[#78846A]/30 mb-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#78846A]" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-[#78846A]">
+                        MANUFACTURING PLANT
+                      </span>
+                    </div>
+                    <h4 className="font-heading font-bold text-lg text-[#202A2E] leading-snug">
+                      High-Speed Corrugation Plant
+                    </h4>
+                    <p className="text-xs sm:text-sm text-[#62574D] mt-1.5 leading-relaxed">
+                      Phase II GIDC Industrial Estate, Gujarat. Operating advanced multi-station corrugators and flexo slotters for reliable B2B dispatches.
+                    </p>
+                  </div>
                 </div>
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#78846A]/15 border border-[#78846A]/30 mb-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#78846A]" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#78846A]">
-                    MANUFACTURING PLANT
-                  </span>
-                </div>
-                <h4 className="font-heading font-bold text-lg text-[#202A2E] leading-snug">
-                  High-Speed Corrugation Plant
-                </h4>
-                <p className="text-xs sm:text-sm text-[#62574D] mt-1.5 leading-relaxed">
-                  Phase II GIDC Industrial Estate, Gujarat. Operating advanced multi-station corrugators and flexo slotters for reliable B2B dispatches.
-                </p>
-              </div>
-            </div>
+              </>
+            )}
           </div>
         </div>
       </div>

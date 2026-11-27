@@ -7,7 +7,23 @@ import { ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import BannerEmployeeMascot from "@/components/common/BannerEmployeeMascot";
 
-export default function ContactHero() {
+interface ContactHeroProps {
+  data?: {
+    title?: string;
+    breadcrumbRoot?: string;
+    breadcrumbCurrent?: string;
+    backgroundImage?: string;
+    backgroundImageAlt?: string;
+    characterImage?: string;
+    characterAlt?: string;
+    characterMediaType?: "image" | "gif" | "video";
+    dialogueIcon?: string;
+    dialogueTitle?: string;
+    dialogueSubtext?: string;
+  };
+}
+
+export default function ContactHero({ data }: ContactHeroProps = {}) {
   const titleRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -30,15 +46,15 @@ export default function ContactHero() {
       {/* Full Width Banner matching exact site banner standard */}
       <div className="relative w-full h-[340px] sm:h-[380px] lg:h-[420px]">
         <Image
-          src="/contact/contact_banner_pano.png"
-          alt="Contact Support Workspace - AAVRIT PACKAGING"
+          src={data?.backgroundImage || "/contact/contact_banner_pano.png"}
+          alt={data?.backgroundImageAlt || "Contact Support Workspace - AAVRIT PACKAGING"}
           fill
           priority
           sizes="100vw"
           className="object-cover object-center pointer-events-none"
         />
 
-        {/* Side Vignette Gradient for Text Contrast (Leaves workspace visual on right clear and bright) */}
+        {/* Side Vignette Gradient for Text Contrast */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#202A2E]/95 via-[#202A2E]/65 to-transparent w-full sm:w-1/2 pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 pointer-events-none" />
 
@@ -48,7 +64,7 @@ export default function ContactHero() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pointer-events-auto">
             <div ref={titleRef} className="max-w-lg">
               <h1 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-tight mb-1.5 drop-shadow-md">
-                Contact Us
+                {data?.title || "Contact Us"}
               </h1>
 
               {/* Breadcrumb Navigation: Home > Contact Us */}
@@ -60,11 +76,11 @@ export default function ContactHero() {
                   href="/"
                   className="hover:text-[#E97835] transition-colors drop-shadow-xs"
                 >
-                  Home
+                  {data?.breadcrumbRoot || "Home"}
                 </Link>
                 <ChevronRight className="w-3.5 h-3.5 text-[#D1B48C]" />
                 <span className="text-[#D1B48C] font-semibold drop-shadow-xs">
-                  Contact Us
+                  {data?.breadcrumbCurrent || "Contact Us"}
                 </span>
               </nav>
             </div>
@@ -72,11 +88,11 @@ export default function ContactHero() {
 
           {/* 2. LOWER AREA: Customer Support & Packaging Consultant Speaking Mascot */}
           <BannerEmployeeMascot
-            characterImage="/contact/character_contact_support.png"
-            characterAlt="Customer Support Specialist - AAVRIT PACKAGING"
-            dialogueIcon="💬"
-            dialogueTitle="We're Here to Help!"
-            dialogueSubtext="Get instant quotes & custom packaging guidance"
+            characterImage={data?.characterImage || "/contact/character_contact_support.png"}
+            characterAlt={data?.characterAlt || "Customer Support Specialist - AAVRIT PACKAGING"}
+            dialogueIcon={data?.dialogueIcon || "💬"}
+            dialogueTitle={data?.dialogueTitle || "We're Here to Help!"}
+            dialogueSubtext={data?.dialogueSubtext || "Get instant quotes & custom packaging guidance"}
             characterWidthClass="w-[110px] sm:w-[135px] lg:w-[155px]"
             shadowWidthClass="w-20 sm:w-24 lg:w-28"
           />

@@ -5,12 +5,23 @@ import { ChevronDown, HelpCircle, MessageSquare } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-interface FAQItem {
+export interface ContactFAQItem {
   question: string;
   answer: string;
 }
 
-const CONTACT_FAQS: FAQItem[] = [
+export interface ContactFAQsData {
+  badge?: string;
+  title?: string;
+  subtitle?: string;
+  faqs?: ContactFAQItem[];
+}
+
+interface ContactFAQsProps {
+  data?: ContactFAQsData;
+}
+
+const DEFAULT_CONTACT_FAQS: ContactFAQItem[] = [
   {
     question: "How can I request a packaging quotation?",
     answer:
@@ -38,7 +49,7 @@ const CONTACT_FAQS: FAQItem[] = [
   },
 ];
 
-export default function ContactFAQs() {
+export default function ContactFAQs({ data }: ContactFAQsProps = {}) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const sectionRef = useRef<HTMLElement | null>(null);
   const headerRef = useRef<HTMLDivElement | null>(null);
@@ -92,6 +103,12 @@ export default function ContactFAQs() {
     setOpenIndex(openIndex === idx ? null : idx);
   };
 
+  const faqs = (data?.faqs && data.faqs.length > 0) ? data.faqs : DEFAULT_CONTACT_FAQS;
+  const badge = data?.badge || "CLARITY & GUIDANCE";
+  const subtitle =
+    data?.subtitle ||
+    "Find quick answers to common questions about inquiries, product guidance, custom box specifications, and working with AAVRIT PACKAGING.";
+
   return (
     <section
       ref={sectionRef}
@@ -107,33 +124,48 @@ export default function ContactFAQs() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                CLARITY &amp; GUIDANCE
+                {badge}
               </span>
             </div>
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] tracking-tight leading-tight">
-              Frequently Asked <br />
-              <span className="text-[#A65D32]">Questions</span>
+              {data?.title ? (
+                data.title.includes("Questions") ? (
+                  <>
+                    {data.title.replace("Questions", "")}
+                    <br />
+                    <span className="text-[#A65D32]">Questions</span>
+                  </>
+                ) : (
+                  data.title
+                )
+              ) : (
+                <>
+                  Frequently Asked <br />
+                  <span className="text-[#A65D32]">Questions</span>
+                </>
+              )}
             </h2>
           </div>
 
           <div className="lg:col-span-5 lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] leading-relaxed">
-              Find quick answers to common questions about inquiries, product guidance, custom box specifications, and working with AAVRIT PACKAGING.
+              {subtitle}
             </p>
           </div>
         </div>
 
         {/* 5-Question Accordion List */}
         <div ref={itemsRef} className="max-w-4xl mx-auto space-y-3.5">
-          {CONTACT_FAQS.map((faq, idx) => {
+          {faqs.map((faq, idx) => {
             const isOpen = openIndex === idx;
             return (
               <div
                 key={idx}
-                className={`bg-white rounded-2xl border transition-all duration-200 overflow-hidden ${isOpen
+                className={`bg-white rounded-2xl border transition-all duration-200 overflow-hidden ${
+                  isOpen
                     ? "border-[#A65D32]/40 shadow-md ring-1 ring-[#A65D32]/10"
                     : "border-[#E4DED3] hover:border-[#D1B48C] shadow-xs"
-                  }`}
+                }`}
               >
                 <button
                   type="button"
@@ -143,10 +175,11 @@ export default function ContactFAQs() {
                 >
                   <div className="flex items-center gap-3.5">
                     <div
-                      className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors ${isOpen
+                      className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                        isOpen
                           ? "bg-[#A65D32] text-white"
                           : "bg-[#FAF7F2] text-[#A65D32] border border-[#E4DED3]"
-                        }`}
+                      }`}
                     >
                       <HelpCircle className="w-4 h-4" />
                     </div>
@@ -156,10 +189,11 @@ export default function ContactFAQs() {
                   </div>
 
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-200 ${isOpen
+                    className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-200 ${
+                      isOpen
                         ? "bg-[#A65D32]/10 text-[#A65D32] rotate-180"
                         : "bg-[#FAF7F2] text-[#62574D]"
-                      }`}
+                    }`}
                   >
                     <ChevronDown className="w-4 h-4" />
                   </div>

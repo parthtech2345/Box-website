@@ -1,11 +1,84 @@
 "use client";
 
 import React, { useRef, useEffect } from "react";
-import { MessageSquareText, Layers, Scissors, Truck } from "lucide-react";
+import {
+  MessageSquareText,
+  Layers,
+  Scissors,
+  Truck,
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
+  ShieldCheck,
+  CheckCircle2,
+} from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function WhyContactUs() {
+export interface WhyContactReasonItem {
+  title: string;
+  description: string;
+  icon?: string;
+  tag?: string;
+}
+
+export interface WhyContactUsData {
+  badge?: string;
+  title?: string;
+  subtitle?: string;
+  reasons?: WhyContactReasonItem[];
+}
+
+interface WhyContactUsProps {
+  data?: WhyContactUsData;
+}
+
+const DEFAULT_REASONS: WhyContactReasonItem[] = [
+  {
+    title: "Packaging Requirement Discussion",
+    description:
+      "Consult directly with experienced manufacturing engineers to evaluate your product's weight, dimensions, and distribution stresses.",
+    icon: "MessageSquareText",
+    tag: "Technical Consult",
+  },
+  {
+    title: "Product and Material Guidance",
+    description:
+      "Get unbiased guidance on selecting suitable kraft paperboard GSM, flute profiles (A, B, C, E), and multi-ply construction.",
+    icon: "Layers",
+    tag: "Material Selection",
+  },
+  {
+    title: "Custom Packaging Inquiries",
+    description:
+      "Discuss bespoke box geometries, crash-lock auto bottoms, tamper-evident seals, and protective internal grid partitions.",
+    icon: "Scissors",
+    tag: "CAD Sampling",
+  },
+  {
+    title: "Bulk Order Discussions",
+    description:
+      "Access direct factory pricing, scheduled recurring batch dispatches, and warehouse inventory buffer management.",
+    icon: "Truck",
+    tag: "Volume Supply",
+  },
+];
+
+const ICON_MAP: Record<string, React.ElementType> = {
+  MessageSquareText,
+  Layers,
+  Scissors,
+  Truck,
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
+  ShieldCheck,
+  CheckCircle2,
+};
+
+export default function WhyContactUs({ data }: WhyContactUsProps = {}) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const gridRef = useRef<HTMLDivElement | null>(null);
 
@@ -37,32 +110,11 @@ export default function WhyContactUs() {
     return () => ctx.revert();
   }, []);
 
-  const reasons = [
-    {
-      title: "Packaging Requirement Discussion",
-      description: "Consult directly with experienced manufacturing engineers to evaluate your product's weight, dimensions, and distribution stresses.",
-      icon: MessageSquareText,
-      tag: "Technical Consult",
-    },
-    {
-      title: "Product and Material Guidance",
-      description: "Get unbiased guidance on selecting suitable kraft paperboard GSM, flute profiles (A, B, C, E), and multi-ply construction.",
-      icon: Layers,
-      tag: "Material Selection",
-    },
-    {
-      title: "Custom Packaging Inquiries",
-      description: "Discuss bespoke box geometries, crash-lock auto bottoms, tamper-evident seals, and protective internal grid partitions.",
-      icon: Scissors,
-      tag: "CAD Sampling",
-    },
-    {
-      title: "Bulk Order Discussions",
-      description: "Access direct factory pricing, scheduled recurring batch dispatches, and warehouse inventory buffer management.",
-      icon: Truck,
-      tag: "Volume Supply",
-    },
-  ];
+  const reasons = (data?.reasons && data.reasons.length > 0) ? data.reasons : DEFAULT_REASONS;
+  const badge = data?.badge || "DIRECT COLLABORATION";
+  const subtitle =
+    data?.subtitle ||
+    "We collaborate with businesses across industrial manufacturing, automotive, pharma, and retail to develop durable, cost-effective packaging.";
 
   return (
     <section
@@ -76,19 +128,32 @@ export default function WhyContactUs() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                DIRECT COLLABORATION
+                {badge}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
-              Why Connect With <br className="hidden sm:inline" />
-              <span className="text-[#A65D32]">AAVRIT PACKAGING</span>
+              {data?.title ? (
+                data.title.includes("AAVRIT PACKAGING") ? (
+                  <>
+                    {data.title.replace("AAVRIT PACKAGING", "")}
+                    <span className="text-[#A65D32]">AAVRIT PACKAGING</span>
+                  </>
+                ) : (
+                  data.title
+                )
+              ) : (
+                <>
+                  Why Connect With <br className="hidden sm:inline" />
+                  <span className="text-[#A65D32]">AAVRIT PACKAGING</span>
+                </>
+              )}
             </h2>
           </div>
 
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              We collaborate with businesses across industrial manufacturing, automotive, pharma, and retail to develop durable, cost-effective packaging.
+              {subtitle}
             </p>
           </div>
         </div>
@@ -96,7 +161,7 @@ export default function WhyContactUs() {
         {/* 4 Cards Grid */}
         <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {reasons.map((item, idx) => {
-            const Icon = item.icon;
+            const Icon = (item.icon && ICON_MAP[item.icon]) ? ICON_MAP[item.icon] : MessageSquareText;
             return (
               <div
                 key={idx}
@@ -105,11 +170,13 @@ export default function WhyContactUs() {
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <div className="w-11 h-11 rounded-xl bg-[#FAF7F2] border border-[#E4DED3] text-[#A65D32] flex items-center justify-center group-hover:bg-[#A65D32] group-hover:text-white transition-colors duration-300">
-                      <Icon className="w-5 h-5" />
+                      <Icon className="w-5 h-5 transition-colors duration-200" />
                     </div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#A65D32] bg-[#A65D32]/10 px-2.5 py-1 rounded-full border border-[#A65D32]/20">
-                      {item.tag}
-                    </span>
+                    {item.tag && (
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#A65D32] bg-[#A65D32]/10 px-2.5 py-1 rounded-full border border-[#A65D32]/20">
+                        {item.tag}
+                      </span>
+                    )}
                   </div>
 
                   <h3 className="font-heading font-bold text-base sm:text-lg text-[#202A2E] group-hover:text-[#A65D32] transition-colors leading-snug mb-2">

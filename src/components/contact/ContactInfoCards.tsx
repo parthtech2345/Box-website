@@ -5,9 +5,79 @@ import { Phone, Mail, MapPin, Clock, ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function ContactInfoCards() {
+interface ContactInfoCardsProps {
+  data?: {
+    cards?: Array<{
+      title: string;
+      value: string;
+      subtext: string;
+      href?: string;
+      actionText?: string;
+      icon: string;
+    }>;
+  };
+}
+
+const DEFAULT_INFO_LIST = [
+  {
+    title: "Direct Phone Line",
+    value: "+91 98765 43210",
+    subtext: "Technical inquiries & rapid quotes",
+    href: "tel:+919876543210",
+    actionText: "Call Now",
+    icon: Phone,
+  },
+  {
+    title: "Official Email Desk",
+    value: "inquiry@aavritpackaging.com",
+    subtext: "Send purchase RFPs & specifications",
+    href: "mailto:inquiry@aavritpackaging.com",
+    actionText: "Send Email",
+    icon: Mail,
+  },
+  {
+    title: "Plant & Head Office",
+    value: "Plot No. 42, Phase II GIDC",
+    subtext: "Gujarat 382445, India",
+    href: "https://maps.google.com/?q=Plot+No.+42,+Phase+II+GIDC+Industrial+Estate,+Gujarat+382445,+India",
+    actionText: "View on Map",
+    target: "_blank",
+    icon: MapPin,
+  },
+  {
+    title: "Business Hours",
+    value: "Mon – Sat: 9:00 AM – 6:30 PM",
+    subtext: "Sunday: Closed (Dispatch on request)",
+    icon: Clock,
+  },
+];
+
+function getCardLucideIcon(iconName: string) {
+  switch (iconName) {
+    case "Phone":
+      return Phone;
+    case "Mail":
+      return Mail;
+    case "MapPin":
+      return MapPin;
+    case "Clock":
+      return Clock;
+    default:
+      return Phone;
+  }
+}
+
+export default function ContactInfoCards({ data }: ContactInfoCardsProps = {}) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const gridRef = useRef<HTMLDivElement | null>(null);
+
+  const infoList = (data?.cards && data.cards.length > 0)
+    ? data.cards.map((c) => ({
+        ...c,
+        icon: getCardLucideIcon(c.icon),
+        target: c.href?.startsWith("http") ? "_blank" : undefined,
+      }))
+    : DEFAULT_INFO_LIST;
 
   useEffect(() => {
     if (typeof window === "undefined" || !sectionRef.current || !gridRef.current) return;
@@ -35,41 +105,7 @@ export default function ContactInfoCards() {
     });
 
     return () => ctx.revert();
-  }, []);
-
-  const infoList = [
-    {
-      title: "Direct Phone Line",
-      value: "+91 98765 43210",
-      subtext: "Technical inquiries & rapid quotes",
-      href: "tel:+919876543210",
-      actionText: "Call Now",
-      icon: Phone,
-    },
-    {
-      title: "Official Email Desk",
-      value: "inquiry@aavritpackaging.com",
-      subtext: "Send purchase RFPs & specifications",
-      href: "mailto:inquiry@aavritpackaging.com",
-      actionText: "Send Email",
-      icon: Mail,
-    },
-    {
-      title: "Plant & Head Office",
-      value: "Plot No. 42, Phase II GIDC",
-      subtext: "Gujarat 382445, India",
-      href: "https://maps.google.com/?q=Plot+No.+42,+Phase+II+GIDC+Industrial+Estate,+Gujarat+382445,+India",
-      actionText: "View on Map",
-      target: "_blank",
-      icon: MapPin,
-    },
-    {
-      title: "Business Hours",
-      value: "Mon – Sat: 9:00 AM – 6:30 PM",
-      subtext: "Sunday: Closed (Dispatch on request)",
-      icon: Clock,
-    },
-  ];
+  }, [infoList]);
 
   return (
     <section

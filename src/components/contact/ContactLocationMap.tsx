@@ -5,7 +5,20 @@ import { MapPin, Navigation, Compass, ExternalLink } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function ContactLocationMap() {
+interface ContactLocationMapProps {
+  data?: {
+    badge?: string;
+    title?: string;
+    subtitle?: string;
+    embedUrl?: string;
+    googleMapsUrl?: string;
+    plantName?: string;
+    address?: string;
+    transitHighlights?: string[];
+  };
+}
+
+export default function ContactLocationMap({ data }: ContactLocationMapProps = {}) {
   const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -33,11 +46,17 @@ export default function ContactLocationMap() {
   }, []);
 
   const googleMapsUrl =
+    data?.googleMapsUrl ||
     "https://maps.google.com/?q=Plot+No.+42,+Phase+II+GIDC+Industrial+Estate,+Gujarat+382445,+India";
 
-  // Google Maps Embed Query pointing to Gujarat GIDC Industrial Estate
   const embedUrl =
+    data?.embedUrl ||
     "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d117502.83605481745!2d72.50284759999999!3d22.998059!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e85c2e17e4e13%3A0xb304b4f5358045b!2sGIDC%20Phase%20II%2C%20Vatva%2C%20Ahmedabad%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin";
+
+  const highlights = data?.transitHighlights || [
+    "Direct arterial connectivity to National Highway freight corridors.",
+    "Equipped with heavy commercial vehicle loading and unloading bays.",
+  ];
 
   return (
     <section
@@ -51,19 +70,23 @@ export default function ContactLocationMap() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                PLANT ACCESSIBILITY
+                {data?.badge || "PLANT ACCESSIBILITY"}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
-              Find Our <br className="hidden sm:inline" />
-              <span className="text-[#A65D32]">Manufacturing Plant</span>
+              {data?.title || (
+                <>
+                  Find Our <br className="hidden sm:inline" />
+                  <span className="text-[#A65D32]">Manufacturing Plant</span>
+                </>
+              )}
             </h2>
           </div>
 
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              Visit our manufacturing facility or use the interactive map below for route planning and dispatch logistics.
+              {data?.subtitle || "Visit our manufacturing facility or use the interactive map below for route planning and dispatch logistics."}
             </p>
           </div>
         </div>
@@ -97,26 +120,24 @@ export default function ContactLocationMap() {
                     REGISTERED LOCATION
                   </span>
                   <h3 className="font-heading font-bold text-base sm:text-lg text-[#202A2E]">
-                    AAVRIT PACKAGING
+                    {data?.plantName || "AAVRIT PACKAGING"}
                   </h3>
                 </div>
               </div>
 
               <div className="p-4 rounded-2xl bg-white border border-[#E4DED3] text-xs sm:text-sm text-[#62574D] leading-relaxed">
                 <strong className="text-[#202A2E] block mb-1">Factory Address:</strong>
-                Plot No. 42, Phase II GIDC Industrial Estate, Gujarat 382445, India.
+                {data?.address || "Plot No. 42, Phase II GIDC Industrial Estate, Gujarat 382445, India."}
               </div>
 
               {/* Transit Highlights */}
               <div className="space-y-2.5 text-xs text-[#62574D]">
-                <div className="flex items-start gap-2">
-                  <Compass className="w-4 h-4 text-[#A65D32] shrink-0 mt-0.5" />
-                  <span>Direct arterial connectivity to National Highway freight corridors.</span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <Navigation className="w-4 h-4 text-[#A65D32] shrink-0 mt-0.5" />
-                  <span>Equipped with heavy commercial vehicle loading and unloading bays.</span>
-                </div>
+                {highlights.map((h, i) => (
+                  <div key={i} className="flex items-start gap-2">
+                    <Navigation className="w-4 h-4 text-[#A65D32] shrink-0 mt-0.5" />
+                    <span>{h}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
