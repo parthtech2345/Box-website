@@ -52,6 +52,9 @@ export default function ProductDetailSections({
 
   // Determine which ply is recommended for this product
   const recommendedPly = React.useMemo(() => {
+    if (product.technicalGuide?.recommendedPly) {
+      return product.technicalGuide.recommendedPly;
+    }
     const name = product.name.toLowerCase();
     const specs = JSON.stringify(product.specifications).toLowerCase();
     if (name.includes("7 ply") || specs.includes("7 ply")) return "7 Ply";
@@ -62,6 +65,16 @@ export default function ProductDetailSections({
 
   // Determine relevant flutes and best recommended flute
   const { relevantFlutes, primaryFlute } = React.useMemo(() => {
+    if (product.technicalGuide?.recommendedFlute) {
+      const primary = product.technicalGuide.recommendedFlute;
+      const code = primary.split(" ")[0].toUpperCase();
+      const matched = flutes.filter((f) => f.name.toUpperCase().includes(code));
+      return {
+        relevantFlutes: matched.length > 0 ? matched : flutes.slice(0, 4),
+        primaryFlute: primary,
+      };
+    }
+
     const rawFlutes = product.specifications.flute || product.specifications.fluteType;
     let primary = "B Flute";
 
@@ -177,10 +190,10 @@ export default function ProductDetailSections({
             B2B TECHNICAL GUIDE
           </span>
           <h2 className="font-heading font-bold text-2xl sm:text-3xl text-[#202A2E] mb-2">
-            Understanding Corrugated Box Specifications
+            {product.technicalGuide?.plyGuideTitle || "Understanding Corrugated Box Specifications"}
           </h2>
           <p className="text-sm text-[#62574D] max-w-3xl">
-            Corrugated packaging performance depends on structural ply construction, fluting geometry, and raw paper liner grades. Explore our manufacturing capabilities below with recommended configurations highlighted.
+            {product.technicalGuide?.plyGuideSubtitle || "Corrugated packaging performance depends on structural ply construction, fluting geometry, and raw paper liner grades. Explore our manufacturing capabilities below with recommended configurations highlighted."}
           </p>
         </div>
 
@@ -404,11 +417,11 @@ export default function ProductDetailSections({
               <span>Tailored Sizing Guide</span>
             </div>
             <h2 className="font-heading font-bold text-2xl sm:text-3xl text-[#202A2E]">
-              Custom Box Sizes & Dimensions
+              {product.technicalGuide?.sizingGuideTitle || "Custom Box Sizes & Dimensions"}
             </h2>
           </div>
           <span className="text-xs text-[#62574D]">
-            All boxes are custom manufactured to your payload requirements: <strong>Length × Width × Height</strong>
+            {product.technicalGuide?.sizingGuideSubtitle || "All boxes are custom manufactured to your payload requirements: Length × Width × Height"}
           </span>
         </div>
 
@@ -483,10 +496,10 @@ export default function ProductDetailSections({
                 </p>
               </div>
               <a
-                href="tel:+919876543210"
+                href={`tel:${product.technicalGuide?.contactPhone || "+919876543210"}`}
                 className="shrink-0 px-4 py-2 rounded-lg bg-[#E97835] hover:bg-[#A65D32] text-white text-xs font-bold tracking-wide transition-colors"
               >
-                Call with this Size
+                {product.technicalGuide?.callButtonText || "Call with this Size"}
               </a>
             </div>
           </div>
@@ -497,10 +510,10 @@ export default function ProductDetailSections({
               Internal vs External Dimensions
             </h4>
             <p>
-              When specifying dimensions, our team confirms internal cavity dimensions (for product fit) and outer dimensions (for pallet stacking efficiency).
+              {product.technicalGuide?.internalDimensionsNote || "When specifying dimensions, our team confirms internal cavity dimensions (for product fit) and outer dimensions (for pallet stacking efficiency)."}
             </p>
             <p className="text-[11px] text-[#7D7166]">
-              Minimum order quantities (MOQ) depend on sheet size and total square meterage.
+              {product.technicalGuide?.moqNote || "Minimum order quantities (MOQ) depend on sheet size and total square meterage."}
             </p>
           </div>
         </div>

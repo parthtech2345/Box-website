@@ -1,3 +1,11 @@
+export interface ProductSEOData {
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  canonicalLink?: string;
+  schemaMarkup?: string;
+}
+
 export interface ProductItem {
   id: string;
   name: string;
@@ -6,6 +14,9 @@ export interface ProductItem {
   categoryName: string;
   image: string;
   fallbackImage: string;
+  imageAlt?: string;
+  imageName?: string;
+  order?: number;
   shortDescription: string;
   fullDescription: string;
   specifications: {
@@ -20,6 +31,21 @@ export interface ProductItem {
     [key: string]: string | string[] | undefined;
   };
   keyFeatures: string[];
+  faqs?: { question: string; answer: string }[];
+  technicalGuide?: {
+    recommendedPly?: string;
+    plyGuideTitle?: string;
+    plyGuideSubtitle?: string;
+    recommendedFlute?: string;
+    flutesSubtitle?: string;
+    sizingGuideTitle?: string;
+    sizingGuideSubtitle?: string;
+    internalDimensionsNote?: string;
+    moqNote?: string;
+    contactPhone?: string;
+    callButtonText?: string;
+  };
+  seo?: ProductSEOData;
 }
 
 export interface ProductCategoryData {
@@ -27,8 +53,12 @@ export interface ProductCategoryData {
   title: string;
   slug: string;
   image: string;
+  imageAlt?: string;
+  imageName?: string;
+  order?: number;
   description: string;
   itemCount: number;
+  seo?: ProductSEOData;
 }
 
 export const MAIN_CATEGORIES: ProductCategoryData[] = [

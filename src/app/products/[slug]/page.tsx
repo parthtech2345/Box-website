@@ -18,6 +18,7 @@ import {
   Settings,
 } from "lucide-react";
 import { ALL_PRODUCTS, ProductItem } from "@/data/productsData";
+import { getProductBySlug, getAllProducts, getProductBanner } from "@/lib/productData";
 import { PRODUCT_FAQS } from "@/data/productFaqsData";
 import {
   FLUTE_PROFILES,
@@ -44,7 +45,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = ALL_PRODUCTS.find((p) => p.slug === slug);
+  const product = (await getProductBySlug(slug)) || ALL_PRODUCTS.find((p) => p.slug === slug);
 
   if (!product) {
     return {
@@ -52,26 +53,36 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     };
   }
 
+  const metaTitle = product.seo?.metaTitle || `${product.name} | AAVRIT PACKAGING`;
+  const metaDescription = product.seo?.metaDescription || product.shortDescription;
+  const keywords = product.seo?.metaKeywords
+    ? product.seo.metaKeywords.split(",").map((k: string) => k.trim())
+    : [
+        product.name,
+        product.categoryName,
+        "corrugated boxes manufacturer",
+        "industrial packaging India",
+        "custom kraft boxes",
+        "Aavrit Packaging",
+      ];
+  const canonical = product.seo?.canonicalLink || `https://aavritpackaging.com/products/${slug}`;
+
   return {
-    title: `${product.name} | AAVRIT PACKAGING`,
-    description: product.shortDescription,
-    keywords: [
-      product.name,
-      product.categoryName,
-      "corrugated boxes manufacturer",
-      "industrial packaging India",
-      "custom kraft boxes",
-      "Aavrit Packaging",
-    ],
+    title: metaTitle,
+    description: metaDescription,
+    keywords,
+    alternates: {
+      canonical,
+    },
     openGraph: {
-      title: `${product.name} | AAVRIT PACKAGING`,
-      description: product.shortDescription,
+      title: metaTitle,
+      description: metaDescription,
       images: [
         {
           url: product.image,
           width: 1200,
           height: 900,
-          alt: product.name,
+          alt: product.imageAlt || product.name,
         },
       ],
     },
@@ -80,14 +91,21 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
 async function ProductDetailContent({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = ALL_PRODUCTS.find((p) => p.slug === slug);
+  const [allProducts, banner] = await Promise.all([
+    getAllProducts(),
+    getProductBanner(),
+  ]);
+  const product = allProducts.find((p) => p.slug === slug) || ALL_PRODUCTS.find((p) => p.slug === slug);
 
   if (!product) {
     notFound();
   }
 
-  // Bespoke 5 FAQs for this product
-  const faqs: ProductFAQ[] = PRODUCT_FAQS[product.slug] || [
+  // Bespoke FAQs for this product: prioritize dynamic CMS product.faqs
+  const faqs: ProductFAQ[] =
+    product.faqs && product.faqs.length > 0
+      ? product.faqs
+      : PRODUCT_FAQS[product.slug] || [
     {
       question: `What are ${product.name} used for?`,
       answer: product.fullDescription,
@@ -111,35 +129,46 @@ async function ProductDetailContent({ params }: ProductPageProps) {
   ];
 
   // Related products from same category
-  const relatedProducts = ALL_PRODUCTS.filter(
-    (p) => p.categoryId === product.categoryId && p.id !== product.id
-  ).slice(0, 3);
+  const relatedProducts = allProducts
+    .filter((p) => p.categoryId === product.categoryId && p.id !== product.id)
+    .slice(0, 3);
 
   // JSON-LD structured data for SEO
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: product.name,
-    image: `https://aavritpackaging.com${product.image}`,
-    description: product.shortDescription,
-    category: product.categoryName,
-    brand: {
-      "@type": "Brand",
-      name: "AAVRIT PACKAGING",
-    },
-    offers: {
-      "@type": "AggregateOffer",
-      priceCurrency: "INR",
-      price: "Contact for Quote",
-      availability: "https://schema.org/InStock",
-    },
-  };
+  let jsonLdContent: any = null;
+  if (product.seo?.schemaMarkup) {
+    try {
+      jsonLdContent = JSON.parse(product.seo.schemaMarkup);
+    } catch (e) {
+      jsonLdContent = null;
+    }
+  }
+
+  if (!jsonLdContent) {
+    jsonLdContent = {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: product.name,
+      image: `https://aavritpackaging.com${product.image}`,
+      description: product.shortDescription,
+      category: product.categoryName,
+      brand: {
+        "@type": "Brand",
+        name: "AAVRIT PACKAGING",
+      },
+      offers: {
+        "@type": "AggregateOffer",
+        priceCurrency: "INR",
+        price: "Contact for Quote",
+        availability: "https://schema.org/InStock",
+      },
+    };
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FFFFFF] text-[#202A2E]">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdContent) }}
       />
       <Header />
 
@@ -151,8 +180,8 @@ async function ProductDetailContent({ params }: ProductPageProps) {
         <section className="relative w-full bg-[#202A2E] text-white overflow-hidden">
           <div className="relative w-full h-[340px] sm:h-[380px] lg:h-[420px]">
             <Image
-              src="/Product/Kraft Packaging Showcase Banner.png"
-              alt="AAVRIT PACKAGING Solutions"
+              src={banner.backgroundImage || "/Product/Kraft Packaging Showcase Banner.png"}
+              alt={banner.backgroundImageAlt || "AAVRIT PACKAGING Solutions"}
               fill
               priority
               sizes="100vw"
@@ -198,13 +227,13 @@ async function ProductDetailContent({ params }: ProductPageProps) {
                 </div>
               </div>
 
-              {/* Lower Area: QC Inspector Mascot */}
+              {/* Lower Area: QC Inspector Mascot / Animated GIF */}
               <BannerEmployeeMascot
-                characterImage="/Product/character_qc_inspector.png"
-                characterAlt="Quality Control Specialist - AAVRIT PACKAGING"
-                dialogueIcon="📦"
-                dialogueTitle="Tested for Strength!"
-                dialogueSubtext="Rigorous edge crush & burst testing certified"
+                characterImage={banner.characterImage || "/Product/character_qc_inspector.png"}
+                characterAlt={banner.characterAlt || "Quality Control Specialist - AAVRIT PACKAGING"}
+                dialogueIcon={banner.dialogueIcon || "📦"}
+                dialogueTitle={banner.dialogueTitle || "Tested for Strength!"}
+                dialogueSubtext={banner.dialogueSubtext || "Rigorous edge crush & burst testing certified"}
                 characterWidthClass="w-[110px] sm:w-[130px] lg:w-[150px]"
                 shadowWidthClass="w-20 sm:w-24 lg:w-28"
               />

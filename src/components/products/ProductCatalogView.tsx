@@ -23,13 +23,49 @@ function ProductCatalogContent() {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get("category");
 
+  const [categoriesList, setCategoriesList] = useState(MAIN_CATEGORIES);
+  const [productsList, setProductsList] = useState(ALL_PRODUCTS);
+  const [bannerData, setBannerData] = useState({
+    title: "Our Products",
+    breadcrumbRoot: "Home",
+    breadcrumbCurrent: "Products",
+    backgroundImage: "/Product/Kraft Packaging Showcase Banner.png",
+    backgroundImageAlt: "AAVRIT PACKAGING - Products Banner",
+    characterImage: "/Product/character_qc_inspector.png",
+    characterAlt: "Quality Control Specialist - AAVRIT PACKAGING",
+    dialogueIcon: "📦",
+    dialogueTitle: "Quality Tested Packaging!",
+    dialogueSubtext: "High-burst strength & precision corrugated cartons",
+  });
+
+  useEffect(() => {
+    let isMounted = true;
+    async function fetchDynamic() {
+      try {
+        const res = await fetch("/api/products");
+        const json = await res.json();
+        if (isMounted && json.success) {
+          if (json.categories && json.categories.length > 0) setCategoriesList(json.categories);
+          if (json.products && json.products.length > 0) setProductsList(json.products);
+          if (json.banner && json.banner.title) setBannerData(json.banner);
+        }
+      } catch (e) {
+        // Fallback silently
+      }
+    }
+    fetchDynamic();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   // Sync category from URL search params (e.g., ?category=printed-corrugated-boxes)
   useEffect(() => {
     if (categoryParam) {
-      const match = MAIN_CATEGORIES.find((c) => c.id === categoryParam);
+      const match = categoriesList.find((c) => c.id === categoryParam);
       if (match) {
         setSelectedCategory(match.id);
         // Smoothly scroll down to catalog area if visiting with category query
@@ -38,7 +74,7 @@ function ProductCatalogContent() {
         }
       }
     }
-  }, [categoryParam]);
+  }, [categoryParam, categoriesList]);
 
   const catalogSectionRef = useRef<HTMLElement | null>(null);
   const searchBarRef = useRef<HTMLDivElement | null>(null);
@@ -48,7 +84,7 @@ function ProductCatalogContent() {
 
   // Filter products based on search term and selected category
   const filteredProducts = useMemo(() => {
-    let result = ALL_PRODUCTS;
+    let result = productsList;
 
     // Filter by Category
     if (selectedCategory !== "all") {
@@ -68,7 +104,7 @@ function ProductCatalogContent() {
     }
 
     return result;
-  }, [searchQuery, selectedCategory]);
+  }, [searchQuery, selectedCategory, productsList]);
 
   const clearSearch = () => {
     setSearchQuery("");
@@ -211,15 +247,15 @@ function ProductCatalogContent() {
       <section className="relative w-full bg-[#202A2E] text-white overflow-hidden">
         <div className="relative w-full h-[340px] sm:h-[380px] lg:h-[420px]">
           <Image
-            src="/Product/Kraft Packaging Showcase Banner.png"
-            alt="AAVRIT PACKAGING - Products Banner"
+            src={bannerData.backgroundImage || "/Product/Kraft Packaging Showcase Banner.png"}
+            alt={bannerData.backgroundImageAlt || "AAVRIT PACKAGING - Products Banner"}
             fill
             priority
             sizes="100vw"
             className="object-cover object-center pointer-events-none"
           />
 
-          {/* Subtle Side Vignette Gradient for Text Contrast (Leaves boxes on the right untouched) */}
+          {/* Subtle Side Vignette Gradient for Text Contrast */}
           <div className="absolute inset-0 bg-gradient-to-r from-[#202A2E]/95 via-[#202A2E]/65 to-transparent w-full sm:w-1/2 pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 pointer-events-none" />
 
@@ -229,29 +265,29 @@ function ProductCatalogContent() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pointer-events-auto">
               <div className="max-w-md">
                 <h1 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-tight mb-1.5 drop-shadow-md">
-                  Our Products
+                  {bannerData.title || "Our Products"}
                 </h1>
 
                 {/* Breadcrumb Effect */}
                 <nav className="flex items-center gap-2 text-xs sm:text-sm text-[#F5F2EB]/90" aria-label="Breadcrumb">
                   <Link href="/" className="hover:text-[#E97835] transition-colors drop-shadow-xs">
-                    Home
+                    {bannerData.breadcrumbRoot || "Home"}
                   </Link>
                   <ChevronRight className="w-3.5 h-3.5 text-[#D1B48C]" />
                   <span className="text-[#D1B48C] font-semibold drop-shadow-xs">
-                    Products
+                    {bannerData.breadcrumbCurrent || "Products"}
                   </span>
                 </nav>
               </div>
             </div>
 
-            {/* Lower Area: QC Inspector Speaking Mascot */}
+            {/* Lower Area: QC Inspector Speaking Mascot / Animated GIF */}
             <BannerEmployeeMascot
-              characterImage="/Product/character_qc_inspector.png"
-              characterAlt="Quality Control Specialist - AAVRIT PACKAGING"
-              dialogueIcon="📦"
-              dialogueTitle="Quality Tested Packaging!"
-              dialogueSubtext="High-burst strength & precision corrugated cartons"
+              characterImage={bannerData.characterImage || "/Product/character_qc_inspector.png"}
+              characterAlt={bannerData.characterAlt || "Quality Control Specialist - AAVRIT PACKAGING"}
+              dialogueIcon={bannerData.dialogueIcon || "📦"}
+              dialogueTitle={bannerData.dialogueTitle || "Quality Tested Packaging!"}
+              dialogueSubtext={bannerData.dialogueSubtext || "High-burst strength & precision corrugated cartons"}
               characterWidthClass="w-[110px] sm:w-[130px] lg:w-[150px]"
               shadowWidthClass="w-20 sm:w-24 lg:w-28"
             />
@@ -305,7 +341,7 @@ function ProductCatalogContent() {
                   <Package className="w-4 h-4 text-[#A65D32]" />
                   <span>
                     Showing <strong className="text-[#202A2E]">{filteredProducts.length}</strong> of{" "}
-                    {ALL_PRODUCTS.length}
+                    {productsList.length}
                   </span>
                 </div>
 
@@ -334,9 +370,9 @@ function ProductCatalogContent() {
                   : "bg-[#FAF7F2] text-[#62574D] border border-[#E4DED3]"
                   }`}
               >
-                All Products ({ALL_PRODUCTS.length})
+                All Products ({productsList.length})
               </button>
-              {MAIN_CATEGORIES.map((c) => (
+              {categoriesList.map((c) => (
                 <button
                   key={c.id}
                   type="button"
@@ -393,13 +429,13 @@ function ProductCatalogContent() {
                       : "bg-[#FAF7F2] text-[#8C7E72]"
                       }`}
                   >
-                    {ALL_PRODUCTS.length}
+                    {productsList.length}
                   </span>
                 </button>
 
-                {MAIN_CATEGORIES.map((cat) => {
+                {categoriesList.map((cat) => {
                   const isSelected = selectedCategory === cat.id;
-                  const count = ALL_PRODUCTS.filter((p) => p.categoryId === cat.id).length;
+                  const count = productsList.filter((p) => p.categoryId === cat.id).length;
 
                   return (
                     <button
@@ -453,7 +489,7 @@ function ProductCatalogContent() {
                   <span className="text-xs text-[#62574D]">Active Filters:</span>
                   {selectedCategory !== "all" && (
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-[#E4DED3] text-xs font-semibold text-[#A65D32]">
-                      Category: {MAIN_CATEGORIES.find((c) => c.id === selectedCategory)?.title}
+                      Category: {categoriesList.find((c) => c.id === selectedCategory)?.title}
                       <button
                         type="button"
                         onClick={() => setSelectedCategory("all")}
@@ -518,7 +554,7 @@ function ProductCatalogContent() {
                         <div className="relative w-full aspect-[4/3] bg-[#FAF7F2] overflow-hidden">
                           <Image
                             src={p.image}
-                            alt={`${p.name} - AAVRIT PACKAGING`}
+                            alt={(p as any).imageAlt || `${p.name} - AAVRIT PACKAGING`}
                             fill
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                             className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
