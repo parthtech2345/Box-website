@@ -5,9 +5,20 @@ import Link from "next/link";
 import { ArrowRight, BookOpen, MessageSquare } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { BlogListingCTAData } from "@/lib/blogData";
 
-export default function BlogsListingCTA() {
+export default function BlogsListingCTA({ data }: { data?: BlogListingCTAData }) {
   const ctaRef = useRef<HTMLElement | null>(null);
+
+  const badge = data?.badge || "CONTINUE LEARNING";
+  const title = data?.title || "Want to Know More About Packaging?";
+  const description =
+    data?.description ||
+    "Explore our packaging solutions or connect with our team to discuss your specific requirements. We are here to help you engineer stronger, cost-optimized corrugated containers.";
+  const primaryButtonText = data?.primaryButtonText || "Explore Products";
+  const primaryButtonLink = data?.primaryButtonLink || "/products";
+  const secondaryButtonText = data?.secondaryButtonText || "Contact Us";
+  const secondaryButtonLink = data?.secondaryButtonLink || "/contact";
 
   useEffect(() => {
     if (typeof window === "undefined" || !ctaRef.current) return;
@@ -50,35 +61,35 @@ export default function BlogsListingCTA() {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 backdrop-blur-xs mb-1">
                 <BookOpen className="w-3.5 h-3.5 text-[#E97835]" />
                 <span className="text-[11px] font-bold uppercase tracking-widest text-[#F5F2EB]">
-                  CONTINUE LEARNING
+                  {badge}
                 </span>
               </div>
 
               <h2 className="font-heading font-bold text-2xl sm:text-3xl lg:text-4xl text-white tracking-tight leading-tight">
-                Want to Know More About Packaging?
+                {title}
               </h2>
 
               <p className="text-xs sm:text-sm lg:text-base text-[#A6B2B8] max-w-2xl leading-relaxed">
-                Explore our packaging solutions or connect with our team to discuss your specific requirements. We are here to help you engineer stronger, cost-optimized corrugated containers.
+                {description}
               </p>
             </div>
 
             {/* Right Buttons */}
             <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 justify-end lg:items-end">
               <Link
-                href="/products"
+                href={primaryButtonLink}
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-[#E97835] hover:bg-[#d46927] text-white font-bold text-xs sm:text-sm tracking-wider uppercase shadow-md hover:shadow-lg transition-all duration-200 active:scale-[0.98] w-full sm:w-auto text-center"
               >
-                <span>Explore Products</span>
+                <span>{primaryButtonText}</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
 
               <Link
-                href="/contact"
+                href={secondaryButtonLink}
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/15 text-white border border-white/20 font-bold text-xs sm:text-sm tracking-wider uppercase backdrop-blur-xs transition-all duration-200 w-full sm:w-auto text-center"
               >
                 <MessageSquare className="w-4 h-4" />
-                <span>Contact Us</span>
+                <span>{secondaryButtonText}</span>
               </Link>
             </div>
           </div>

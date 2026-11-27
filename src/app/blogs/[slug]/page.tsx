@@ -17,7 +17,8 @@ import {
   getBlogBySlug,
   getRelatedBlogs,
   getAdjacentBlogs,
-} from "@/data/blogsData";
+  getBlogDetailBanner,
+} from "@/lib/blogData";
 
 interface PageProps {
   params: Promise<{
@@ -25,9 +26,9 @@ interface PageProps {
   }>;
 }
 
-// Generate static routes for all 5 initial blogs at build time
+// Generate static routes for all initial blogs at build time
 export async function generateStaticParams() {
-  const blogs = getAllBlogs();
+  const blogs = await getAllBlogs();
   return blogs.map((blog) => ({
     slug: blog.slug,
   }));
@@ -38,7 +39,7 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const blog = getBlogBySlug(slug);
+  const blog = await getBlogBySlug(slug);
 
   if (!blog) {
     return {
@@ -49,8 +50,9 @@ export async function generateMetadata({
   return {
     title: `${blog.title} | AAVRIT PACKAGING`,
     description: blog.seo.description,
+    keywords: blog.seo.keywords,
     alternates: {
-      canonical: `/blogs/${blog.slug}`,
+      canonical: blog.seo.canonical || `/blogs/${blog.slug}`,
     },
     openGraph: {
       title: `${blog.title} | AAVRIT PACKAGING`,
@@ -75,14 +77,17 @@ export async function generateMetadata({
 // This adheres to Next.js Cache Components / Partial Prefetching requirements
 async function BlogDetailContent({ params }: PageProps) {
   const { slug } = await params;
-  const blog = getBlogBySlug(slug);
+  const [blog, detailBanner] = await Promise.all([
+    getBlogBySlug(slug),
+    getBlogDetailBanner(),
+  ]);
 
   if (!blog) {
     notFound();
   }
 
-  const relatedBlogs = getRelatedBlogs(blog.relatedBlogSlugs);
-  const { prev, next } = getAdjacentBlogs(blog.slug);
+  const relatedBlogs = await getRelatedBlogs(blog.relatedBlogSlugs || []);
+  const { prev, next } = await getAdjacentBlogs(blog.slug);
 
   // Structured Data (JSON-LD) for Article and Breadcrumbs
   const jsonLd = {
@@ -143,7 +148,7 @@ async function BlogDetailContent({ params }: PageProps) {
 
       <main className="flex-1 w-full">
         {/* 1. Blog Detail Hero (Clean banner with small heading and breadcrumbs) */}
-        <BlogDetailHero />
+        <BlogDetailHero data={detailBanner} />
 
         {/* 2. Main Editorial Content Area */}
         <div className="w-full bg-[#FAF7F2] py-12 sm:py-14">
@@ -255,10 +260,11 @@ async function BlogDetailContent({ params }: PageProps) {
                                 {row.map((cell, cIdx) => (
                                   <td
                                     key={cIdx}
-                                    className={`p-3 sm:p-3.5 text-[#62574D] ${cIdx === 0
+                                    className={`p-3 sm:p-3.5 text-[#62574D] ${
+                                      cIdx === 0
                                         ? "font-semibold text-[#202A2E]"
                                         : ""
-                                      }`}
+                                    }`}
                                   >
                                     {cell}
                                   </td>
@@ -275,7 +281,7 @@ async function BlogDetailContent({ params }: PageProps) {
                 {/* Key Takeaways Section */}
                 <BlogKeyTakeaways takeaways={blog.keyTakeaways} />
 
-                {/* 5 Blog-Specific FAQs */}
+                {/* Blog-Specific FAQs */}
                 <BlogFAQs faqs={blog.faqs} articleTitle={blog.title} />
               </article>
 

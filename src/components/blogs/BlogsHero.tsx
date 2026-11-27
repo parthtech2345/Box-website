@@ -6,9 +6,21 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import BannerEmployeeMascot from "@/components/common/BannerEmployeeMascot";
+import { BlogBannerData } from "@/lib/blogData";
 
-export default function BlogsHero() {
+export default function BlogsHero({ data }: { data?: BlogBannerData }) {
   const titleRef = useRef<HTMLDivElement | null>(null);
+
+  const title = data?.title || "Blogs & Insights";
+  const breadcrumbRoot = data?.breadcrumbRoot || "Home";
+  const breadcrumbCurrent = data?.breadcrumbCurrent || "Blogs";
+  const backgroundImage = data?.backgroundImage || "/blog/blog_banner_pano.png";
+  const backgroundImageAlt = data?.backgroundImageAlt || "Blogs Banner - AAVRIT PACKAGING";
+  const characterImage = data?.characterImage || "/blog/character_blog_author.png";
+  const characterAlt = data?.characterAlt || "Packaging Technical Author - AAVRIT PACKAGING";
+  const dialogueIcon = data?.dialogueIcon || "📚";
+  const dialogueTitle = data?.dialogueTitle || "Packaging Insights & Trends!";
+  const dialogueSubtext = data?.dialogueSubtext || "Technical guides, GSM calculations & industry knowledge";
 
   useEffect(() => {
     if (typeof window === "undefined" || !titleRef.current) return;
@@ -30,8 +42,8 @@ export default function BlogsHero() {
       {/* Full Width Banner matching exact site banner standard */}
       <div className="relative w-full h-[340px] sm:h-[380px] lg:h-[420px]">
         <Image
-          src="/blog/blog_banner_pano.png"
-          alt="Blogs Banner - AAVRIT PACKAGING"
+          src={backgroundImage}
+          alt={backgroundImageAlt}
           fill
           priority
           sizes="100vw"
@@ -48,7 +60,7 @@ export default function BlogsHero() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pointer-events-auto">
             <div ref={titleRef} className="max-w-xl">
               <h1 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-tight mb-1.5 drop-shadow-md">
-                Blogs & Insights
+                {title}
               </h1>
 
               {/* Breadcrumb Navigation: Home > Blogs */}
@@ -60,11 +72,11 @@ export default function BlogsHero() {
                   href="/"
                   className="hover:text-[#E97835] transition-colors drop-shadow-xs"
                 >
-                  Home
+                  {breadcrumbRoot}
                 </Link>
                 <ChevronRight className="w-3.5 h-3.5 text-[#D1B48C]" />
                 <span className="text-[#D1B48C] font-semibold drop-shadow-xs">
-                  Blogs
+                  {breadcrumbCurrent}
                 </span>
               </nav>
             </div>
@@ -72,11 +84,11 @@ export default function BlogsHero() {
 
           {/* 2. LOWER AREA: Technical Author Speaking Mascot */}
           <BannerEmployeeMascot
-            characterImage="/blog/character_blog_author.png"
-            characterAlt="Packaging Technical Author - AAVRIT PACKAGING"
-            dialogueIcon="📚"
-            dialogueTitle="Packaging Insights & Trends!"
-            dialogueSubtext="Technical guides, GSM calculations & industry knowledge"
+            characterImage={characterImage}
+            characterAlt={characterAlt}
+            dialogueIcon={dialogueIcon}
+            dialogueTitle={dialogueTitle}
+            dialogueSubtext={dialogueSubtext}
             characterWidthClass="w-[115px] sm:w-[140px] lg:w-[160px]"
             shadowWidthClass="w-22 sm:w-26 lg:w-30"
           />

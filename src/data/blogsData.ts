@@ -45,6 +45,8 @@ export interface BlogPost {
   seo: {
     title: string;
     description: string;
+    keywords?: string;
+    canonical?: string;
   };
 }
 

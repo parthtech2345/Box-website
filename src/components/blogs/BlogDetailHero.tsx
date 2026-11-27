@@ -6,9 +6,16 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { BlogDetailBannerData } from "@/lib/blogData";
 
-export default function BlogDetailHero() {
+export default function BlogDetailHero({ data }: { data?: BlogDetailBannerData }) {
   const contentRef = useRef<HTMLDivElement | null>(null);
+
+  const title = data?.title || "Blog Details";
+  const breadcrumbRoot = data?.breadcrumbRoot || "Home";
+  const breadcrumbCurrent = data?.breadcrumbCurrent || "Blog Details";
+  const backgroundImage = data?.backgroundImage || "/blog/blog_banner_pano.png";
+  const backgroundImageAlt = data?.backgroundImageAlt || "Blog Details Banner - AAVRIT PACKAGING";
 
   useEffect(() => {
     if (typeof window === "undefined" || !contentRef.current) return;
@@ -35,8 +42,8 @@ export default function BlogDetailHero() {
       {/* Full Width Banner matching exact site banner standard */}
       <div className="relative w-full h-[320px] sm:h-[360px] lg:h-[400px]">
         <Image
-          src="/blog/blog_banner_pano.png"
-          alt="Blog Details Banner - AAVRIT PACKAGING"
+          src={backgroundImage}
+          alt={backgroundImageAlt}
           fill
           priority
           sizes="100vw"
@@ -52,7 +59,7 @@ export default function BlogDetailHero() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div ref={contentRef} className="max-w-lg">
               <h1 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-tight mb-2 drop-shadow-md">
-                Blog Details
+                {title}
               </h1>
 
               {/* Breadcrumb Navigation: Home > Blogs > Blog Details */}
@@ -64,7 +71,7 @@ export default function BlogDetailHero() {
                   href="/"
                   className="hover:text-[#E97835] transition-colors drop-shadow-xs"
                 >
-                  Home
+                  {breadcrumbRoot}
                 </Link>
                 <ChevronRight className="w-3.5 h-3.5 text-[#D1B48C]" />
                 <Link
@@ -75,7 +82,7 @@ export default function BlogDetailHero() {
                 </Link>
                 <ChevronRight className="w-3.5 h-3.5 text-[#D1B48C]" />
                 <span className="text-[#D1B48C] font-semibold drop-shadow-xs">
-                  Blog Details
+                  {breadcrumbCurrent}
                 </span>
               </nav>
             </div>
