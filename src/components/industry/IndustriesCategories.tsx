@@ -1,17 +1,23 @@
-"use client";
+﻿"use client";
 
 import React, { useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ChevronRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { INDUSTRIES_DATA } from "@/data/industriesData";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function IndustriesCategories() {
+interface IndustriesCategoriesProps {
+  industries?: any[];
+}
+
+export default function IndustriesCategories({ industries }: IndustriesCategoriesProps = {}) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const headerRef = useRef<HTMLDivElement | null>(null);
   const cardsRef = useRef<HTMLDivElement | null>(null);
+
+  const list = industries && industries.length > 0 ? industries : INDUSTRIES_DATA;
 
   useEffect(() => {
     if (typeof window === "undefined" || !sectionRef.current) return;
@@ -57,7 +63,7 @@ export default function IndustriesCategories() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [list]);
 
   return (
     <section
@@ -91,18 +97,18 @@ export default function IndustriesCategories() {
           </div>
         </div>
 
-        {/* 6 Industry Cards Grid (Reusing exact homepage 6 images & order) */}
+        {/* 6 Industry Cards Grid */}
         <div
           ref={cardsRef}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7"
         >
-          {INDUSTRIES_DATA.map((ind) => (
+          {list.map((ind) => (
             <Link
               key={ind.slug}
               href={`/industries/${ind.slug}`}
               className="group flex flex-col bg-white rounded-2xl border border-[#E4DED3] overflow-hidden shadow-xs hover:border-[#A65D32] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer block"
             >
-              {/* Industry Image (Clean, No Text Overlay) */}
+              {/* Industry Image */}
               <div className="relative w-full aspect-[16/10] bg-[#FAF7F2] overflow-hidden">
                 <Image
                   src={ind.image}
@@ -113,7 +119,7 @@ export default function IndustriesCategories() {
                 />
               </div>
 
-              {/* Card Body: Headline & Explore Button Only */}
+              {/* Card Body */}
               <div className="p-4 sm:p-5 flex items-center justify-between gap-3 bg-white">
                 <h3 className="font-heading font-bold text-base sm:text-lg text-[#202A2E] group-hover:text-[#A65D32] transition-colors leading-snug">
                   {ind.name}

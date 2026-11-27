@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { INDUSTRIES_DATA } from "@/data/industriesData";
+import { getAllIndustries, getIndustryBySlug } from "@/lib/industryData";
 import IndustryDetailBanner from "@/components/industry/IndustryDetailBanner";
 import IndustryOverview from "@/components/industry/IndustryOverview";
 import IndustryRequirements from "@/components/industry/IndustryRequirements";
@@ -14,7 +15,9 @@ import IndustryFAQs from "@/components/industry/IndustryFAQs";
 import IndustryCTA from "@/components/industry/IndustryCTA";
 
 export async function generateStaticParams() {
-  return INDUSTRIES_DATA.map((ind) => ({
+  const industries = await getAllIndustries();
+  const list = industries && industries.length > 0 ? industries : INDUSTRIES_DATA;
+  return list.map((ind: any) => ({
     slug: ind.slug,
   }));
 }
@@ -25,7 +28,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const industry = INDUSTRIES_DATA.find((ind) => ind.slug === slug);
+  const industry = await getIndustryBySlug(slug);
 
   if (!industry) {
     return {
@@ -33,9 +36,24 @@ export async function generateMetadata({
     };
   }
 
+  const seo = industry.seo || {};
+  const metaTitle = seo.metaTitle || seo.title || `${industry.name} Packaging Solutions | AAVRIT PACKAGING`;
+  const metaDescription = seo.metaDescription || industry.heroTagline || `Specialized corrugated packaging solutions for the ${industry.name} sector by AAVRIT PACKAGING.`;
+  const keywords = seo.keywords || `${industry.name} packaging, corrugated boxes, industrial boxes`;
+  const canonical = seo.canonical || `https://aavritpackaging.com/industries/${industry.slug}`;
+
   return {
-    title: industry.seo.title,
-    description: industry.seo.metaDescription,
+    title: metaTitle,
+    description: metaDescription,
+    keywords: keywords,
+    alternates: {
+      canonical: canonical,
+    },
+    openGraph: {
+      title: metaTitle,
+      description: metaDescription,
+      images: industry.image ? [{ url: industry.image }] : undefined,
+    },
   };
 }
 
@@ -45,7 +63,7 @@ async function IndustryContent({
   paramsPromise: Promise<{ slug: string }>;
 }) {
   const { slug } = await paramsPromise;
-  const industry = INDUSTRIES_DATA.find((ind) => ind.slug === slug);
+  const industry = await getIndustryBySlug(slug);
 
   if (!industry) {
     notFound();
@@ -53,6 +71,13 @@ async function IndustryContent({
 
   return (
     <>
+      {industry.seo?.schemaMarkup && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: industry.seo.schemaMarkup }}
+        />
+      )}
+
       {/* 1. Common Industry Banner & Breadcrumbs */}
       <IndustryDetailBanner
         industryName={industry.name}
@@ -63,39 +88,39 @@ async function IndustryContent({
       <IndustryOverview
         industryName={industry.name}
         image={industry.image}
-        overviewParagraphs={industry.detailedOverview}
-        challenges={industry.packagingChallenges}
-        benefits={industry.corrugatedBenefits}
+        overviewParagraphs={industry.detailedOverview || []}
+        challenges={industry.packagingChallenges || []}
+        benefits={industry.corrugatedBenefits || []}
       />
 
       {/* 3. Specific Packaging Requirements */}
       <IndustryRequirements
         industryName={industry.name}
-        requirements={industry.packagingRequirements}
+        requirements={industry.packagingRequirements || []}
       />
 
       {/* 4. Examples of Businesses in This Industry */}
       <IndustryBusinesses
         industryName={industry.name}
-        businesses={industry.businessExamples}
+        businesses={industry.businessExamples || []}
       />
 
       {/* 5. Common Packaging Applications */}
       <IndustryApplications
         industryName={industry.name}
-        applications={industry.packagingApplications}
+        applications={industry.packagingApplications || []}
       />
 
       {/* 6. Recommended Packaging Products from Existing Catalogue */}
       <IndustryRelatedProducts
         industryName={industry.name}
-        relatedSlugs={industry.relatedProductSlugs}
+        relatedSlugs={industry.relatedProductSlugs || []}
       />
 
-      {/* 7. Industry-Specific FAQs (5 Questions) */}
+      {/* 7. Industry-Specific FAQs */}
       <IndustryFAQs
         industryName={industry.name}
-        faqs={industry.faqs}
+        faqs={industry.faqs || []}
       />
 
       {/* 8. Industry-Specific Request a Quote CTA */}

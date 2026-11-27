@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useRef, useEffect } from "react";
 import Image from "next/image";
@@ -7,8 +7,34 @@ import { ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import BannerEmployeeMascot from "@/components/common/BannerEmployeeMascot";
 
-export default function IndustriesHero() {
+interface IndustriesHeroProps {
+  data?: {
+    title?: string;
+    breadcrumbRoot?: string;
+    breadcrumbCurrent?: string;
+    backgroundImage?: string;
+    backgroundImageAlt?: string;
+    characterImage?: string;
+    characterAlt?: string;
+    dialogueIcon?: string;
+    dialogueTitle?: string;
+    dialogueSubtext?: string;
+  };
+}
+
+export default function IndustriesHero({ data }: IndustriesHeroProps = {}) {
   const titleRef = useRef<HTMLDivElement | null>(null);
+
+  const title = data?.title || "Industries";
+  const breadcrumbRoot = data?.breadcrumbRoot || "Home";
+  const breadcrumbCurrent = data?.breadcrumbCurrent || "Industries";
+  const backgroundImage = data?.backgroundImage || "/Industries/industries_banner_pano.png";
+  const backgroundImageAlt = data?.backgroundImageAlt || "Industries We Serve Banner - AAVRIT PACKAGING";
+  const characterImage = data?.characterImage || "/Industries/character_logistics_manager.png";
+  const characterAlt = data?.characterAlt || "Logistics & Supply Chain Director - AAVRIT PACKAGING";
+  const dialogueIcon = data?.dialogueIcon || "🏭";
+  const dialogueTitle = data?.dialogueTitle || "Built for Your Industry!";
+  const dialogueSubtext = data?.dialogueSubtext || "Heavy-duty supply chain packaging for FMCG, Pharma & Auto";
 
   useEffect(() => {
     if (typeof window === "undefined" || !titleRef.current) return;
@@ -30,15 +56,15 @@ export default function IndustriesHero() {
       {/* Full Width Banner matching exact product banner standard */}
       <div className="relative w-full h-[340px] sm:h-[380px] lg:h-[420px]">
         <Image
-          src="/Industries/industries_banner_pano.png"
-          alt="Industries We Serve Banner - AAVRIT PACKAGING"
+          src={backgroundImage}
+          alt={backgroundImageAlt}
           fill
           priority
           sizes="100vw"
           className="object-cover object-center pointer-events-none"
         />
 
-        {/* Side Vignette Gradient for Text Contrast (Leaves warehouse packaging on the right untouched) */}
+        {/* Side Vignette Gradient for Text Contrast */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#202A2E]/95 via-[#202A2E]/65 to-transparent w-full sm:w-1/2 pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 pointer-events-none" />
 
@@ -48,7 +74,7 @@ export default function IndustriesHero() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pointer-events-auto">
             <div ref={titleRef} className="max-w-lg">
               <h1 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-tight mb-1.5 drop-shadow-md">
-                Industries
+                {title}
               </h1>
 
               {/* Breadcrumb Effect: Home > Industries */}
@@ -60,23 +86,23 @@ export default function IndustriesHero() {
                   href="/"
                   className="hover:text-[#E97835] transition-colors drop-shadow-xs"
                 >
-                  Home
+                  {breadcrumbRoot}
                 </Link>
                 <ChevronRight className="w-3.5 h-3.5 text-[#D1B48C]" />
                 <span className="text-[#D1B48C] font-semibold drop-shadow-xs">
-                  Industries
+                  {breadcrumbCurrent}
                 </span>
               </nav>
             </div>
           </div>
 
-          {/* 2. LOWER AREA: B2B Supply Chain & Logistics Director Speaking Mascot */}
+          {/* 2. LOWER AREA: Speaking Mascot */}
           <BannerEmployeeMascot
-            characterImage="/Industries/character_logistics_manager.png"
-            characterAlt="Logistics & Supply Chain Director - AAVRIT PACKAGING"
-            dialogueIcon="🏭"
-            dialogueTitle="Built for Your Industry!"
-            dialogueSubtext="Heavy-duty supply chain packaging for FMCG, Pharma & Auto"
+            characterImage={characterImage}
+            characterAlt={characterAlt}
+            dialogueIcon={dialogueIcon}
+            dialogueTitle={dialogueTitle}
+            dialogueSubtext={dialogueSubtext}
             characterWidthClass="w-[120px] sm:w-[150px] lg:w-[170px]"
             shadowWidthClass="w-24 sm:w-28 lg:w-32"
           />

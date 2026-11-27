@@ -6,7 +6,17 @@ import { ArrowRight, Phone, Sparkles, MessageSquare } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function IndustriesCTA() {
+interface IndustriesCTAProps {
+  data?: {
+    badge?: string;
+    title?: string;
+    subtitle?: string;
+    phone?: string;
+    email?: string;
+  };
+}
+
+export default function IndustriesCTA({ data }: IndustriesCTAProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const cardRef = useRef<HTMLDivElement | null>(null);
 
@@ -56,16 +66,20 @@ export default function IndustriesCTA() {
             <div className="max-w-xl">
               <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/20 text-[#A65D32] text-[11px] font-bold uppercase tracking-wider mb-3">
                 <Sparkles className="w-3 h-3 text-[#A65D32]" />
-                <span>Industry Technical Consultation</span>
+                <span>{data?.badge || "Industry Technical Consultation"}</span>
               </div>
 
               <h2 className="font-heading font-bold text-2xl sm:text-3xl text-[#202A2E] leading-tight mb-2.5">
-                Looking for the Right Packaging{" "}
-                <span className="text-[#A65D32]">for Your Industry?</span>
+                {data?.title || (
+                  <>
+                    Looking for the Right Packaging{" "}
+                    <span className="text-[#A65D32]">for Your Industry?</span>
+                  </>
+                )}
               </h2>
 
               <p className="text-xs sm:text-sm text-[#62574D] leading-relaxed">
-                Tell us about your business and packaging requirements. Our engineers will recommend optimal flute profiles, bursting strength, and cost-effective bulk configurations.
+                {data?.subtitle || "Tell us about your business and packaging requirements. Our engineers will recommend optimal flute profiles, bursting strength, and cost-effective bulk configurations."}
               </p>
             </div>
 
@@ -80,11 +94,11 @@ export default function IndustriesCTA() {
               </Link>
 
               <a
-                href="tel:+919876543210"
+                href={`tel:${data?.phone?.replace(/\s+/g, "") || "+919876543210"}`}
                 className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#FAF7F2] hover:bg-white text-[#493629] text-xs sm:text-sm font-semibold border border-[#D1B48C]/70 hover:border-[#A65D32] transition-colors"
               >
                 <Phone className="w-3.5 h-3.5 text-[#A65D32]" />
-                <span>+91 98765 43210</span>
+                <span>{data?.phone || "+91 98765 43210"}</span>
               </a>
             </div>
           </div>
