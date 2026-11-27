@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
@@ -7,7 +7,7 @@ import { ArrowRight, Sparkles, CheckCircle2 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-interface CustomBoxType {
+export interface CustomBoxType {
   id: string;
   title: string;
   category: string;
@@ -16,6 +16,7 @@ interface CustomBoxType {
   minOrder: string;
   productionDays: string;
   recommendedPly: string;
+  buttonText?: string;
 }
 
 const CUSTOM_TYPES: CustomBoxType[] = [
@@ -81,11 +82,40 @@ const CUSTOM_TYPES: CustomBoxType[] = [
   },
 ];
 
-export default function CustomBoxTypes() {
+interface CustomBoxTypesProps {
+  data?: {
+    badge?: string;
+    title?: string;
+    subtitle?: string;
+    filterCategories?: Array<{ id: string; label: string }>;
+    boxTypes?: CustomBoxType[];
+  };
+}
+
+export default function CustomBoxTypes({ data }: CustomBoxTypesProps = {}) {
   const [activeFilter, setActiveFilter] = useState("all");
   const sectionRef = useRef<HTMLElement | null>(null);
   const headerRef = useRef<HTMLDivElement | null>(null);
   const gridRef = useRef<HTMLDivElement | null>(null);
+
+  const badge = data?.badge || "CUSTOMIZABLE STRUCTURES";
+  const title = data?.title || "Select Your Custom Box Architecture";
+  const subtitle =
+    data?.subtitle ||
+    "Every design is fabricated from scratch to match your dimensions, drop-test requirements, and material load thresholds.";
+
+  const filters = data?.filterCategories && data.filterCategories.length > 0
+    ? data.filterCategories
+    : [
+        { id: "all", label: "All Custom Styles" },
+        { id: "die-cut", label: "Die-Cut Mailers" },
+        { id: "corrugated", label: "Master Shippers (RSC)" },
+        { id: "printed", label: "Branded Flexo" },
+        { id: "industrial", label: "Industrial & Partitions" },
+      ];
+
+  const allItems: CustomBoxType[] =
+    data?.boxTypes && data.boxTypes.length > 0 ? data.boxTypes : CUSTOM_TYPES;
 
   useEffect(() => {
     if (typeof window === "undefined" || !sectionRef.current) return;
@@ -131,11 +161,14 @@ export default function CustomBoxTypes() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [allItems]);
 
-  const filtered = activeFilter === "all"
-    ? CUSTOM_TYPES
-    : CUSTOM_TYPES.filter((t) => t.category.toLowerCase().includes(activeFilter.toLowerCase()));
+  const filtered =
+    activeFilter === "all"
+      ? allItems
+      : allItems.filter((t) =>
+          (t.category || "").toLowerCase().includes(activeFilter.toLowerCase())
+        );
 
   return (
     <section
@@ -152,39 +185,33 @@ export default function CustomBoxTypes() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                CUSTOMIZABLE STRUCTURES
+                {badge}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
-              Select Your Custom <br className="hidden sm:inline" />
-              <span className="text-[#A65D32]">Box Architecture</span>
+              {title}
             </h2>
           </div>
 
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              Every design is fabricated from scratch to match your dimensions, drop-test requirements, and material load thresholds.
+              {subtitle}
             </p>
           </div>
         </div>
 
         {/* Filter Strip */}
         <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8">
-          {[
-            { id: "all", label: "All Custom Styles" },
-            { id: "die-cut", label: "Die-Cut Mailers" },
-            { id: "corrugated", label: "Master Shippers (RSC)" },
-            { id: "printed", label: "Branded Flexo" },
-            { id: "industrial", label: "Industrial & Partitions" },
-          ].map((f) => (
+          {filters.map((f) => (
             <button
               key={f.id}
               onClick={() => setActiveFilter(f.id)}
-              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap cursor-pointer ${activeFilter === f.id
+              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap cursor-pointer ${
+                activeFilter === f.id
                   ? "bg-[#493629] text-white shadow-sm"
                   : "bg-[#FAF7F2] text-[#62574D] border border-[#E4DED3] hover:border-[#A65D32] hover:text-[#202A2E]"
-                }`}
+              }`}
             >
               {f.label}
             </button>
@@ -209,40 +236,47 @@ export default function CustomBoxTypes() {
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 />
+                <div className="absolute top-3 left-3">
+                  <span className="px-2.5 py-1 rounded-md bg-[#202A2E]/80 backdrop-blur-xs text-white text-[11px] font-semibold tracking-wide">
+                    {item.category}
+                  </span>
+                </div>
               </div>
 
-              <div className="p-5 flex-1 flex flex-col justify-between gap-4">
+              <div className="p-5 flex-1 flex flex-col justify-between bg-white">
                 <div>
                   <h3 className="font-heading font-bold text-lg text-[#202A2E] group-hover:text-[#A65D32] transition-colors mb-2">
                     {item.title}
                   </h3>
                   <p className="text-xs text-[#62574D] leading-relaxed mb-4">
-                    {item.idealFor}
+                    <strong className="text-[#202A2E]">Ideal For:</strong> {item.idealFor}
                   </p>
+                </div>
 
-                  <div className="space-y-1.5 border-t border-[#E4DED3]/60 pt-3 text-xs">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[#8C7E72]">Recommended Ply:</span>
-                      <strong className="text-[#202A2E]">{item.recommendedPly}</strong>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-[#8C7E72]">Minimum Order:</span>
-                      <strong className="text-[#202A2E]">{item.minOrder}</strong>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-[#8C7E72]">Turnaround:</span>
-                      <strong className="text-[#A65D32]">{item.productionDays}</strong>
-                    </div>
+                <div className="pt-4 border-t border-[#E4DED3]/60 space-y-2">
+                  <div className="flex items-center justify-between text-xs text-[#62574D]">
+                    <span>Recommended Flute / Ply:</span>
+                    <span className="font-semibold text-[#202A2E]">{item.recommendedPly}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs text-[#62574D]">
+                    <span>MOQ:</span>
+                    <span className="font-semibold text-[#202A2E]">{item.minOrder}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs text-[#62574D]">
+                    <span>Lead Time:</span>
+                    <span className="font-semibold text-[#A65D32]">{item.productionDays}</span>
                   </div>
                 </div>
 
-                <a
-                  href="#custom-calculator"
-                  className="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-[#FAF7F2] group-hover:bg-[#493629] text-[#493629] group-hover:text-white border border-[#E4DED3] group-hover:border-[#493629] text-xs font-bold transition-all"
-                >
-                  <span>Configure This Style</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-[#A65D32] group-hover:text-[#D1B48C] transition-colors" />
-                </a>
+                <div className="mt-5 pt-3">
+                  <Link
+                    href="#configurator"
+                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#FAF7F2] hover:bg-[#A65D32] text-[#202A2E] hover:text-white text-xs font-bold transition-all border border-[#E4DED3] hover:border-transparent group-hover:shadow-xs cursor-pointer"
+                  >
+                    <span>{item.buttonText || "Configure This Box"}</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
               </div>
             </div>
           ))}
@@ -251,3 +285,4 @@ export default function CustomBoxTypes() {
     </section>
   );
 }
+

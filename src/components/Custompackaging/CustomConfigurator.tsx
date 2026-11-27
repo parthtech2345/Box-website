@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useRef, useEffect } from "react";
 import {
@@ -11,15 +11,34 @@ import {
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function CustomConfigurator() {
-  const [unit, setUnit] = useState<"mm" | "inch">("inch");
-  const [length, setLength] = useState("12");
-  const [width, setWidth] = useState("10");
-  const [height, setHeight] = useState("8");
-  const [ply, setPly] = useState("5-ply");
-  const [boxStyle, setBoxStyle] = useState("rsc");
-  const [printing, setPrinting] = useState("2-colour");
-  const [quantity, setQuantity] = useState("2500");
+interface CustomConfiguratorProps {
+  data?: {
+    badge?: string;
+    title?: string;
+    subtitle?: string;
+    defaultLength?: string;
+    defaultWidth?: string;
+    defaultHeight?: string;
+    defaultUnit?: "mm" | "inch";
+    defaultPly?: string;
+    defaultBoxStyle?: string;
+    defaultPrinting?: string;
+    defaultQuantity?: string;
+    submitButtonText?: string;
+    successMessage?: string;
+    guaranteeNote?: string;
+  };
+}
+
+export default function CustomConfigurator({ data }: CustomConfiguratorProps = {}) {
+  const [unit, setUnit] = useState<"mm" | "inch">(data?.defaultUnit || "inch");
+  const [length, setLength] = useState(data?.defaultLength || "12");
+  const [width, setWidth] = useState(data?.defaultWidth || "10");
+  const [height, setHeight] = useState(data?.defaultHeight || "8");
+  const [ply, setPly] = useState(data?.defaultPly || "5-ply");
+  const [boxStyle, setBoxStyle] = useState(data?.defaultBoxStyle || "rsc");
+  const [printing, setPrinting] = useState(data?.defaultPrinting || "2-colour");
+  const [quantity, setQuantity] = useState(data?.defaultQuantity || "2500");
 
   const [submitted, setSubmitted] = useState(false);
 
@@ -27,6 +46,20 @@ export default function CustomConfigurator() {
   const headerRef = useRef<HTMLDivElement | null>(null);
   const formRef = useRef<HTMLDivElement | null>(null);
   const previewRef = useRef<HTMLDivElement | null>(null);
+
+  const badge = data?.badge || "INTERACTIVE CONFIGURATOR";
+  const title = data?.title || "Configure Your Custom Box Specifications";
+  const subtitle =
+    data?.subtitle ||
+    "Input your box size, preferred wall ply, and printing requirements to generate an instant engineering summary and request an expedited quotation.";
+  const submitButtonText =
+    data?.submitButtonText || "Calculate & Request Specification Sheet";
+  const successMessage =
+    data?.successMessage ||
+    "Configuration saved! Our engineering team will reach out with the dieline drawing.";
+  const guaranteeNote =
+    data?.guaranteeNote ||
+    "We provide custom die-lines and sample boxes prior to commercial production runs to ensure 100% fit accuracy.";
 
   useEffect(() => {
     if (typeof window === "undefined" || !sectionRef.current) return;
@@ -112,19 +145,18 @@ export default function CustomConfigurator() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-3.5">
               <Calculator className="w-3.5 h-3.5 text-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                INTERACTIVE CONFIGURATOR
+                {badge}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
-              Configure Your Custom <br className="hidden sm:inline" />
-              <span className="text-[#A65D32]">Box Specifications</span>
+              {title}
             </h2>
           </div>
 
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              Input your box size, preferred wall ply, and printing requirements to generate an instant engineering summary and request an expedited quotation.
+              {subtitle}
             </p>
           </div>
         </div>
@@ -146,20 +178,22 @@ export default function CustomConfigurator() {
                   <button
                     type="button"
                     onClick={() => setUnit("inch")}
-                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${unit === "inch"
+                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                      unit === "inch"
                         ? "bg-[#493629] text-white shadow-xs"
                         : "text-[#62574D] hover:text-[#202A2E]"
-                      }`}
+                    }`}
                   >
                     Inches (&ldquo;)
                   </button>
                   <button
                     type="button"
                     onClick={() => setUnit("mm")}
-                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${unit === "mm"
+                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                      unit === "mm"
                         ? "bg-[#493629] text-white shadow-xs"
                         : "text-[#62574D] hover:text-[#202A2E]"
-                      }`}
+                    }`}
                   >
                     Millimeters (mm)
                   </button>
@@ -282,7 +316,7 @@ export default function CustomConfigurator() {
                 type="submit"
                 className="w-full py-3.5 px-6 rounded-xl bg-[#493629] hover:bg-[#A65D32] text-white text-sm font-bold tracking-wide transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>Calculate & Request Specification Sheet</span>
+                <span>{submitButtonText}</span>
                 <ArrowRight className="w-4 h-4 text-[#D1B48C]" />
               </button>
             </form>
@@ -340,12 +374,12 @@ export default function CustomConfigurator() {
             {submitted ? (
               <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
-                <span>Configuration saved! Our engineering team will reach out with the dieline drawing.</span>
+                <span>{successMessage}</span>
               </div>
             ) : (
               <div className="p-4 rounded-xl bg-white/5 border border-white/10 text-xs text-[#F5F2EB]/80 leading-relaxed">
                 <Sparkles className="w-4 h-4 text-[#D1B48C] inline mr-1.5" />
-                We provide custom die-lines and sample boxes prior to commercial production runs to ensure 100% fit accuracy.
+                {guaranteeNote}
               </div>
             )}
           </div>

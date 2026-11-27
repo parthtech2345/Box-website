@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useRef, useEffect } from "react";
 import Image from "next/image";
@@ -7,8 +7,34 @@ import { ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import BannerEmployeeMascot from "@/components/common/BannerEmployeeMascot";
 
-export default function CustomHero() {
+interface CustomHeroProps {
+  data?: {
+    title?: string;
+    breadcrumbRoot?: string;
+    breadcrumbCurrent?: string;
+    backgroundImage?: string;
+    backgroundImageAlt?: string;
+    characterImage?: string;
+    characterAlt?: string;
+    dialogueIcon?: string;
+    dialogueTitle?: string;
+    dialogueSubtext?: string;
+  };
+}
+
+export default function CustomHero({ data }: CustomHeroProps = {}) {
   const titleRef = useRef<HTMLDivElement | null>(null);
+
+  const title = data?.title || "Custom Packaging";
+  const breadcrumbRoot = data?.breadcrumbRoot || "Home";
+  const breadcrumbCurrent = data?.breadcrumbCurrent || "Custom Packaging";
+  const backgroundImage = data?.backgroundImage || "/custom pack/custom_packaging_banner_pano.png";
+  const backgroundImageAlt = data?.backgroundImageAlt || "Custom Packaging Banner - AAVRIT PACKAGING";
+  const characterImage = data?.characterImage || "/custom pack/character_custom_designer.png";
+  const characterAlt = data?.characterAlt || "Custom Packaging Design Engineer - AAVRIT PACKAGING";
+  const dialogueIcon = data?.dialogueIcon || "📐";
+  const dialogueTitle = data?.dialogueTitle || "Tailored to Your Product!";
+  const dialogueSubtext = data?.dialogueSubtext || "Custom die-cuts, bespoke sizes & high-res branding";
 
   useEffect(() => {
     if (typeof window === "undefined" || !titleRef.current) return;
@@ -30,8 +56,8 @@ export default function CustomHero() {
       {/* Full Width Banner matching exact site banner standard */}
       <div className="relative w-full h-[340px] sm:h-[380px] lg:h-[420px]">
         <Image
-          src="/custom pack/custom_packaging_banner_pano.png"
-          alt="Custom Packaging Banner - AAVRIT PACKAGING"
+          src={backgroundImage}
+          alt={backgroundImageAlt}
           fill
           priority
           sizes="100vw"
@@ -48,7 +74,7 @@ export default function CustomHero() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pointer-events-auto">
             <div ref={titleRef} className="max-w-md">
               <h1 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-tight mb-1.5 drop-shadow-md">
-                Custom Packaging
+                {title}
               </h1>
 
               {/* Breadcrumb Effect: Home > Custom Packaging */}
@@ -60,11 +86,11 @@ export default function CustomHero() {
                   href="/"
                   className="hover:text-[#E97835] transition-colors drop-shadow-xs"
                 >
-                  Home
+                  {breadcrumbRoot}
                 </Link>
                 <ChevronRight className="w-3.5 h-3.5 text-[#D1B48C]" />
                 <span className="text-[#D1B48C] font-semibold drop-shadow-xs">
-                  Custom Packaging
+                  {breadcrumbCurrent}
                 </span>
               </nav>
             </div>
@@ -72,11 +98,11 @@ export default function CustomHero() {
 
           {/* 2. LOWER AREA: Custom Packaging Designer Speaking Mascot */}
           <BannerEmployeeMascot
-            characterImage="/custom pack/character_custom_designer.png"
-            characterAlt="Custom Packaging Design Engineer - AAVRIT PACKAGING"
-            dialogueIcon="📐"
-            dialogueTitle="Tailored to Your Product!"
-            dialogueSubtext="Custom die-cuts, bespoke sizes & high-res branding"
+            characterImage={characterImage}
+            characterAlt={characterAlt}
+            dialogueIcon={dialogueIcon}
+            dialogueTitle={dialogueTitle}
+            dialogueSubtext={dialogueSubtext}
             characterWidthClass="w-[115px] sm:w-[140px] lg:w-[160px]"
             shadowWidthClass="w-22 sm:w-26 lg:w-30"
           />
