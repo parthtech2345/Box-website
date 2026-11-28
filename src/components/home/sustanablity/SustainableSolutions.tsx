@@ -2,8 +2,7 @@
 
 import React, { useRef, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowUpRight, Box, Layers, FileText, RefreshCw } from "lucide-react";
+import { Box, Layers, FileText, RefreshCw } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SustainabilitySolutionsData, DEFAULT_SUSTAINABILITY_DATA } from "@/data/sustainabilityData";
@@ -105,7 +104,7 @@ export default function SustainableSolutions({ data }: SustainableSolutionsProps
               >
                 <div>
                   {/* Image Container with Badge */}
-                  <div className="relative w-full aspect-[16/11] overflow-hidden bg-[#FAF7F2]">
+                  <div className="relative w-full aspect-[16/9] overflow-hidden bg-[#FAF7F2]">
                     <Image
                       src={itemImage}
                       alt={itemAlt}
@@ -116,37 +115,26 @@ export default function SustainableSolutions({ data }: SustainableSolutionsProps
                   </div>
 
                   {/* Content Container */}
-                  <div className="p-5 sm:p-6">
+                  <div className="p-4 sm:p-4.5">
                     <div className="flex items-center gap-2 mb-2">
-                      <Icon className="w-4 h-4 text-[#78846A]" />
-                      <h3 className="font-heading font-bold text-base text-[#202A2E] group-hover:text-[#A65D32] transition-colors">
+                      <Icon className="w-4 h-4 text-[#78846A] shrink-0" />
+                      <h3 className="font-heading font-bold text-sm sm:text-base text-[#202A2E] group-hover:text-[#A65D32] transition-colors leading-snug">
                         {item.title}
                       </h3>
                     </div>
 
-                    <p className="text-xs sm:text-sm text-[#62574D] leading-relaxed mb-4">
+                    <p className="text-xs sm:text-[13px] text-[#62574D] leading-relaxed mb-3">
                       {item.description}
                     </p>
 
                     {/* Key Benefit Pill */}
-                    <div className="p-2.5 rounded-lg bg-[#FAF7F2] border border-[#E4DED3] text-[11px] font-medium text-[#62574D]">
+                    <div className="p-2 sm:p-2.5 rounded-lg bg-[#FAF7F2] border border-[#E4DED3] text-[11px] font-medium text-[#62574D]">
                       <span className="text-[#78846A] font-bold block mb-0.5">
                         Key Value:
                       </span>
                       {item.benefit}
                     </div>
                   </div>
-                </div>
-
-                {/* Footer Link */}
-                <div className="p-4 sm:p-5 pt-0">
-                  <Link
-                    href={item.link}
-                    className="inline-flex items-center justify-between w-full text-xs font-bold uppercase tracking-wider text-[#78846A] hover:text-[#A65D32] pt-3 border-t border-[#F0ECE1] transition-colors"
-                  >
-                    <span>Learn More</span>
-                    <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </Link>
                 </div>
               </div>
             );
