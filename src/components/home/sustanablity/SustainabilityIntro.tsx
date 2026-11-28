@@ -5,11 +5,31 @@ import Image from "next/image";
 import { Layers, Scissors, Recycle } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SustainabilityIntroData, DEFAULT_SUSTAINABILITY_DATA } from "@/data/sustainabilityData";
 
-export default function SustainabilityIntro() {
+const ICON_MAP: Record<string, React.ElementType> = {
+  Layers,
+  Scissors,
+  Recycle,
+};
+
+interface SustainabilityIntroProps {
+  data?: SustainabilityIntroData | null;
+}
+
+export default function SustainabilityIntro({ data }: SustainabilityIntroProps = {}) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const leftColRef = useRef<HTMLDivElement | null>(null);
   const rightColRef = useRef<HTMLDivElement | null>(null);
+
+  const fallback = DEFAULT_SUSTAINABILITY_DATA.intro!;
+  const badge = data?.badge || fallback.badge;
+  const title = data?.title || fallback.title;
+  const highlightText = data?.highlightText || fallback.highlightText;
+  const paragraphs = (data?.paragraphs && data.paragraphs.length > 0 ? data.paragraphs : fallback.paragraphs) || [];
+  const image = data?.image || fallback.image || "/Sustanablity/intro-sustainable-packaging.png";
+  const imageAlt = data?.imageAlt || fallback.imageAlt || "Natural kraft corrugated cardboard packaging arrangement";
+  const highlights = (data?.highlights && data.highlights.length > 0 ? data.highlights : fallback.highlights) || [];
 
   useEffect(() => {
     if (typeof window === "undefined" || !sectionRef.current) return;
@@ -54,24 +74,6 @@ export default function SustainabilityIntro() {
     return () => ctx.revert();
   }, []);
 
-  const highlights = [
-    {
-      title: "Thoughtful Material Selection",
-      description: "Selecting appropriate paper grades and renewable fiber weights matched to actual structural load requirements.",
-      icon: Layers,
-    },
-    {
-      title: "Responsible Packaging Design",
-      description: "Optimizing box dimensions to fit goods securely, eliminating excess volume, void-fill, and shipping weight.",
-      icon: Scissors,
-    },
-    {
-      title: "Resource-Conscious Manufacturing",
-      description: "Systematic segregation and recovery of paper trimmings to feed circular paper reprocessing streams.",
-      icon: Recycle,
-    },
-  ];
-
   return (
     <section
       ref={sectionRef}
@@ -85,29 +87,26 @@ export default function SustainabilityIntro() {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
                 <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                  RESPONSIBLE PACKAGING
+                  {badge}
                 </span>
               </div>
 
               <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.15] tracking-tight">
-                Why Sustainability <br />
-                <span className="text-[#A65D32]">Matters in Packaging</span>
+                {title} <br />
+                {highlightText && <span className="text-[#A65D32]">{highlightText}</span>}
               </h2>
             </div>
 
             <div className="space-y-3.5 text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              <p>
-                Packaging plays an important role in protecting products during storage and transportation. However, the materials used, the way packaging is designed, and the manufacturing process also matter.
-              </p>
-              <p>
-                Corrugated cardboard packaging offers a practical packaging option that can support material recovery and recycling systems when properly collected and processed. By focusing on smart dimensional planning and responsibly sourced paperboards, businesses can safeguard their goods while minimizing unnecessary material consumption.
-              </p>
+              {paragraphs.map((p, idx) => (
+                <p key={idx}>{p}</p>
+              ))}
             </div>
 
             {/* Three Small Highlight Points */}
             <div className="pt-2 grid grid-cols-1 sm:grid-cols-3 gap-3.5">
               {highlights.map((item, idx) => {
-                const Icon = item.icon;
+                const Icon = (item.icon && ICON_MAP[item.icon]) ? ICON_MAP[item.icon] : Layers;
                 return (
                   <div
                     key={idx}
@@ -132,8 +131,8 @@ export default function SustainabilityIntro() {
           <div ref={rightColRef} className="lg:col-span-5 relative">
             <div className="relative w-full aspect-[4/3] sm:aspect-[5/4] lg:aspect-[4/4] rounded-2xl overflow-hidden bg-[#FAF7F2] border-2 border-[#E4DED3] shadow-md group">
               <Image
-                src="/Sustanablity/intro-sustainable-packaging.png"
-                alt="Natural kraft corrugated cardboard packaging arrangement"
+                src={image}
+                alt={imageAlt}
                 fill
                 sizes="(max-width: 1024px) 100vw, 40vw"
                 className="object-cover object-center group-hover:scale-102 transition-transform duration-700 ease-out"

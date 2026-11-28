@@ -4,81 +4,29 @@ import React, { useRef, useEffect } from "react";
 import { Recycle, Repeat, Maximize2, ShieldCheck, ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SustainabilityDifferenceData, DEFAULT_SUSTAINABILITY_DATA } from "@/data/sustainabilityData";
 
-export default function CorrugatedDifference() {
+const ICON_MAP: Record<string, React.ElementType> = {
+  Recycle,
+  Repeat,
+  Maximize2,
+  ShieldCheck,
+};
+
+interface CorrugatedDifferenceProps {
+  data?: SustainabilityDifferenceData | null;
+}
+
+export default function CorrugatedDifference({ data }: CorrugatedDifferenceProps = {}) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const cardsRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    if (typeof window === "undefined" || !sectionRef.current || !cardsRef.current) return;
-    gsap.registerPlugin(ScrollTrigger);
-
-    const ctx = gsap.context(() => {
-      const cards = cardsRef.current?.querySelectorAll(".diff-card");
-      if (cards && cards.length > 0) {
-        gsap.fromTo(
-          cards,
-          { opacity: 0, y: 30 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            stagger: 0.15,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 75%",
-            },
-          }
-        );
-      }
-    });
-
-    return () => ctx.revert();
-  }, []);
-
-  const cards = [
-    {
-      code: "A",
-      title: "Recyclable Paper-Based Material",
-      description:
-        "Corrugated packaging is primarily made from paper-based materials and can enter established paper recycling systems when collected and processed appropriately.",
-      icon: Recycle,
-      tag: "Circular Recovery",
-      color: "#78846A",
-      bgLight: "#FAF7F2",
-    },
-    {
-      code: "B",
-      title: "Reusable Packaging",
-      description:
-        "Suitable corrugated boxes can be reused for storage, handling, or transportation, depending on their condition and intended use.",
-      icon: Repeat,
-      tag: "Extended Utility",
-      color: "#A65D32",
-      bgLight: "#FAF7F2",
-    },
-    {
-      code: "C",
-      title: "Right-Sized Packaging",
-      description:
-        "Choosing suitable box dimensions can help avoid unnecessary packaging material and improve packaging efficiency across shipping and warehousing.",
-      icon: Maximize2,
-      tag: "Material Efficiency",
-      color: "#E97835",
-      bgLight: "#FAF7F2",
-    },
-    {
-      code: "D",
-      title: "Practical Product Protection",
-      description:
-        "Appropriately designed corrugated packaging helps protect products during storage and transportation, reducing the risk of damage and product loss.",
-      icon: ShieldCheck,
-      tag: "Damage Prevention",
-      color: "#202A2E",
-      bgLight: "#FAF7F2",
-    },
-  ];
+  const fallback = DEFAULT_SUSTAINABILITY_DATA.difference!;
+  const badge = data?.badge || fallback.badge;
+  const title = data?.title || fallback.title;
+  const highlightText = data?.highlightText || fallback.highlightText;
+  const subtitle = data?.subtitle || fallback.subtitle;
+  const cards = (data?.cards && data.cards.length > 0 ? data.cards : fallback.cards) || [];
 
   return (
     <section
@@ -92,19 +40,19 @@ export default function CorrugatedDifference() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                STRUCTURAL & RESOURCE ADVANTAGES
+                {badge}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
-              Why Corrugated Packaging <br className="hidden sm:inline" />
-              <span className="text-[#A65D32]">Makes a Difference</span>
+              {title} <br className="hidden sm:inline" />
+              {highlightText && <span className="text-[#A65D32]">{highlightText}</span>}
             </h2>
           </div>
 
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              Corrugated board provides a balance of cushioning strength, structural stiffness, and material efficiency without relying on complex composite plastics.
+              {subtitle}
             </p>
           </div>
         </div>
@@ -115,7 +63,9 @@ export default function CorrugatedDifference() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {cards.map((card, idx) => {
-            const Icon = card.icon;
+            const Icon = (card.icon && typeof card.icon === "string" && ICON_MAP[card.icon])
+              ? ICON_MAP[card.icon]
+              : (typeof card.icon === "function" ? card.icon : Recycle);
             return (
               <div
                 key={idx}

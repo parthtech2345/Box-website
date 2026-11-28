@@ -4,69 +4,30 @@ import React, { useRef, useEffect } from "react";
 import { Check, Compass, Ruler, Shield, Sparkles, TrendingDown } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SustainabilityWasteReductionData, DEFAULT_SUSTAINABILITY_DATA } from "@/data/sustainabilityData";
 
-export default function ReducingPackagingWaste() {
+const ICON_MAP: Record<string, React.ElementType> = {
+  Ruler,
+  Shield,
+  Compass,
+  TrendingDown,
+  Sparkles,
+};
+
+interface ReducingPackagingWasteProps {
+  data?: SustainabilityWasteReductionData | null;
+}
+
+export default function ReducingPackagingWaste({ data }: ReducingPackagingWasteProps = {}) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const cardsRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    if (typeof window === "undefined" || !sectionRef.current || !cardsRef.current) return;
-    gsap.registerPlugin(ScrollTrigger);
-
-    const ctx = gsap.context(() => {
-      const items = cardsRef.current?.querySelectorAll(".waste-card");
-      if (items && items.length > 0) {
-        gsap.fromTo(
-          items,
-          { opacity: 0, y: 30 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            stagger: 0.12,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 75%",
-            },
-          }
-        );
-      }
-    });
-
-    return () => ctx.revert();
-  }, []);
-
-  const methods = [
-    {
-      num: "01",
-      title: "Right-Sized Boxes",
-      summary: "Select dimensions that suit the product instead of using unnecessarily oversized packaging.",
-      impact: "Eliminates dead volume, lowers transport emissions, and removes the need for plastic filler cushioning.",
-      icon: Ruler,
-    },
-    {
-      num: "02",
-      title: "Appropriate Board Construction",
-      summary: "Select suitable ply and flute combinations according to the required protection.",
-      impact: "Avoids heavy over-calipering by matching paper weight and flute profiles precisely to stacking loads.",
-      icon: Shield,
-    },
-    {
-      num: "03",
-      title: "Efficient Material Planning",
-      summary: "Plan box layouts and material usage carefully to help minimize avoidable production waste.",
-      impact: "Precision die-cutting nesting and CAD slot planning maximize sheet yield from master paper reels.",
-      icon: Compass,
-    },
-    {
-      num: "04",
-      title: "Responsible Waste Handling",
-      summary: "Separate paper and cardboard waste for appropriate collection and recovery wherever facilities are available.",
-      impact: "Clean corrugated off-cuts are compressed into dense bales and returned to pulp mills for continuous re-pulping.",
-      icon: TrendingDown,
-    },
-  ];
+  const fallback = DEFAULT_SUSTAINABILITY_DATA.wasteReduction!;
+  const badge = data?.badge || fallback.badge;
+  const title = data?.title || fallback.title;
+  const highlightText = data?.highlightText || fallback.highlightText;
+  const subtitle = data?.subtitle || fallback.subtitle;
+  const methods = (data?.methods && data.methods.length > 0 ? data.methods : fallback.methods) || [];
 
   return (
     <section
@@ -80,19 +41,19 @@ export default function ReducingPackagingWaste() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                PRACTICAL WASTE MINIMIZATION
+                {badge}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
-              Small Packaging Decisions. <br className="hidden sm:inline" />
-              <span className="text-[#A65D32]">Meaningful Impact.</span>
+              {title} <br className="hidden sm:inline" />
+              {highlightText && <span className="text-[#A65D32]">{highlightText}</span>}
             </h2>
           </div>
 
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              Sustainable packaging does not require complex compromises. Making deliberate decisions during box dimensioning, board engineering, and trim handling generates noticeable efficiencies.
+              {subtitle}
             </p>
           </div>
         </div>
@@ -103,7 +64,9 @@ export default function ReducingPackagingWaste() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {methods.map((item, idx) => {
-            const Icon = item.icon;
+            const Icon = (item.icon && typeof item.icon === "string" && ICON_MAP[item.icon])
+              ? ICON_MAP[item.icon]
+              : (typeof item.icon === "function" ? item.icon : Ruler);
             return (
               <div
                 key={idx}

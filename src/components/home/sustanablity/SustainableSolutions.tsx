@@ -6,10 +6,29 @@ import Link from "next/link";
 import { ArrowUpRight, Box, Layers, FileText, RefreshCw } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SustainabilitySolutionsData, DEFAULT_SUSTAINABILITY_DATA } from "@/data/sustainabilityData";
 
-export default function SustainableSolutions() {
+const ICON_MAP: Record<string, React.ElementType> = {
+  Box,
+  Layers,
+  FileText,
+  RefreshCw,
+};
+
+interface SustainableSolutionsProps {
+  data?: SustainabilitySolutionsData | null;
+}
+
+export default function SustainableSolutions({ data }: SustainableSolutionsProps = {}) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const gridRef = useRef<HTMLDivElement | null>(null);
+
+  const fallback = DEFAULT_SUSTAINABILITY_DATA.solutions!;
+  const badge = data?.badge || fallback.badge;
+  const title = data?.title || fallback.title;
+  const highlightText = data?.highlightText || fallback.highlightText;
+  const subtitle = data?.subtitle || fallback.subtitle;
+  const solutions = (data?.solutions && data.solutions.length > 0 ? data.solutions : fallback.solutions) || [];
 
   useEffect(() => {
     if (typeof window === "undefined" || !sectionRef.current || !gridRef.current) return;
@@ -39,53 +58,6 @@ export default function SustainableSolutions() {
     return () => ctx.revert();
   }, []);
 
-  const solutions = [
-    {
-      title: "Custom-Sized Packaging",
-      badge: "Dimension Optimization",
-      description:
-        "Packaging dimensions engineered specifically according to the product's size and protection requirements, preventing oversized shipping and extra cushioning.",
-      image: "/Sustanablity/box-display.png",
-      alt: "Custom-sized corrugated box packaging assortment",
-      icon: Box,
-      benefit: "Reduces void space & shipping freight",
-      link: "/custom-packaging",
-    },
-    {
-      title: "Suitable Ply Selection",
-      badge: "Structural Caliper",
-      description:
-        "Choosing an appropriate 3 Ply, 5 Ply, or 7 Ply construction based on product weight, stacking, and transportation needs, avoiding material over-specification.",
-      image: "/Sustanablity/ply-5ply.png",
-      alt: "Corrugated flute board layers 3-ply and 5-ply construction",
-      icon: Layers,
-      benefit: "Tailors paper caliper to load",
-      link: "/products",
-    },
-    {
-      title: "Paper-Based Packaging",
-      badge: "Mono-Material Format",
-      description:
-        "Using suitable kraft and other paper-based board options according to the required application, simplifying waste streams compared to non-recyclable multi-material composites.",
-      image: "/Sustanablity/journey-sustainable.png",
-      alt: "Kraft paperboard materials and corrugated boxes",
-      icon: FileText,
-      benefit: "Compatible with paper recycling",
-      link: "/products",
-    },
-    {
-      title: "Reusable Packaging Options",
-      badge: "Extended Lifecycle",
-      description:
-        "Where suitable, boxes can be designed with heavy-duty construction for multiple handling, internal transit, or storage uses, depending on their condition.",
-      image: "/Sustanablity/sustainable-plant.png",
-      alt: "Durable corrugated storage containers and warehouse packing",
-      icon: RefreshCw,
-      benefit: "Multi-cycle operational utility",
-      link: "/industries",
-    },
-  ];
-
   return (
     <section
       ref={sectionRef}
@@ -98,19 +70,19 @@ export default function SustainableSolutions() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                RESPONSIBLE PACKAGING OPTIONS
+                {badge}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
-              Smarter Packaging Choices <br className="hidden sm:inline" />
-              <span className="text-[#A65D32]">for Different Needs</span>
+              {title} <br className="hidden sm:inline" />
+              {highlightText && <span className="text-[#A65D32]">{highlightText}</span>}
             </h2>
           </div>
 
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              Every product has distinct structural demands. By tailoring dimensions, ply grades, and paperboards, packaging provides dependable protection with responsible material usage.
+              {subtitle}
             </p>
           </div>
         </div>
@@ -121,7 +93,11 @@ export default function SustainableSolutions() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {solutions.map((item, idx) => {
-            const Icon = item.icon;
+            const Icon = (item.icon && typeof item.icon === "string" && ICON_MAP[item.icon])
+              ? ICON_MAP[item.icon]
+              : (typeof item.icon === "function" ? item.icon : Box);
+            const itemImage = item.image || "/Sustanablity/box-display.png";
+            const itemAlt = item.alt || item.title || "Packaging solution";
             return (
               <div
                 key={idx}
@@ -131,8 +107,8 @@ export default function SustainableSolutions() {
                   {/* Image Container with Badge */}
                   <div className="relative w-full aspect-[16/11] overflow-hidden bg-[#FAF7F2]">
                     <Image
-                      src={item.image}
-                      alt={item.alt}
+                      src={itemImage}
+                      alt={itemAlt}
                       fill
                       sizes="(max-width: 768px) 100vw, 25vw"
                       className="object-cover object-center group-hover:scale-104 transition-transform duration-500 ease-out"

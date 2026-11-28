@@ -5,9 +5,23 @@ import Link from "next/link";
 import { ArrowRight, Phone, Mail, Sparkles, Leaf } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SustainabilityCTAData, DEFAULT_SUSTAINABILITY_DATA } from "@/data/sustainabilityData";
 
-export default function SustainabilityCTA() {
+interface SustainabilityCTAProps {
+  data?: SustainabilityCTAData | null;
+}
+
+export default function SustainabilityCTA({ data }: SustainabilityCTAProps = {}) {
   const ctaRef = useRef<HTMLElement | null>(null);
+
+  const fallback = DEFAULT_SUSTAINABILITY_DATA.cta!;
+  const badge = data?.badge || fallback.badge;
+  const title = data?.title || fallback.title;
+  const description = data?.description || fallback.description;
+  const primaryButtonText = data?.primaryButtonText || fallback.primaryButtonText || "Explore Our Products";
+  const primaryButtonLink = data?.primaryButtonLink || fallback.primaryButtonLink || "/products";
+  const secondaryButtonText = data?.secondaryButtonText || fallback.secondaryButtonText || "Contact Our Team";
+  const secondaryButtonLink = data?.secondaryButtonLink || fallback.secondaryButtonLink || "/#contact";
 
   useEffect(() => {
     if (typeof window === "undefined" || !ctaRef.current) return;
@@ -50,35 +64,35 @@ export default function SustainabilityCTA() {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#78846A]/25 border border-[#78846A]/40 mb-1">
                 <Leaf className="w-3 h-3 text-[#D1B48C]" />
                 <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-[#F5F2EB]">
-                  RESPONSIBLE COLLABORATION
+                  {badge}
                 </span>
               </div>
 
               <h2 className="font-heading font-bold text-2xl sm:text-3xl lg:text-4xl text-white tracking-tight leading-tight">
-                Let&apos;s Make Better Packaging Choices Together.
+                {title}
               </h2>
 
               <p className="text-sm sm:text-base text-[#F5F2EB]/85 font-normal leading-relaxed max-w-xl">
-                Looking for packaging solutions that balance product protection, practical design, and responsible material choices? Talk to our team about your requirements.
+                {description}
               </p>
             </div>
 
             {/* Right Column: CTA Action Buttons */}
             <div className="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col xl:flex-row items-stretch sm:items-center lg:items-stretch xl:items-center justify-end gap-3.5">
               <Link
-                href="/products"
+                href={primaryButtonLink}
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#E97835] hover:bg-[#d46927] text-white text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 text-center"
               >
-                <span>Explore Our Products</span>
+                <span>{primaryButtonText}</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
 
               <Link
-                href="/#contact"
+                href={secondaryButtonLink}
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-[#F5F2EB] hover:text-white border border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-200 backdrop-blur-xs text-center"
               >
                 <Mail className="w-4 h-4 text-[#D1B48C]" />
-                <span>Contact Our Team</span>
+                <span>{secondaryButtonText}</span>
               </Link>
             </div>
           </div>

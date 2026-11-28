@@ -4,15 +4,22 @@ import React, { useState, useRef, useEffect } from "react";
 import { ChevronDown, HelpCircle } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SustainabilityFAQsData, DEFAULT_SUSTAINABILITY_DATA } from "@/data/sustainabilityData";
 
-interface FAQItem {
-  question: string;
-  answer: string;
+interface SustainabilityFAQsProps {
+  data?: SustainabilityFAQsData | null;
 }
 
-export default function SustainabilityFAQs() {
+export default function SustainabilityFAQs({ data }: SustainabilityFAQsProps = {}) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const sectionRef = useRef<HTMLElement | null>(null);
+
+  const fallback = DEFAULT_SUSTAINABILITY_DATA.faqs!;
+  const badge = data?.badge || fallback.badge;
+  const title = data?.title || fallback.title;
+  const highlightText = data?.highlightText || fallback.highlightText;
+  const subtitle = data?.subtitle || fallback.subtitle;
+  const faqs = (data?.faqs && data.faqs.length > 0 ? data.faqs : fallback.faqs) || [];
 
   useEffect(() => {
     if (typeof window === "undefined" || !sectionRef.current) return;
@@ -38,34 +45,6 @@ export default function SustainabilityFAQs() {
     return () => ctx.revert();
   }, []);
 
-  const faqs: FAQItem[] = [
-    {
-      question: "Are corrugated cardboard boxes recyclable?",
-      answer:
-        "Yes. Corrugated cardboard is primarily composed of renewable paper fibers and is one of the most widely recovered packaging materials globally. In regions with paper recycling infrastructure, clean corrugated boxes can be placed in paper recycling streams where they are pulped, cleaned, and remanufactured into fresh paperboard.",
-    },
-    {
-      question: "Can corrugated boxes be reused?",
-      answer:
-        "Many corrugated boxes can be reused multiple times for storage, internal handling, or secondary transit, provided they have maintained their structural integrity and are free from severe crushing, moisture damage, or structural tears.",
-    },
-    {
-      question: "How can custom-sized packaging help reduce material waste?",
-      answer:
-        "Custom-sized packaging matches the exact dimensions of the packed goods. This eliminates empty void space inside the carton, significantly reduces or removes the need for plastic void-fillers, and allows more packages to fit onto each shipping pallet, optimizing logistics efficiency.",
-    },
-    {
-      question: "What is the difference between recycled kraft and virgin kraft paper?",
-      answer:
-        "Virgin kraft paper is manufactured directly from sustainably harvested wood pulp fibers, resulting in long, uniform fibers that offer high tensile strength and puncture resistance. Recycled kraft is made from recovered cardboard and paper, which offers a lower raw material footprint while providing sufficient strength for a wide range of standard commercial boxes.",
-    },
-    {
-      question: "How can businesses choose more responsible packaging solutions?",
-      answer:
-        "Businesses can begin by conducting a packaging audit: right-sizing box dimensions to fit products tightly, selecting the minimum appropriate ply specification (such as 3-ply instead of 5-ply where load allows), opting for mono-material paper-based tape and labeling, and consolidating carton varieties to streamline inventory and scrap.",
-    },
-  ];
-
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
@@ -82,19 +61,19 @@ export default function SustainabilityFAQs() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                CLARITY & GUIDANCE
+                {badge}
               </span>
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
-              Frequently Asked Questions <br className="hidden sm:inline" />
-              <span className="text-[#A65D32]">About Sustainable Packaging</span>
+              {title} <br className="hidden sm:inline" />
+              {highlightText && <span className="text-[#A65D32]">{highlightText}</span>}
             </h2>
           </div>
 
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              Clear, practical answers about paper-based materials, box recyclability, and responsible packaging design.
+              {subtitle}
             </p>
           </div>
         </div>

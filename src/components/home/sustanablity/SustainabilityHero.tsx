@@ -6,9 +6,26 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import BannerEmployeeMascot from "@/components/common/BannerEmployeeMascot";
+import { SustainabilityBannerData } from "@/data/sustainabilityData";
 
-export default function SustainabilityHero() {
+interface SustainabilityHeroProps {
+  data?: SustainabilityBannerData | null;
+}
+
+export default function SustainabilityHero({ data }: SustainabilityHeroProps = {}) {
   const titleRef = useRef<HTMLDivElement | null>(null);
+
+  const bannerImage = data?.backgroundImage || "/Sustanablity/sustainability_banner_pano.png";
+  const bannerAlt = data?.backgroundImageAlt || "Sustainable Corrugated Packaging - AAVRIT PACKAGING";
+  const title = data?.title || "Sustainability";
+  const breadcrumbRoot = data?.breadcrumbRoot || "Home";
+  const breadcrumbCurrent = data?.breadcrumbCurrent || "Sustainability";
+
+  const characterImage = data?.characterImage || "/Sustanablity/character_sustainability_officer.png";
+  const characterAlt = data?.characterAlt || "Sustainability Specialist - AAVRIT PACKAGING";
+  const dialogueIcon = data?.dialogueIcon || "🌱";
+  const dialogueTitle = data?.dialogueTitle || "100% Recyclable Kraft!";
+  const dialogueSubtext = data?.dialogueSubtext || "Eco-friendly, biodegradable & FSC-aligned production";
 
   useEffect(() => {
     if (typeof window === "undefined" || !titleRef.current) return;
@@ -30,8 +47,8 @@ export default function SustainabilityHero() {
       {/* Full Width Banner matching exact site banner standard */}
       <div className="relative w-full h-[340px] sm:h-[380px] lg:h-[420px]">
         <Image
-          src="/Sustanablity/sustainability_banner_pano.png"
-          alt="Sustainable Corrugated Packaging - AAVRIT PACKAGING"
+          src={bannerImage}
+          alt={bannerAlt}
           fill
           priority
           sizes="100vw"
@@ -48,7 +65,7 @@ export default function SustainabilityHero() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pointer-events-auto">
             <div ref={titleRef} className="max-w-lg">
               <h1 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-tight mb-1.5 drop-shadow-md">
-                Sustainability
+                {title}
               </h1>
 
               {/* Breadcrumb Navigation: Home > Sustainability */}
@@ -60,11 +77,11 @@ export default function SustainabilityHero() {
                   href="/"
                   className="hover:text-[#E97835] transition-colors drop-shadow-xs"
                 >
-                  Home
+                  {breadcrumbRoot}
                 </Link>
                 <ChevronRight className="w-3.5 h-3.5 text-[#D1B48C]" />
                 <span className="text-[#D1B48C] font-semibold drop-shadow-xs">
-                  Sustainability
+                  {breadcrumbCurrent}
                 </span>
               </nav>
             </div>
@@ -72,11 +89,11 @@ export default function SustainabilityHero() {
 
           {/* 2. LOWER AREA: Eco-Packaging Sustainability Specialist Speaking Mascot */}
           <BannerEmployeeMascot
-            characterImage="/Sustanablity/character_sustainability_officer.png"
-            characterAlt="Sustainability Specialist - AAVRIT PACKAGING"
-            dialogueIcon="🌱"
-            dialogueTitle="100% Recyclable Kraft!"
-            dialogueSubtext="Eco-friendly, biodegradable & FSC-aligned production"
+            characterImage={characterImage}
+            characterAlt={characterAlt}
+            dialogueIcon={dialogueIcon}
+            dialogueTitle={dialogueTitle}
+            dialogueSubtext={dialogueSubtext}
             characterWidthClass="w-[95px] sm:w-[115px] lg:w-[130px]"
             shadowWidthClass="w-18 sm:w-22 lg:w-26"
           />
