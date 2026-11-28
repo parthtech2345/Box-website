@@ -8,343 +8,53 @@ import GalleryHero from "./GalleryHero";
 import GalleryCTA from "./GalleryCTA";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import {
+  GalleryPageData,
+  GalleryItemDetails,
+  DEFAULT_GALLERY_DATA,
+  DEFAULT_GALLERY_CATEGORIES,
+} from "@/data/galleryData";
 
-export interface GalleryItemDetails {
-  id: string;
-  title: string;
-  image: string;
-  category: string;
-  description: string;
-  keypoints: string[];
-  link?: string;
-  linkText?: string;
+export type { GalleryItemDetails };
+
+interface GalleryClientProps {
+  data?: GalleryPageData | null;
 }
 
-interface GallerySectionData {
-  category: string;
-  items: GalleryItemDetails[];
-}
-
-const GALLERY_SECTIONS: GallerySectionData[] = [
-  // 1. Machinery & Technology
-  {
-    category: "Machinery & Technology",
-    items: [
-      {
-        id: "mach-1",
-        title: "Automatic Corrugation Production Line",
-        image: "/Machinery/corrugation-machine.png",
-        category: "Machinery & Technology",
-        description: "Continuous industrial corrugator combining virgin kraft paper reels and fluting medium into high-strength 3-ply and 5-ply boards.",
-        keypoints: [
-          "Continuous multi-reel paper feeding",
-          "Steam-pressured flute forming rolls",
-          "Precision starch adhesive bonding",
-        ],
-        link: "/machinery/corrugation-machine",
-        linkText: "Explore Machine",
-      },
-      {
-        id: "mach-2",
-        title: "High-Definition Flexo Printer Slotter",
-        image: "/Machinery/flexo-printer-slotter.png",
-        category: "Machinery & Technology",
-        description: "Inline multi-colour flexographic printing, scoring, and slotting equipment delivering sharp corporate branding and exact fold lines.",
-        keypoints: [
-          "Multi-colour water-based ink registration",
-          "Synchronized rotary scoring & creasing",
-          "High-speed precision carton slotting",
-        ],
-        link: "/machinery/flexo-printer-slotter",
-        linkText: "Explore Machine",
-      },
-      {
-        id: "mach-3",
-        title: "Rotary Die-Cutting Machine",
-        image: "/Machinery/die-cutting-machine.png",
-        category: "Machinery & Technology",
-        description: "High-speed rotary cylinder die-cutter producing complex box geometries, hand holes, ventilation ports, and self-locking tabs.",
-        keypoints: [
-          "Custom curved cutting dies",
-          "Intricate tab & crease formation",
-          "Tear-free smooth edge finishing",
-        ],
-        link: "/machinery/die-cutting-machine",
-        linkText: "Explore Machine",
-      },
-      {
-        id: "mach-4",
-        title: "Automated Folder Gluer & Stitching Line",
-        image: "/Machinery/folder-gluer-stitcher.png",
-        category: "Machinery & Technology",
-        description: "High-efficiency joint assembly system delivering accurate hot/cold adhesive application and reinforced heavy-gauge wire stitching.",
-        keypoints: [
-          "Dual adhesive & wire stitch options",
-          "Accurate squaring and alignment",
-          "High-speed bundle counting & stacking",
-        ],
-        link: "/machinery/folder-gluer-stitcher",
-        linkText: "Explore Machine",
-      },
-    ],
-  },
-
-  // 2. Custom Packaging
-  {
-    category: "Custom Packaging",
-    items: [
-      {
-        id: "cust-1",
-        title: "Precision Corrugated Box Solutions",
-        image: "/custom pack/custom-corrugated-solutions.png",
-        category: "Custom Packaging",
-        description: "Bespoke engineered kraft corrugated cartons and master shippers designed for direct-to-consumer and industrial freight.",
-        keypoints: [
-          "Tailored internal dimensions for exact fit",
-          "High-burst strength kraft board with zero void-fill",
-          "Optimized package weight and transport freight",
-        ],
-        link: "/custom-packaging",
-        linkText: "View Custom Packaging",
-      },
-      {
-        id: "cust-2",
-        title: "Custom Prototyped Box Formats",
-        image: "/about/Professional Corrugated Packaging Display.png",
-        category: "Custom Packaging",
-        description: "Custom dimension CAD samples and box geometries fabricated to match exact client product dimensions and drop-test requirements.",
-        keypoints: [
-          "24-Hour CAD sample fabrication",
-          "Multi-ply board caliper matching",
-          "Drop-test and compression verified",
-        ],
-        link: "/custom-packaging",
-        linkText: "View Custom Packaging",
-      },
-      {
-        id: "cust-3",
-        title: "Crash-Lock Auto-Bottom Cartons",
-        image: "/Product/items/auto-bottom-boxes.png",
-        category: "Custom Packaging",
-        description: "Instant pre-glued bottom base designed for rapid manual or semi-automated packaging line fulfillment with zero tape required.",
-        keypoints: [
-          "Instant push-open base erection",
-          "Eliminates bottom taping labor",
-          "High bottom-load carrying capacity",
-        ],
-        link: "/custom-packaging",
-        linkText: "View Custom Packaging",
-      },
-      {
-        id: "cust-4",
-        title: "Self-Locking Shipping Boxes",
-        image: "/Product/items/real-returnable-self-locking-shipping-boxes.png",
-        category: "Custom Packaging",
-        description: "Interlocking side tabs and roll-over front flaps providing structural reinforcement and tamper-evident transit security.",
-        keypoints: [
-          "Double-layer reinforced sidewalls",
-          "Tool-free self-locking assembly",
-          "Premium customer unboxing presentation",
-        ],
-        link: "/custom-packaging",
-        linkText: "View Custom Packaging",
-      },
-    ],
-  },
-
-  // 3. Products & Packaging
-  {
-    category: "Products & Packaging",
-    items: [
-      {
-        id: "prod-1",
-        title: "3-Ply Single Wall Corrugated Box",
-        image: "/Product/items/real-3-ply-corrugated-boxes.png",
-        category: "Products & Packaging",
-        description: "Lightweight and dependable shipping cartons engineered for retail distribution, consumer goods, and e-commerce packaging.",
-        keypoints: [
-          "Single flute cushioning barrier",
-          "Economical shipping freight weight",
-          "100% recyclable paperboard substrate",
-        ],
-        link: "/products",
-        linkText: "Explore Products",
-      },
-      {
-        id: "prod-2",
-        title: "5-Ply Double Wall Heavy-Duty Box",
-        image: "/Product/items/real-5-ply-corrugated-boxes.png",
-        category: "Products & Packaging",
-        description: "Dual fluting layers delivering superior compression strength, stackability, and puncture resistance for heavier freight.",
-        keypoints: [
-          "Two fluting layers with center liner",
-          "High vertical stacking compression",
-          "Ideal for machinery & industrial parts",
-        ],
-        link: "/products",
-        linkText: "Explore Products",
-      },
-      {
-        id: "prod-3",
-        title: "7-Ply Triple Wall Export Container",
-        image: "/Product/items/real-7-ply-corrugated-boxes.png",
-        category: "Products & Packaging",
-        description: "Maximum-caliper heavy industrial containers designed for automotive parts, machinery exports, and heavy payload transit.",
-        keypoints: [
-          "Triple wall high-caliper construction",
-          "Timber crate alternative with lower weight",
-          "Extreme crush and impact resistance",
-        ],
-        link: "/products",
-        linkText: "Explore Products",
-      },
-      {
-        id: "prod-4",
-        title: "Precision Die-Cut Mailer Box",
-        image: "/Product/items/die-cut-boxes.png",
-        category: "Products & Packaging",
-        description: "Sharp crease lines and self-locking tab closures engineered for direct-to-consumer presentation and unboxing aesthetics.",
-        keypoints: [
-          "Roll-end tuck-front (RETF) profile",
-          "Crisp creases for easy folding",
-          "Custom flexo printing compatible",
-        ],
-        link: "/products",
-        linkText: "Explore Products",
-      },
-    ],
-  },
-
-  // 4. Manufacturing Process
-  {
-    category: "Manufacturing Process",
-    items: [
-      {
-        id: "proc-1",
-        title: "Stage 01: Raw Paper Reel Selection",
-        image: "/home/manufacturing-process/raw-material-selection.png",
-        category: "Manufacturing Process",
-        description: "Careful grading and testing of virgin kraft and recycled paper reels for bursting factor and moisture balance.",
-        keypoints: [
-          "Inward reel moisture & GSM check",
-          "Tested for burst factor (BF)",
-          "Responsibly sourced renewable fibers",
-        ],
-        link: "/#manufacturing",
-        linkText: "View Process",
-      },
-      {
-        id: "proc-2",
-        title: "Stage 02: Flute & Board Formation",
-        image: "/home/manufacturing-process/corrugation-board-formation.png",
-        category: "Manufacturing Process",
-        description: "Heated corrugating rollers forming precision fluted mediums and bonding liner papers with starch adhesive.",
-        keypoints: [
-          "Heated steam corrugating rolls",
-          "Even starch glue line distribution",
-          "Continuous board web cooling & scoring",
-        ],
-        link: "/#manufacturing",
-        linkText: "View Process",
-      },
-      {
-        id: "proc-3",
-        title: "Stage 03: Multi-Colour Flexo Printing",
-        image: "/home/manufacturing-process/printing-branding.png",
-        category: "Manufacturing Process",
-        description: "Inline high-speed flexo printing applying water-based inks for sharp brand graphics, handling icons, and barcodes.",
-        keypoints: [
-          "Non-toxic water-based inks",
-          "Accurate multi-color registration",
-          "High-contrast barcode clarity",
-        ],
-        link: "/#manufacturing",
-        linkText: "View Process",
-      },
-      {
-        id: "proc-4",
-        title: "Stage 04: Quality Inspection & Dispatch",
-        image: "/home/manufacturing-process/quality-inspection-dispatch.png",
-        category: "Manufacturing Process",
-        description: "Dimensional auditing, edge crush compliance checks, and stretch-wrapped palletizing ready for industrial shipment.",
-        keypoints: [
-          "Edge Crush Test (ECT) verification",
-          "Squareness and bond strength check",
-          "Palletized weather-protective stretch film",
-        ],
-        link: "/#manufacturing",
-        linkText: "View Process",
-      },
-    ],
-  },
-
-  // 5. Industries We Serve
-  {
-    category: "Industries Served",
-    items: [
-      {
-        id: "ind-1",
-        title: "Automotive & Heavy Engineering",
-        image: "/home/industries/automotive.jpg",
-        category: "Industries Served",
-        description: "High-density multi-ply cartons engineered to carry automotive spares, machined metal parts, and hardware without deformation.",
-        keypoints: [
-          "Reinforced corners for dense parts",
-          "Oil and moisture-repellent board options",
-          "Internal partition inserts for gears",
-        ],
-        link: "/industries/automotive",
-        linkText: "View Automotive",
-      },
-      {
-        id: "ind-2",
-        title: "E-Commerce & Retail Shipping",
-        image: "/home/industries/ecommerce.jpg",
-        category: "Industries Served",
-        description: "Fast-erecting mailer boxes and self-locking cartons built for courier parcel handling resilience and memorable customer unboxing.",
-        keypoints: [
-          "Rapid assembly for packing stations",
-          "Drop-tested for parcel sorting hubs",
-          "Custom branded interior printing",
-        ],
-        link: "/industries",
-        linkText: "View Industries",
-      },
-      {
-        id: "ind-3",
-        title: "Pharmaceutical & Healthcare Transit",
-        image: "/home/industries/pharmaceutical.jpg",
-        category: "Industries Served",
-        description: "Hygienic, moisture-resistant corrugated shippers tailored for pharmaceutical bottles, diagnostic kits, and medical disposables.",
-        keypoints: [
-          "Clean-room compatible processing",
-          "Moisture-controlled corrugated board",
-          "Tamper-evident sealing options",
-        ],
-        link: "/industries/pharmaceutical",
-        linkText: "View Pharma",
-      },
-      {
-        id: "ind-4",
-        title: "Food & Agricultural Produce",
-        image: "/home/industries/food-beverage.jpg",
-        category: "Industries Served",
-        description: "Ventilated, high-compression boxes manufactured for orchard harvesting, cold-storage transit, and commercial food supply chains.",
-        keypoints: [
-          "Ventilation holes for air circulation",
-          "High humidity stacking resistance",
-          "Food-grade safe contact boards",
-        ],
-        link: "/industries",
-        linkText: "View Industries",
-      },
-    ],
-  },
-];
-
-export default function GalleryClient() {
+export default function GalleryClient({ data }: GalleryClientProps = {}) {
   const [selectedImage, setSelectedImage] = useState<GalleryItemDetails | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+
+  const showcase = data?.showcase || DEFAULT_GALLERY_DATA.showcase!;
+  const allItems: GalleryItemDetails[] =
+    showcase.items && showcase.items.length > 0
+      ? showcase.items
+      : DEFAULT_GALLERY_DATA.showcase!.items;
+
+  const categoryOrder =
+    showcase.categories && showcase.categories.length > 0
+      ? showcase.categories
+      : DEFAULT_GALLERY_CATEGORIES;
+
+  // Build dynamic sections grouped by category
+  const sections: { category: string; items: GalleryItemDetails[] }[] = [];
+  const handledCategories = new Set<string>();
+
+  categoryOrder.forEach((cat) => {
+    const itemsInCat = allItems.filter((i) => i.category === cat);
+    if (itemsInCat.length > 0) {
+      sections.push({ category: cat, items: itemsInCat });
+      handledCategories.add(cat);
+    }
+  });
+
+  allItems.forEach((item) => {
+    if (!handledCategories.has(item.category)) {
+      handledCategories.add(item.category);
+      const itemsInCat = allItems.filter((i) => i.category === item.category);
+      sections.push({ category: item.category, items: itemsInCat });
+    }
+  });
 
   // GSAP Scroll Animations on Gallery Page
   useEffect(() => {
@@ -352,8 +62,8 @@ export default function GalleryClient() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      const sections = containerRef.current?.querySelectorAll(".gallery-section-block");
-      sections?.forEach((sec) => {
+      const sectionBlocks = containerRef.current?.querySelectorAll(".gallery-section-block");
+      sectionBlocks?.forEach((sec) => {
         const header = sec.querySelector(".section-header");
         const cards = sec.querySelectorAll(".gallery-card");
 
@@ -395,7 +105,7 @@ export default function GalleryClient() {
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [sections.length]);
 
   // Close lightbox on Escape key
   useEffect(() => {
@@ -417,7 +127,7 @@ export default function GalleryClient() {
   return (
     <>
       {/* 1. Hero Banner */}
-      <GalleryHero />
+      <GalleryHero data={data?.banner} />
 
       {/* Main Clean Gallery Section */}
       <section
@@ -425,7 +135,7 @@ export default function GalleryClient() {
         className="w-full bg-[#FFFFFF] py-12 sm:py-14 border-b border-[#E4DED3]"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14 sm:space-y-16">
-          {GALLERY_SECTIONS.map((sec, idx) => (
+          {sections.map((sec, idx) => (
             <div key={idx} className="gallery-section-block space-y-6">
               {/* Category Heading matching Theme */}
               <div className="section-header flex items-center gap-3 pb-3 border-b border-[#E4DED3]">
@@ -472,7 +182,7 @@ export default function GalleryClient() {
       </section>
 
       {/* Final CTA */}
-      <GalleryCTA />
+      <GalleryCTA data={data?.cta} />
 
       {/* Lightbox Modal matching Website Theme (2-Column Split: Image Left, Details & Keypoints Right) */}
       {selectedImage && (
@@ -534,19 +244,21 @@ export default function GalleryClient() {
                   </p>
 
                   {/* Keypoints Box */}
-                  <div className="pt-2">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#202A2E] block mb-2">
-                      Key Highlights:
-                    </span>
-                    <ul className="space-y-2 bg-white rounded-xl p-3 sm:p-3.5 border border-[#E4DED3]">
-                      {selectedImage.keypoints.map((point, i) => (
-                        <li key={i} className="flex items-start gap-2 text-xs text-[#62574D] leading-snug">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-[#A65D32] shrink-0 mt-0.5" />
-                          <span>{point}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  {selectedImage.keypoints && selectedImage.keypoints.length > 0 && (
+                    <div className="pt-2">
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-[#202A2E] block mb-2">
+                        Key Highlights:
+                      </span>
+                      <ul className="space-y-2 bg-white rounded-xl p-3 sm:p-3.5 border border-[#E4DED3]">
+                        {selectedImage.keypoints.map((point, i) => (
+                          <li key={i} className="flex items-start gap-2 text-xs text-[#62574D] leading-snug">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-[#A65D32] shrink-0 mt-0.5" />
+                            <span>{point}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
 
                 {/* Footer Link / Action */}

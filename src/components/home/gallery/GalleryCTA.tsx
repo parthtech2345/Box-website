@@ -5,9 +5,26 @@ import Link from "next/link";
 import { ArrowRight, Mail, Phone, PackageCheck } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { GalleryCTAData, DEFAULT_GALLERY_DATA } from "@/data/galleryData";
 
-export default function GalleryCTA() {
+interface GalleryCTAProps {
+  data?: GalleryCTAData | null;
+}
+
+export default function GalleryCTA({ data }: GalleryCTAProps = {}) {
+  const fallback = DEFAULT_GALLERY_DATA.cta!;
   const ctaRef = useRef<HTMLElement | null>(null);
+
+  const badge = data?.badge || fallback.badge || "MANUFACTURING CAPABILITIES";
+  const title = data?.title || fallback.title || "Want to Explore Our Packaging Solutions?";
+  const description =
+    data?.description ||
+    fallback.description ||
+    "Discover our products and customized packaging solutions designed for different business requirements. From heavy industrial shipping to custom-printed retail mailers, we engineer packaging that protects.";
+  const primaryButtonText = data?.primaryButtonText || fallback.primaryButtonText || "Explore Products";
+  const primaryButtonLink = data?.primaryButtonLink || fallback.primaryButtonLink || "/products";
+  const secondaryButtonText = data?.secondaryButtonText || fallback.secondaryButtonText || "Contact Us";
+  const secondaryButtonLink = data?.secondaryButtonLink || fallback.secondaryButtonLink || "/#contact";
 
   useEffect(() => {
     if (typeof window === "undefined" || !ctaRef.current) return;
@@ -50,35 +67,35 @@ export default function GalleryCTA() {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/25 border border-[#A65D32]/40 mb-1">
                 <PackageCheck className="w-3.5 h-3.5 text-[#D1B48C]" />
                 <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-[#F5F2EB]">
-                  MANUFACTURING CAPABILITIES
+                  {badge}
                 </span>
               </div>
 
               <h2 className="font-heading font-bold text-2xl sm:text-3xl lg:text-4xl text-white tracking-tight leading-tight">
-                Want to Explore Our Packaging Solutions?
+                {title}
               </h2>
 
               <p className="text-sm sm:text-base text-[#F5F2EB]/85 font-normal leading-relaxed max-w-xl">
-                Discover our products and customized packaging solutions designed for different business requirements. From heavy industrial shipping to custom-printed retail mailers, we engineer packaging that protects.
+                {description}
               </p>
             </div>
 
             {/* Right Column: CTA Action Buttons */}
             <div className="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col xl:flex-row items-stretch sm:items-center lg:items-stretch xl:items-center justify-end gap-3.5">
               <Link
-                href="/products"
+                href={primaryButtonLink}
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#E97835] hover:bg-[#d46927] text-white text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 text-center"
               >
-                <span>Explore Products</span>
+                <span>{primaryButtonText}</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
 
               <Link
-                href="/#contact"
+                href={secondaryButtonLink}
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-[#F5F2EB] hover:text-white border border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-200 backdrop-blur-xs text-center"
               >
                 <Mail className="w-4 h-4 text-[#D1B48C]" />
-                <span>Contact Us</span>
+                <span>{secondaryButtonText}</span>
               </Link>
             </div>
           </div>
