@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useRef, useEffect } from "react";
 import {
@@ -176,8 +176,8 @@ export default function CustomProcess({ data }: CustomProcessProps = {}) {
                 <div>
                   <div className="flex items-center justify-between mb-5">
                     {/* Icon container with clean, sharp contrast */}
-                    <div className="w-11 h-11 rounded-xl bg-white border border-[#E8D5B8] flex items-center justify-center text-[#A65D32] group-hover:bg-[#A65D32] group-hover:border-[#A65D32] shadow-2xs transition-all duration-200">
-                      <IconComponent className="w-5 h-5 text-[#A65D32] group-hover:text-white transition-colors duration-200" />
+                    <div className="w-11 h-11 rounded-xl bg-white border border-[#E8D5B8] flex items-center justify-center text-[#A65D32] group-hover:bg-[#A65D32] group-hover:border-[#A65D32] group-hover:text-white shadow-2xs transition-all duration-200">
+                      <IconComponent className="w-5 h-5 text-current transition-all duration-200 group-hover:scale-110" />
                     </div>
                     <span className="text-2xl font-mono font-black text-[#A65D32]/25 group-hover:text-[#A65D32] transition-colors">
                       {s.step}

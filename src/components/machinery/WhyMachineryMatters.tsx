@@ -1,87 +1,79 @@
 "use client";
 
 import React, { useRef, useEffect } from "react";
-import { Zap, ShieldCheck, Target, CheckCircle2 } from "lucide-react";
+import { Zap, ShieldCheck, Target, CheckCircle2, Cpu } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { MachineryWhyMattersData } from "@/lib/machineryData";
 
-export default function WhyMachineryMatters() {
+interface WhyMachineryMattersProps {
+  data?: MachineryWhyMattersData | null;
+}
+
+function getBlockIcon(iconName?: string, index: number = 0) {
+  switch (iconName) {
+    case "Zap":
+      return Zap;
+    case "ShieldCheck":
+      return ShieldCheck;
+    case "Target":
+      return Target;
+    case "CheckCircle2":
+      return CheckCircle2;
+    case "Cpu":
+      return Cpu;
+    default: {
+      const fallback = [Zap, ShieldCheck, Target, CheckCircle2];
+      return fallback[index % fallback.length];
+    }
+  }
+}
+
+export default function WhyMachineryMatters({ data }: WhyMachineryMattersProps = {}) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const headerRef = useRef<HTMLDivElement | null>(null);
   const blocksRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    if (typeof window === "undefined" || !sectionRef.current) return;
-    gsap.registerPlugin(ScrollTrigger);
+  const badge = data?.badge || "OPERATIONAL ADVANTAGE";
+  const title = data?.title || "Supporting Consistent";
+  const highlightText = data?.highlightText || "Manufacturing";
+  const subtitle =
+    data?.subtitle ||
+    "Our machinery investments focus on dimensional repeatability, material integrity, and dependable corrugated box fabrication.";
 
-    const ctx = gsap.context(() => {
-      if (headerRef.current) {
-        gsap.fromTo(
-          headerRef.current,
-          { opacity: 0, y: 25 },
+  const blocks =
+    data?.blocks && data.blocks.length > 0
+      ? data.blocks.map((b, i) => ({
+          icon: getBlockIcon(b.icon, i),
+          title: b.title || "",
+          description: b.description || "",
+        }))
+      : [
           {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: headerRef.current,
-              start: "top 85%",
-              toggleActions: "play none none none",
-            },
-          }
-        );
-      }
-
-      if (blocksRef.current) {
-        gsap.fromTo(
-          blocksRef.current.children,
-          { opacity: 0, y: 30 },
+            icon: Zap,
+            title: "Efficient Production Processes",
+            description:
+              "Coordinated machinery setups and reliable equipment workflows help keep operations organized and delivery schedules on track.",
+          },
           {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            stagger: 0.1,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: blocksRef.current,
-              start: "top 82%",
-              toggleActions: "play none none none",
-            },
-          }
-        );
-      }
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  const blocks = [
-    {
-      icon: Zap,
-      title: "Efficient Production Processes",
-      description:
-        "Coordinated machinery setups and reliable equipment workflows help keep operations organized and delivery schedules on track.",
-    },
-    {
-      icon: ShieldCheck,
-      title: "Consistent Packaging Construction",
-      description:
-        "Uniform fluting, adhesive bonding, and board consolidation ensure predictable structural strength across every batch.",
-    },
-    {
-      icon: Target,
-      title: "Precision in Box Manufacturing",
-      description:
-        "Calibrated slotting, creasing, and die-cutting machinery produce accurate dimensions and clean fold lines for effortless box assembly.",
-    },
-    {
-      icon: CheckCircle2,
-      title: "Quality-Focused Operations",
-      description:
-        "Regular maintenance, blade sharpening, and machine calibration support consistent visual appeal and box integrity throughout production.",
-    },
-  ];
+            icon: ShieldCheck,
+            title: "Consistent Packaging Construction",
+            description:
+              "Uniform fluting, adhesive bonding, and board consolidation ensure predictable structural strength across every batch.",
+          },
+          {
+            icon: Target,
+            title: "Precision in Box Manufacturing",
+            description:
+              "Calibrated slotting, creasing, and die-cutting machinery produce accurate dimensions and clean fold lines for effortless box assembly.",
+          },
+          {
+            icon: CheckCircle2,
+            title: "Quality-Focused Operations",
+            description:
+              "Regular maintenance, blade sharpening, and machine calibration support consistent visual appeal and box integrity throughout production.",
+          },
+        ];
 
   return (
     <section
@@ -96,15 +88,15 @@ export default function WhyMachineryMatters() {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-3.5">
             <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
             <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-              OPERATIONAL ADVANTAGE
+              {badge}
             </span>
           </div>
 
           <h2 className="font-heading font-bold text-3xl sm:text-4xl text-[#202A2E] leading-tight mb-3">
-            Supporting Consistent <span className="text-[#A65D32]">Manufacturing</span>
+            {title} {highlightText && <span className="text-[#A65D32]">{highlightText}</span>}
           </h2>
           <p className="text-sm sm:text-base text-[#62574D] leading-relaxed">
-            Our machinery investments focus on dimensional repeatability, material integrity, and dependable corrugated box fabrication.
+            {subtitle}
           </p>
         </div>
 

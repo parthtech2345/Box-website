@@ -31,7 +31,7 @@ interface WhyIndustriesChooseUsProps {
   };
 }
 
-const ICON_CLASS = "w-5 h-5 text-[#A65D32] group-hover:text-white transition-colors duration-200";
+const ICON_CLASS = "w-5 h-5 text-current transition-all duration-200 group-hover:scale-110";
 
 const DEFAULT_REASONS = [
   {
@@ -200,7 +200,7 @@ export default function WhyIndustriesChooseUs({ data }: WhyIndustriesChooseUsPro
               className="p-6 rounded-2xl bg-[#FAF7F2] border border-[#E8D5B8] hover:border-[#A65D32] hover:bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group cursor-default"
             >
               <div>
-                <div className="w-11 h-11 rounded-xl bg-white border border-[#E8D5B8] flex items-center justify-center mb-4 group-hover:bg-[#A65D32] group-hover:border-[#A65D32] transition-all duration-200 shadow-2xs">
+                <div className="w-11 h-11 rounded-xl bg-white border border-[#E8D5B8] flex items-center justify-center mb-4 text-[#A65D32] group-hover:bg-[#A65D32] group-hover:border-[#A65D32] group-hover:text-white transition-all duration-200 shadow-2xs">
                   {item.icon}
                 </div>
                 <h3 className="font-heading font-bold text-base sm:text-lg text-[#202A2E] group-hover:text-[#A65D32] transition-colors mb-2">

@@ -6,19 +6,35 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import BannerEmployeeMascot from "@/components/common/BannerEmployeeMascot";
+import { MachineryBannerData } from "@/lib/machineryData";
 
 interface MachineryDetailBannerProps {
   name: string;
   category: string;
   shortDescription: string;
+  bannerData?: MachineryBannerData | null;
 }
 
 export default function MachineryDetailBanner({
   name,
   category,
   shortDescription,
+  bannerData,
 }: MachineryDetailBannerProps) {
   const contentRef = useRef<HTMLDivElement | null>(null);
+
+  const bannerImage =
+    bannerData?.detailBannerImage ||
+    bannerData?.backgroundImage ||
+    "/Machinery/machinery_banner_pano.png";
+  const characterImage =
+    bannerData?.detailCharacterImage ||
+    bannerData?.characterImage ||
+    "/Machinery/character_plant_engineer.png";
+  const dialogueIcon = bannerData?.detailDialogueIcon || bannerData?.dialogueIcon || "⚡";
+  const dialogueSubtext =
+    bannerData?.detailDialogueSubtext ||
+    "High-speed precision automated manufacturing in operation";
 
   useEffect(() => {
     if (typeof window === "undefined" || !contentRef.current) return;
@@ -40,7 +56,7 @@ export default function MachineryDetailBanner({
       {/* Full Width Banner matching exact site banner standard */}
       <div className="relative w-full h-[340px] sm:h-[380px] lg:h-[420px]">
         <Image
-          src="/Machinery/machinery_banner_pano.png"
+          src={bannerImage}
           alt={`${name} Banner - AAVRIT PACKAGING`}
           fill
           priority
@@ -88,11 +104,11 @@ export default function MachineryDetailBanner({
 
           {/* Lower Area: Automation Engineer Mascot */}
           <BannerEmployeeMascot
-            characterImage="/Machinery/character_plant_engineer.png"
+            characterImage={characterImage}
             characterAlt={`${name} Operating Specialist - AAVRIT PACKAGING`}
-            dialogueIcon="⚡"
+            dialogueIcon={dialogueIcon}
             dialogueTitle={`${name} Line!`}
-            dialogueSubtext="High-speed precision automated manufacturing in operation"
+            dialogueSubtext={dialogueSubtext}
             characterWidthClass="w-[120px] sm:w-[150px] lg:w-[170px]"
             shadowWidthClass="w-22 sm:w-26 lg:w-30"
           />

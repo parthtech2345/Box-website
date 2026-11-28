@@ -3,7 +3,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { MACHINERY_DATA } from "@/data/machineryData";
+import {
+  getAllMachinery,
+  getMachineBySlug,
+  getMachineryBanner,
+  getMachineryCTA,
+} from "@/lib/machineryData";
 
 import MachineryDetailBanner from "@/components/machinery/MachineryDetailBanner";
 import MachineryOverview from "@/components/machinery/MachineryOverview";
@@ -20,7 +25,8 @@ interface MachineryDetailPageProps {
 }
 
 export async function generateStaticParams() {
-  return MACHINERY_DATA.map((machine) => ({
+  const machines = await getAllMachinery();
+  return machines.map((machine) => ({
     slug: machine.slug,
   }));
 }
@@ -29,7 +35,7 @@ export async function generateMetadata({
   params,
 }: MachineryDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const machine = MACHINERY_DATA.find((m) => m.slug === slug);
+  const machine = await getMachineBySlug(slug);
 
   if (!machine) {
     return {
@@ -37,12 +43,16 @@ export async function generateMetadata({
     };
   }
 
+  const title = machine.seo?.title || `${machine.name} | AAVRIT PACKAGING`;
+  const description =
+    machine.seo?.description || machine.shortDescription || machine.fullDescription;
+
   return {
-    title: machine.seo.title,
-    description: machine.seo.description,
+    title,
+    description,
     openGraph: {
-      title: machine.seo.title,
-      description: machine.seo.description,
+      title,
+      description,
       images: [
         {
           url: machine.image,
@@ -59,7 +69,11 @@ async function MachineryDetailContent({
   params,
 }: MachineryDetailPageProps) {
   const { slug } = await params;
-  const machine = MACHINERY_DATA.find((m) => m.slug === slug);
+  const [machine, banner, cta] = await Promise.all([
+    getMachineBySlug(slug),
+    getMachineryBanner(),
+    getMachineryCTA(),
+  ]);
 
   if (!machine) {
     notFound();
@@ -74,6 +88,7 @@ async function MachineryDetailContent({
           name={machine.name}
           category={machine.category}
           shortDescription={machine.shortDescription}
+          bannerData={banner}
         />
 
         {/* 2. Main Machinery Overview: Description Left + Image Right */}
@@ -104,7 +119,7 @@ async function MachineryDetailContent({
         />
 
         {/* 7. Final Contact CTA */}
-        <MachineryDetailCTA />
+        <MachineryDetailCTA data={cta?.detail} />
       </main>
       <Footer />
     </div>

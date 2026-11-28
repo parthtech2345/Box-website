@@ -5,10 +5,26 @@ import Link from "next/link";
 import { ArrowRight, Phone, Sparkles } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { MachineryCTAItem } from "@/lib/machineryData";
 
-export default function MachineryDetailCTA() {
+interface MachineryDetailCTAProps {
+  data?: MachineryCTAItem | null;
+}
+
+export default function MachineryDetailCTA({ data }: MachineryDetailCTAProps = {}) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const cardRef = useRef<HTMLDivElement | null>(null);
+
+  const badge = data?.badge || "MANUFACTURING CONSULTATION";
+  const title = data?.title || "Want to Know More About";
+  const highlightText = data?.highlightText || "Our Capabilities?";
+  const description =
+    data?.description ||
+    "Get in touch with our team to learn more about our manufacturing processes, equipment tolerances, and custom packaging solutions.";
+  const buttonText = data?.buttonText || "Contact Us";
+  const buttonLink = data?.buttonLink || "/#contact";
+  const phone = data?.phone || "+91 98765 43210";
+  const phoneLink = data?.phoneLink || "tel:+919876543210";
 
   useEffect(() => {
     if (typeof window === "undefined" || !sectionRef.current) return;
@@ -57,36 +73,35 @@ export default function MachineryDetailCTA() {
             <div className="max-w-xl">
               <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/20 text-[#A65D32] text-[11px] font-bold uppercase tracking-wider mb-3">
                 <Sparkles className="w-3 h-3 text-[#A65D32]" />
-                <span>MANUFACTURING CONSULTATION</span>
+                <span>{badge}</span>
               </div>
 
               <h2 className="font-heading font-bold text-2xl sm:text-3xl text-[#202A2E] leading-tight mb-2.5">
-                Want to Know More About{" "}
-                <span className="text-[#A65D32]">Our Capabilities?</span>
+                {title}{" "}
+                {highlightText && <span className="text-[#A65D32]">{highlightText}</span>}
               </h2>
 
               <p className="text-xs sm:text-sm text-[#62574D] leading-relaxed">
-                Get in touch with our team to learn more about our manufacturing
-                processes, equipment tolerances, and custom packaging solutions.
+                {description}
               </p>
             </div>
 
             {/* Right Action Buttons */}
             <div className="flex flex-col sm:flex-row lg:flex-col items-stretch sm:items-center lg:items-end gap-2.5 shrink-0">
               <Link
-                href="/#contact"
+                href={buttonLink}
                 className="group inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#A65D32] hover:bg-[#8F4E28] text-white text-xs sm:text-sm font-bold tracking-wide uppercase transition-all shadow-xs hover:shadow-md active:scale-98"
               >
-                <span>Contact Us</span>
+                <span>{buttonText}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
 
               <a
-                href="tel:+919876543210"
+                href={phoneLink}
                 className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#FAF7F2] hover:bg-white text-[#493629] text-xs sm:text-sm font-semibold border border-[#D1B48C]/70 hover:border-[#A65D32] transition-colors"
               >
                 <Phone className="w-3.5 h-3.5 text-[#A65D32]" />
-                <span>+91 98765 43210</span>
+                <span>{phone}</span>
               </a>
             </div>
           </div>

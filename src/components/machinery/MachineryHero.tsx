@@ -6,9 +6,25 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import BannerEmployeeMascot from "@/components/common/BannerEmployeeMascot";
+import { MachineryBannerData } from "@/lib/machineryData";
 
-export default function MachineryHero() {
+interface MachineryHeroProps {
+  data?: MachineryBannerData | null;
+}
+
+export default function MachineryHero({ data }: MachineryHeroProps = {}) {
   const titleRef = useRef<HTMLDivElement | null>(null);
+
+  const bannerImage = data?.backgroundImage || "/Machinery/machinery_banner_pano.png";
+  const bannerAlt = data?.backgroundImageAlt || "Machinery & Technology Banner - AAVRIT PACKAGING";
+  const title = data?.title || "Machinery & Technology";
+  const breadcrumbRoot = data?.breadcrumbRoot || "Home";
+  const breadcrumbCurrent = data?.breadcrumbCurrent || "Machinery & Technology";
+  const characterImage = data?.characterImage || "/Machinery/character_plant_engineer.png";
+  const characterAlt = data?.characterAlt || "Plant Automation Engineer - AAVRIT PACKAGING";
+  const dialogueIcon = data?.dialogueIcon || "⚡";
+  const dialogueTitle = data?.dialogueTitle || "15M+ Monthly Capacity!";
+  const dialogueSubtext = data?.dialogueSubtext || "High-speed corrugators & 4-color inline flexo printers";
 
   useEffect(() => {
     if (typeof window === "undefined" || !titleRef.current) return;
@@ -30,8 +46,8 @@ export default function MachineryHero() {
       {/* Full Width Banner matching exact site banner standard */}
       <div className="relative w-full h-[340px] sm:h-[380px] lg:h-[420px]">
         <Image
-          src="/Machinery/machinery_banner_pano.png"
-          alt="Machinery & Technology Banner - AAVRIT PACKAGING"
+          src={bannerImage}
+          alt={bannerAlt}
           fill
           priority
           sizes="100vw"
@@ -48,7 +64,7 @@ export default function MachineryHero() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pointer-events-auto">
             <div ref={titleRef} className="max-w-lg">
               <h1 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-tight mb-1.5 drop-shadow-md">
-                Machinery & Technology
+                {title}
               </h1>
 
               {/* Breadcrumb Navigation: Home > Machinery & Technology */}
@@ -60,11 +76,11 @@ export default function MachineryHero() {
                   href="/"
                   className="hover:text-[#E97835] transition-colors drop-shadow-xs"
                 >
-                  Home
+                  {breadcrumbRoot}
                 </Link>
                 <ChevronRight className="w-3.5 h-3.5 text-[#D1B48C]" />
                 <span className="text-[#D1B48C] font-semibold drop-shadow-xs">
-                  Machinery & Technology
+                  {breadcrumbCurrent}
                 </span>
               </nav>
             </div>
@@ -72,11 +88,11 @@ export default function MachineryHero() {
 
           {/* 2. LOWER AREA: Chief Plant Automation Engineer Speaking Mascot */}
           <BannerEmployeeMascot
-            characterImage="/Machinery/character_plant_engineer.png"
-            characterAlt="Plant Automation Engineer - AAVRIT PACKAGING"
-            dialogueIcon="⚡"
-            dialogueTitle="15M+ Monthly Capacity!"
-            dialogueSubtext="High-speed corrugators & 4-color inline flexo printers"
+            characterImage={characterImage}
+            characterAlt={characterAlt}
+            dialogueIcon={dialogueIcon}
+            dialogueTitle={dialogueTitle}
+            dialogueSubtext={dialogueSubtext}
             characterWidthClass="w-[125px] sm:w-[155px] lg:w-[175px]"
             shadowWidthClass="w-24 sm:w-28 lg:w-34"
           />

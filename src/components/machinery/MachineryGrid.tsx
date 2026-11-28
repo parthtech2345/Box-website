@@ -4,15 +4,35 @@ import React, { useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { MACHINERY_DATA } from "@/data/machineryData";
+import { MACHINERY_DATA, MachineItem } from "@/data/machineryData";
+import { MachineryGridHeaderData } from "@/lib/machineryData";
 import Card3DTilt from "@/components/ui/Card3DTilt";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function MachineryGrid() {
+interface MachineryGridProps {
+  machines?: MachineItem[];
+  headerData?: MachineryGridHeaderData | null;
+}
+
+export default function MachineryGrid({ machines, headerData }: MachineryGridProps = {}) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const headerRef = useRef<HTMLDivElement | null>(null);
   const cardsRef = useRef<HTMLDivElement | null>(null);
+
+  const items = machines && machines.length > 0 ? machines : MACHINERY_DATA;
+  const badge = headerData?.badge || "CORE PLANT INFRASTRUCTURE";
+  const rawTitle = headerData?.title || "Our Machinery &";
+  const highlightText = headerData?.highlightText || "Equipment";
+  const subtitle =
+    headerData?.subtitle ||
+    "Explore the dedicated machinery operating in our manufacturing plant, engineered to produce high-end corrugated cartons with precision, speed, and durability.";
+
+  // Prevent repetition if title already includes or ends with highlightText
+  let displayTitle = rawTitle.trim();
+  if (highlightText && displayTitle.toLowerCase().endsWith(highlightText.toLowerCase())) {
+    displayTitle = displayTitle.slice(0, -highlightText.length).trim();
+  }
 
   useEffect(() => {
     if (typeof window === "undefined" || !sectionRef.current) return;
@@ -76,19 +96,19 @@ export default function MachineryGrid() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#A65D32]/10 border border-[#A65D32]/25 mb-3.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#A65D32]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#A65D32]">
-                CORE PLANT INFRASTRUCTURE
+                {badge}
               </span>
             </div>
 
-            <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-[#202A2E] leading-[1.1] tracking-tight">
-              Our Machinery & <br className="hidden sm:inline" />
-              <span className="text-[#A65D32]">Manufacturing Equipment</span>
+            <h2 className="font-heading font-bold text-2xl sm:text-3xl lg:text-4xl text-[#202A2E] leading-tight tracking-tight">
+              {displayTitle}{" "}
+              {highlightText && <span className="text-[#A65D32]">{highlightText}</span>}
             </h2>
           </div>
 
           <div className="max-w-md lg:border-l-2 lg:border-[#D1B48C]/60 lg:pl-6 pb-1">
             <p className="text-sm sm:text-base text-[#62574D] font-normal leading-relaxed">
-              Explore the dedicated machinery operating in our manufacturing plant, engineered to produce high-end corrugated cartons with precision, speed, and durability.
+              {subtitle}
             </p>
           </div>
         </div>
@@ -98,7 +118,7 @@ export default function MachineryGrid() {
           ref={cardsRef}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7"
         >
-          {MACHINERY_DATA.map((machine) => (
+          {items.map((machine) => (
             <Card3DTilt key={machine.id} className="h-full rounded-2xl">
               <Link
                 href={`/machinery/${machine.slug}`}
